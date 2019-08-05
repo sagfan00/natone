@@ -10,5 +10,6 @@ define data local
 end-define 
 read (2) emp 
 display emp
+display "aa"
 end-read
 end
