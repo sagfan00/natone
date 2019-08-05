@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CSAEXAM
+   2 INPUTS
+     3 EXAMINE-WHAT (A253) /* String to be examined
+     3 FOR-WHAT (A80) /* String to be examined for
+     3 REPLACE-WITH (A80) /* String to replace with
+     3 DELETE (L) /* By default, a blank
+/*                                       /* REPLACE-WITH will replace
+/*                                       /* with 1 space. To replace
+/*                                       /* with no space, set DELETE
+     3 POSITION-ONLY (L) /* Only want position of scan
+/*                                       /* string. See OUTPUTS...
+   2 OUTPUTS
+     3 POSITION (I2) /* If the REPLACE-WITH string
+/*                                       /* is
+END-DEFINE

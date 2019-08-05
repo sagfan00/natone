@@ -1,0 +1,14 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+define data local      
+1 emp view of employees-nat
+2 personnel-id
+2 First-name 
+end-define 
+read (2) emp 
+display emp
+end-read
+end

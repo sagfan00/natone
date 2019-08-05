@@ -1,0 +1,37 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This data area is passed to
+/*  CDAAACT to retrieve action
+/*  information from CD--ACT.
+/*
+ 1 CDAAACTA
+   2 INPUTS (A1/1:15)
+   2 REDEFINE INPUTS /* REDEF. BEGIN : INPUTS
+     3 METHOD (A2) /* Method requested
+     3 VERSION (N1) /* Method version
+     3 START-SOURCE-ID (A2) /* Start Source of action id
+     3 START-ACTION-ID (N4) /* Start Action id
+     3 MAX-ACTION-REQUESTED (N4) /* Max action id requested
+     3 RESTRICT-SOURCE-ID (A2) /* Restrict source id
+   2 INPUT-OUTPUTS (A1/1:1140)
+   2 REDEFINE INPUT-OUTPUTS /* REDEF. BEGIN : INPUT-OUTPUTS
+     3 ACTION-ARRAY (1:12) /* Action array
+       4 ACTION-IDENTIFIER (A6) /* Action identifier
+       4 REDEFINE ACTION-IDENTIFIER /* REDEF. BEGIN : ACTION-IDENTIF
+         5 ACTION-SOURCE-ID (A2) /* Action source id
+         5 ACTION-ACTION-ID (N4) /* Action id
+       4 ACTION-NAME-VARIABLE (A32) /* Action name variable
+       4 ACTION-CODE (A12) /* Action code
+       4 ACTION-NAME (A12) /* Action name
+       4 ACTION-NAME-LONG (A32) /* Action name long description
+       4 ACTION-NAME-STATUS (A1) /* Action name variable
+   2 OUTPUTS (A1/1:72)
+   2 REDEFINE OUTPUTS /* REDEF. BEGIN : OUTPUTS
+     3 METHOD-LIBRARY (A8)
+     3 METHOD-DESCRIPTION (A60)
+     3 MAX-ACTION-RETURNED (N4) /* Max action id returned
+END-DEFINE

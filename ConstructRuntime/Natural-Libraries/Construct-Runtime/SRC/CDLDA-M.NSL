@@ -1,0 +1,16 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This LDA is used to save the
+/*  update message info returned
+/*  from the object so this is
+/*  preserved when an INIT call
+/*  is done after the update.
+ 1 SAVE-MSG-INFO /* Corresponds to PDA CDPDA-M
+   2 ##MSG (A79) /* Passed/Returned message or
+   2 ##MSG-NR (N4) /* Message number on SYSERR file
+   2 ##MSG-DATA (A32/1:3) /* Used to substitute
+END-DEFINE

@@ -1,0 +1,106 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*
+/*
+/*  Data Area Name: CD--ACTM                       Function
+/*  Created on....: May 27, 97                     ========
+/*  Created by....: SAG                  This data area defines the
+/*                                       valid types for CD--ACT
+/* *Default constants
+ 1 CD--ACTD
+   2 MAX-AM (I2) CONST<6> /* Max action methods
+   2 MAX-AS (I2) CONST<4> /* Max action source id
+   2 MAX-SAC (I2) CONST<13> /* Max CST single act.
+   2 MAX-SAA (I2) CONST<2> /* Max App single act.
+   2 MAX-MAC (I2) CONST<1> /* Max CST model act.
+   2 MAX-MAA (I2) CONST<1> /* Max App model act.
+   2 METHOD-LIBRARY (A8) CONST<'CSTACT'> /* Syserr lib.
+   2 METHOD-DESCRIPTION (A60) CONST<'*8800.1'> /*
+/* *
+ 1 CD--ACTM
+/* *
+/* *Defined methods for CD--ACT
+   2 METHODS (A2/1:MAX-AM) INIT
+     (1) <'SK'>
+     (2) <'MK'>
+     (3) <'AS'>
+     (4) <'AM'>
+     (5) <'AK'>
+   2 REDEFINE METHODS /* REDEF. BEGIN : METHODS
+     3 SINGLE-ACTION (A2)
+     3 MODEL-ACTIONS (A2)
+     3 ALL-SINGLE-ACTIONS (A2)
+     3 ALL-MODEL-ACTIONS (A2)
+     3 ALL-ACTIONS (A2)
+     3 MODEL-ACTION-DETAIL (A2)
+/* *
+/* *Defined source ids for CD--ACT
+   2 SOURCE (A2/1:MAX-AS) INIT
+     (1) <'MA'>
+     (2) <'MC'>
+     (3) <'SA'>
+     (4) <'SC'>
+   2 REDEFINE SOURCE /* REDEF. BEGIN : SOURCE
+     3 MODEL-APPLICATION (A2)
+     3 MODEL-CONSTRUCT (A2)
+     3 SINGLE-APPLICATION (A2)
+     3 SINGLE-CONSTRUCT (A2)
+/* *
+/* *Construct Single Action Id List
+   2 SAC-ACTION-ID (I2/1:MAX-SAC) INIT
+     (1) <1>
+     (2) <2>
+     (3) <3>
+     (4) <4>
+     (5) <5>
+     (6) <6>
+     (7) <7>
+     (8) <8>
+     (9) <9>
+     (10) <10>
+     (11) <11>
+     (12) <12>
+     (13) <13>
+   2 REDEFINE SAC-ACTION-ID /* REDEF. BEGIN : SAC-ACTION-ID
+/* *                                     /* CONSTRUCT list
+     3 ADD-ACTION (I2) /* Action Id 1
+     3 BROWSE-ACTION (I2) /* Action Id 2
+     3 CLEAR-ACTION (I2) /* Action Id 3
+     3 COPY-ACTION (I2) /* Action Id 4
+     3 DETAIL-ACTION (I2) /* Action Id 5
+     3 DISPLAY-ACTION (I2) /* Action Id 6
+     3 MODIFY-ACTION (I2) /* Action Id 7
+     3 NEXT-ACTION (I2) /* Action Id 8
+     3 PURGE-ACTION (I2) /* Action Id 9
+     3 RECALL-ACTION (I2) /* Action Id 10
+     3 REPLACE-ACTION (I2) /* Action Id 11
+     3 SELECT-ACTION (I2) /* Action Id 12
+     3 FORMER-ACTION (I2) /* Action Id 13
+/* *
+/* *Application Single Action Id
+   2 SAA-ACTION-ID (I2/1:MAX-SAA) INIT
+     (1) <1>
+     (2) <2>
+   2 REDEFINE SAA-ACTION-ID /* REDEF. BEGIN : SAA-ACTION-ID
+/* *                                     /* Application list
+     3 SAMPLE-ACTION1 (I2) /* Action Id 1
+     3 SAMPLE-ACTION2 (I2) /* Action Id 2
+/* *
+/* *Construct Model Action Id List
+   2 MAC-ACTION-ID (I2/1:MAX-MAC) INIT
+     (1) <1>
+   2 REDEFINE MAC-ACTION-ID /* REDEF. BEGIN : MAC-ACTION-ID
+/* *                                     /* CONSTRUCT list
+     3 OBJECT-BROWSE-DIALOG (I2) /* Model Action Id 1
+/* *
+/* *Application Model Action Id List
+   2 MAA-ACTION-ID (I2/1:MAX-MAA) INIT
+     (1) <1>
+   2 REDEFINE MAA-ACTION-ID /* REDEF. BEGIN : MAA-ACTION-ID
+/* *                                     /* Application list
+     3 SAMPLE-MODEL (I2) /* Model Action Id 1
+END-DEFINE

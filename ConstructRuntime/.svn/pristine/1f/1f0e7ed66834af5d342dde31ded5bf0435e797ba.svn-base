@@ -1,0 +1,74 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+/* If an xarray is part of another xarray and there is a length
+/* reserve room in the dynamic portion of the message for the number of
+/* occurrences that are in the fixed portion of the message.  In other
+/* words if the xarray is not materialized there will still be a spot
+/* in the fixed portion of the message for the first occurrence of the
+/* non materialized array so for ease of use the dynamic portion of
+/* the message will also contain empty bytes equivalent to the required
+/* room in the fixed portion of the xarray
+/* find out if this xarray belongs to another xarray
+#XARRAY-IN-XARRAY := FALSE
+FOR #I = +XARRAY-CURRENT-LOCATION TO 1 STEP -1
+  IF +XARRAY-LEVEL-NUMBER(#I) <
+      +XARRAY-LEVEL-NUMBER(+XARRAY-CURRENT-LOCATION) THEN
+    #XARRAY-IN-XARRAY := TRUE
+  END-IF
+END-FOR
+IF #XARRAY-IN-XARRAY THEN
+  IF +XARRAY-BYTES(+XARRAY-CURRENT-LOCATION) NE 0 THEN
+    #BYTES := +XARRAY-BYTES(+XARRAY-CURRENT-LOCATION)
+  ELSE
+/* determine how many bytes are contained with in this whole
+/* group
+/* note that +XARRAY-ATTRIBUTE-NUMBER(+XARRAY-CURRENT-LOCATION)
+/*   gives the current index into +PDA for the XARRAY being
+/*   processed
+    RESET #BYTES
+    #START-PDA-INDEX := +XARRAY-ATTRIBUTE-NUMBER(+XARRAY-CURRENT-LOCATION) + 1
+    FOR #I = #START-PDA-INDEX TO #MAX-PDA-OCC
+      IF +PDA-LEVEL-NUMBER(#I) <=
+          +XARRAY-LEVEL-NUMBER(+XARRAY-CURRENT-LOCATION) THEN
+        ESCAPE BOTTOM
+      END-IF
+      ADD +PDA-BYTES(#I) TO #BYTES
+      /* consider the required fix occurrence positions
+      #PGM-THRU-INDEX(*) := +PDA-THRU-INDEX(#I,*)
+      #OCC := 1
+      FOR #K = 1 TO 3
+        IF #PGM-THRU-INDEX(#K) = 0 THEN
+          ESCAPE BOTTOM /* we've looked at all the indexes here
+        END-IF
+        IF #PGM-THRU-XARRAY-REDEF(#K) THEN
+          ESCAPE TOP /* an xarray not a fixed array
+        END-IF
+        #OCC := #OCC * #PGM-THRU-INDEX(#K)
+      END-FOR
+      #BYTES := #OCC * #BYTES
+    END-FOR
+  END-IF
+  IF #BYTES NE 0 THEN
+     COMPRESS #INDENT(1:#SPACES) 'IF' #XARRAY-INDEX-CONSTANTS(1)
+     'NE 1 THEN' INTO #SRC-LINE
+     WRITE(SRC) #SRC-LINE
+     ADD 1 TO #SPACES
+     COMPRESS #INDENT(1:#SPACES) 'FOR #BLANKS = 1 TO' #BYTES INTO #SRC-LINE
+     WRITE(SRC) #SRC-LINE
+     ADD 1 TO  #SPACES
+     COMPRESS #INDENT(1:#SPACES)
+       'COMPRESS FULL #XA-DYNA #BLANK TO #XA-DYNA LEAVING NO' INTO #SRC-LINE
+     WRITE(SRC) #SRC-LINE
+     SUBTRACT 1 FROM #SPACES
+     COMPRESS #INDENT(1:#SPACES) 'END-FOR' INTO #SRC-LINE
+     WRITE(SRC) #SRC-LINE
+     COMPRESS #INDENT(1:#SPACES) 'ADD' #BYTES 'TO #XCURPOS' INTO #SRC-LINE
+     WRITE (SRC) #SRC-LINE
+     SUBTRACT 1 FROM #SPACES
+     COMPRESS #INDENT(1:#SPACES) 'END-IF' INTO #SRC-LINE
+     WRITE (SRC) #SRC-LINE
+  END-IF
+END-IF

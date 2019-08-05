@@ -1,0 +1,35 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**********************************************************************
+* Program    : CDNCPX
+* System     : NATURAL-CONSTRUCT
+* Application: All generated applications which use Direct Commands
+* Title      : Natural Construct Examine Direct Command
+* Written on : 03 Nov 1992
+* Description: Attempts to process a direct command as a Natural
+*              Command Processor command.
+*
+*              Note: A Natural Command Processor must be currently
+*                    active (Usually initially invoked by an application
+*                    Startup program).
+*
+* History
+**********************************************************************
+DEFINE DATA
+  PARAMETER USING CDPDA-D
+  PARAMETER USING CDPDA-M
+END-DEFINE
+*
+* Check if direct command is executable by a command processor and
+* execute the command via the command processor if possible.
+  CALLNAT 'CDNCP' DIALOG-INFO
+                  MSG-INFO
+*
+* Return from CDNCP indicates the command is not executable by a
+* Natural command processor.
+RELEASE STACK
+FETCH DIALOG-INFO.##MAIN
+END

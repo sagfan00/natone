@@ -1,0 +1,28 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  Data Area Name: CSASTD                         Function
+/*  Created on....: Jan 21, 88                     ========
+/*  Created by....: SAG                  This data area is used to
+/*                                       transfer message and error
+/*                                       information between CST
+/*                                       components.
+/*
+ 1 CSASTD /* Standard Message Parameters
+   2 OUTPUTS
+     3 MSG (A79) /* Returned message string.
+     3 MSG-NR (N4) /* CSTMSG application message
+     3 MSG-DATA (A32/1:3) /* Used to pass variables
+/*                                       /* to be substituted into msg.
+     3 RETURN-CODE (A1) /* Type of message:
+/*                                       /* ' ' = Informatory message
+/*                                       /* 'W' = Warning (can continue)
+/*                                       /* 'E' = Error (fatal)
+     3 ERROR-FIELD (A32) /* Name of field in error.
+     3 ERROR-FIELD-INDEX1 (P3) /* These indexes are used if the
+     3 ERROR-FIELD-INDEX2 (P3) /* field in err in an element of
+     3 ERROR-FIELD-INDEX3 (P3) /* an array.
+END-DEFINE

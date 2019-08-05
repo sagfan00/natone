@@ -1,0 +1,102 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM1140
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 5.3.1.10
+**SAG TITLE: CST XML substitution mod
+**SAG SYSTEM: C53RT
+**SAG DESCS(1): This CST module is used to substitute XML reserved
+**SAG DESCS(2): characters found in the xml data
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDRDOCA2
+************************************************************************
+* Program  : CDXMLSUB
+* System   : C53RT
+* Title    : CST XML substitution mod
+* Generated: May 17,2011 at 09:59:05 by SAG
+* Function : This CST module is used to substitute XML reserved
+*            characters found in the xml data
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on May 13,2011 by CNDSHE for release ____
+* >
+* >
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+**SAG EXIT POINT PARAMETER-DATA
+  PARAMETER USING CDRDOCA2
+  LOCAL USING CSASTD
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+  LOCAL
+  01 #DOUBLE-QUOTE (A1)
+  01 #MAX-REPLACEMENTS (I2) CONST <5> /* CUSTOMIZE: adjust table size
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG EXIT POINT START-OF-PROGRAM
+*
+**SAG DEFINE EXIT GENERATE-CODE
+/** New Subprogram CDXMLSUB.
+RESIZE ARRAY #REPLACEMENT-TABLE TO (1:#MAX-REPLACEMENTS)
+* Determine double quotes in based on platform
+#DOUBLE-QUOTE := 'A'
+IF #DOUBLE-QUOTE < '0' THEN   /* Letters LT numbers
+#DOUBLE-QUOTE := H'7F' /* EBCDIC
+ELSE
+#DOUBLE-QUOTE := H'22' /* ASCII
+END-IF
+*
+* setup search and replace strings
+* note & must be first because of & substitution
+/* CUSTOMIZE:
+#SEARCH-STRING(1) := '&'
+#REPLACE-STRING(1) := '&amp;'
+#SEARCH-STRING(2) := "'"
+#REPLACE-STRING(2) := '&apos;'
+#SEARCH-STRING(3) := #DOUBLE-QUOTE
+#REPLACE-STRING(3) := '&quot;'
+#SEARCH-STRING(4) := '<'
+#REPLACE-STRING(4) := '&lt;'
+#SEARCH-STRING(5) := '>'
+#REPLACE-STRING(5) := '&gt;'
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+**SAG EXIT POINT BEFORE-CHECK-ERROR
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+**SAG EXIT POINT ADDITIONAL-INITIALIZATIONS
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+**SAG EXIT POINT END-OF-PROGRAM
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

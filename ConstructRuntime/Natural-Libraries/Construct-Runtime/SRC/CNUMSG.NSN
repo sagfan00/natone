@@ -1,0 +1,540 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**POST-GEN changes
+**comment out 'LOCAL USING CNAMSG' since this is a pda
+**comment out AT-TOP-OF-PAGE processing
+**SAG GENERATOR: CST-FRAME                        VERSION: 4.5.1
+**SAG TITLE: CST Utility Frame Subp
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): Error message handler.
+**SAG DESCS(2): This routine is used to return the text information
+**SAG DESCS(3): associated with a given USER message. The error text
+**SAG DESCS(4): returned is based on the current value of *LANGUAGE.
+**SAG DATA-AREA: CSASTD
+************************************************************************
+* Program  : CNUMSG
+* System   : NATURAL-CONSTRUCT
+* Title    : CST Utility Frame Subp
+* Generated: Aug  8,2002 at 15:18:04 by CNDKB
+* Function : Error message handler.
+*            This routine is used to return the text information
+*            associated with a given USER message. The error text
+*            returned is based on the current value of *LANGUAGE.
+* History
+**SAG EXIT POINT CHANGE-HISTORY
+************************************************************************
+DEFINE DATA
+*
+**SAG DEFINE EXIT PARAMETER-DATA
+PARAMETER
+  01 CNAMSG
+    02 INPUTS
+      03 INSTALL-LANGUAGE (I1)
+      03 DEFAULT-LANGUAGE (I1/1:8)
+      03 MESSAGE-LIBRARY (A8)
+      03 MSG-DATA-LIBRARY (A8/1:3)
+      03 RETRIEVAL-METHOD (A1)
+      03 FORMAT-METHOD (A2)
+      03 FORMAT-METHOD-LENGTH (N2)
+    02 INPUT-OUTPUTS
+      03 MSG (A250)
+      03 REDEFINE MSG
+        04 CNAMSG-CHAR(A1/1:250)
+      03 REDEFINE MSG
+        04 MSG-CHUNK(A60/1:4)
+      03 MSG-NR (N4)
+      03 MSG-DATA (A32/1:3)
+      03 RETURN-CODE (A1)
+    02 OUTPUTS
+      03 RESPONSE-CODE (N4)
+**SAG END-EXIT
+  PARAMETER USING CSASTD              /* Standard message passing area
+**LOCAL USING CNAMSG                  /* Message retrieval passing area
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL USING CSADEFLT                /* Used to obtain default values
+  LOCAL
+  01 #PROGRAM(A8)
+  01 #BYPASS-DEFINE-PRINTER(L)        /* Set to true to not exec DEF PTR
+**SAG DEFINE EXIT LOCAL-DATA
+  LOCAL USING CNLMSG
+  LOCAL USING CSACENTR
+  LOCAL USING NAD00073
+  LOCAL
+  01 #ALL-MESSAGES(A1) INIT<'A'>
+  01 #MAX-TRACE-LEVELS(I1) CONST<12>
+  01 #STRING-LEN(I1) CONST<65>
+  01 USR0320N-PARMS
+    02 APPLICATION(A8)
+    02 ERROR-NUMBER(N4)
+    02 LANGUAGE(I1)
+    02 RESPONSE(N4)
+    02 S-TEXT(A65)
+    02 REDEFINE S-TEXT
+      03 #CHAR(A1/1:#STRING-LEN)
+  01 #ARROW(A2)
+  01 #BEGIN-TRACE(L)
+  01 #CHAR-INDEX(I1)
+  01 #CHECKED-LANGUAGE(L/60)
+  01 #CENTER-DELIMITER (A3) INIT<',+/'>
+  01 #CENTERING-REQUESTED (L)
+  01 #LEN (P3)
+  01 #MESSAGE-LENGTH (A79)
+  01 REDEFINE #MESSAGE-LENGTH
+    02 #MSG-LENGTH (A2)
+    02 #MSG-REMAINDER (A77)
+  01 #DELIMITER (A1) INIT<H'01'>
+  01 #K(I1)
+  01 #L(I1)
+  01 #MSG-NR (N4)
+  01 REDEFINE #MSG-NR
+    02 #MSG-NR-A (A4)
+  01 #INITIAL-MESSAGE (A250)
+  01 #MESSAGE(A250)
+  01 REDEFINE #MESSAGE
+    02 #FIRST-CHAR (A1)
+    02 #SYSERR-NR (A4)
+    02 #DISPLACEMENT-CHAR (A1)
+    02 #DISPLACEMENT (A1)
+  01 #NUM(I1)
+  01 #PLACEHOLDER
+    02 BLANK1(A1)
+    02 #UNPRINTABLE(A1) INIT<H'01'>
+    02 BLANK2(A1)
+  01 REDEFINE #PLACEHOLDER
+    02 #STRING1(A3)
+  01 REDEFINE #PLACEHOLDER
+    02 FILLER-BLANK1(A1)
+    02 #STRING2(A2)
+  01 REDEFINE #PLACEHOLDER
+    02 #STRING3(A2)
+  01 #POS(I1)
+  01 #DISP-NR (N2)
+  01 #SKIP-SLASHES(I1)
+  01 #SLASH(A1) INIT<'/'>
+  01 #SLASH-COUNT(I1)
+  01 #SUB-STRING-RL-BLANK(A5) INIT<' :N: '>
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #FILLER-L(A1)
+    02 #SUB-STRING(A3)
+    02 REDEFINE #SUB-STRING
+      03 FILLER(A1)
+      03 #I(N1)
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #SUB-STRING-L-BLANK(A4)
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #FILLER-R(A1)
+    02 #SUB-STRING-R-BLANK(A4)
+  01 #SYSTEM-DEFAULT-LANGUAGE(I1) INIT<1>
+  01 #SYSTEM-DEFAULT-LIBRARY(A8) INIT<'CSTMSG'>
+  01 #TEMP-MSG-DATA (A32)
+  INDEPENDENT
+  01 +MSG-TRACE(A1)
+**SAG END-EXIT
+END-DEFINE
+*
+PROG.   /* to allow escape from routine
+REPEAT
+*
+PERFORM INITIALIZATIONS
+INCLUDE CU--DFP2          /* Define printer
+*
+* Top of page to avoid having to use NOTITLE option
+**AT TOP OF PAGE(SRC)
+**  WRITE(SRC) NOTITLE '*/'
+**END-TOPPAGE
+**SAG DEFINE EXIT START-OF-PROGRAM
+  RESET CNAMSG.RESPONSE-CODE
+  IF CNAMSG.MESSAGE-LIBRARY = ' ' THEN
+    ASSIGN CNAMSG.MESSAGE-LIBRARY =  #SYSTEM-DEFAULT-LIBRARY
+  END-IF
+*
+* Determine if centering requested
+  RESET #CENTERING-REQUESTED
+  EXAMINE CNAMSG.MSG FOR #CENTER-DELIMITER
+    REPLACE WITH #DELIMITER
+  SEPARATE CNAMSG.MSG INTO CNAMSG.MSG
+    REMAINDER #MESSAGE-LENGTH WITH DELIMITERS #DELIMITER
+  RESET #MSG-REMAINDER
+  IF #MESSAGE-LENGTH IS (N2) THEN
+    ASSIGN #LEN = VAL(#MESSAGE-LENGTH)
+    ASSIGN #CENTERING-REQUESTED = TRUE
+  END-IF
+*
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+  DECIDE ON FIRST VALUE OF CNAMSG.RETRIEVAL-METHOD
+    VALUE ' ', 'B'  /* Both Retrieve and Substitute
+      IGNORE
+    VALUE 'R'  /* Retrieve Only
+      IGNORE
+    VALUE 'S'  /* Substitute Only
+*      ASSIGN USR0320N-PARMS.S-TEXT = CNAMSG.MSG
+      ASSIGN #INITIAL-MESSAGE = CNAMSG.MSG
+      PERFORM MESSAGE-SUBSTITUTION
+      PERFORM ESCAPE-SUBROUTINE
+    NONE VALUE
+      RESET INITIAL CNLMSG CSASTD
+      ASSIGN CNLMSG.MSG-DATA(1) = '*0586.3'  /* Method
+      ASSIGN CNLMSG.MSG-DATA(2) = CNAMSG.RETRIEVAL-METHOD
+      ASSIGN CNLMSG.MSG-DATA(3) = *PROGRAM
+      ASSIGN CNLMSG.MSG-NR = 0024
+      ASSIGN CNLMSG.MSG = 'Invalid:1::2:passed to:3:'
+      CALLNAT 'CNUMSG' CNLMSG CSASTD
+      ASSIGN CSASTD.RETURN-CODE = CSLRCODE.#ERROR
+      MOVE BY NAME CNLMSG TO CSASTD
+      PERFORM ESCAPE-SUBROUTINE
+  END-DECIDE
+*
+* Check for message number in message or previously translated message
+  ASSIGN #MESSAGE = CNAMSG.MSG
+  DECIDE FOR FIRST CONDITION
+    WHEN CNAMSG.MSG-NR NE 0
+      ASSIGN #MSG-NR = CNAMSG.MSG-NR
+    WHEN CNAMSG.MSG = MASK('*'NNNN'.')
+      DECIDE ON FIRST VALUE OF #MESSAGE.#DISPLACEMENT
+        VALUE '1':'9'
+          ASSIGN #DISP-NR = VAL(#MESSAGE.#DISPLACEMENT)
+        VALUE 'A','a'
+          ASSIGN #DISP-NR = 10
+        VALUE 'B','b'
+          ASSIGN #DISP-NR = 11
+        VALUE 'C','c'
+          ASSIGN #DISP-NR = 12
+        VALUE 'D','d'
+          ASSIGN #DISP-NR = 13
+        VALUE 'E','e'
+          ASSIGN #DISP-NR = 14
+        VALUE 'F','f'
+          ASSIGN #DISP-NR = 15
+        ANY
+          ASSIGN #MSG-NR = VAL(#MESSAGE.#SYSERR-NR)
+          PERFORM PARTITION-SUBSTITUTION
+        NONE IGNORE
+      END-DECIDE
+    WHEN CNAMSG.MSG = MASK('*'NNNN)
+      ASSIGN #MSG-NR = VAL(#MESSAGE.#SYSERR-NR)
+      PERFORM PARTITION-SUBSTITUTION
+    WHEN CNAMSG.MSG NE ' ' /* Assume message has already been translated
+      IF CNAMSG.MSG = SCAN ':1:' OR
+        CNAMSG.MSG = SCAN ':2:' OR
+        CNAMSG.MSG = SCAN ':3:'
+*        ASSIGN USR0320N-PARMS.S-TEXT = CNAMSG.MSG
+        ASSIGN #INITIAL-MESSAGE = CNAMSG.MSG
+        PERFORM MESSAGE-SUBSTITUTION
+      END-IF
+      IF #CENTERING-REQUESTED THEN
+        PERFORM CENTER-MESSAGE
+      END-IF
+      PERFORM ESCAPE-SUBROUTINE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+*
+  IF *LANGUAGE LT 1 OR *LANGUAGE GT 60 THEN
+    ASSIGN *LANGUAGE = 1
+  END-IF
+*
+* If install language used then perform substitution only
+  IF CNAMSG.INSTALL-LANGUAGE = *LANGUAGE AND CNAMSG.MSG NE ' ' THEN
+*    ASSIGN USR0320N-PARMS.S-TEXT = CNAMSG.MSG
+    ASSIGN #INITIAL-MESSAGE = CNAMSG.MSG
+    PERFORM MESSAGE-SUBSTITUTION
+    PERFORM ESCAPE-SUBROUTINE
+  END-IF
+*
+* Retrieve message with *LANGUAGE as the language code
+  ASSIGN USR0320N-PARMS.APPLICATION = CNAMSG.MESSAGE-LIBRARY
+  ASSIGN USR0320N-PARMS.ERROR-NUMBER = #MSG-NR
+  ASSIGN USR0320N-PARMS.LANGUAGE = #L = *LANGUAGE
+  CALLNAT 'USR0320N'
+    USR0320N-PARMS
+  IF USR0320N-PARMS.S-TEXT NE ' ' THEN
+    PERFORM MESSAGE-DISPLACEMENT
+    #INITIAL-MESSAGE := USR0320N-PARMS.S-TEXT
+    PERFORM MESSAGE-SUBSTITUTION
+    PERFORM ESCAPE-SUBROUTINE
+  ELSE
+    MOVE TRUE TO #CHECKED-LANGUAGE(#L)
+  END-IF
+*
+* Verify user provided default-language codes
+  FOR #K = 1 TO 8
+    IF CNAMSG.DEFAULT-LANGUAGE(#K) LT 1 OR
+        CNAMSG.DEFAULT-LANGUAGE(#K) GT 60 THEN
+      ASSIGN CNAMSG.DEFAULT-LANGUAGE(#K) = #SYSTEM-DEFAULT-LANGUAGE
+    END-IF
+  END-FOR
+*
+* Retrieve message with user provided default language codes
+  FOR #K = 1 TO 8
+    ASSIGN #L = CNAMSG.DEFAULT-LANGUAGE(#K)
+    IF NOT #CHECKED-LANGUAGE(#L) THEN
+      ASSIGN USR0320N-PARMS.LANGUAGE = #L
+      CALLNAT 'USR0320N'
+        USR0320N-PARMS
+      IF USR0320N-PARMS.S-TEXT NE ' ' THEN
+        PERFORM MESSAGE-DISPLACEMENT
+        #INITIAL-MESSAGE := USR0320N-PARMS.S-TEXT
+        PERFORM MESSAGE-SUBSTITUTION
+        PERFORM ESCAPE-SUBROUTINE
+      ELSE
+        MOVE TRUE TO #CHECKED-LANGUAGE(#L)
+      END-IF
+    END-IF
+  END-FOR
+*
+* Retrieve message with system default language code
+  IF NOT #CHECKED-LANGUAGE(#SYSTEM-DEFAULT-LANGUAGE) THEN
+    ASSIGN USR0320N-PARMS.LANGUAGE = #SYSTEM-DEFAULT-LANGUAGE
+    CALLNAT 'USR0320N'
+      USR0320N-PARMS
+    IF USR0320N-PARMS.S-TEXT NE ' ' THEN
+      PERFORM MESSAGE-DISPLACEMENT
+      #INITIAL-MESSAGE := USR0320N-PARMS.S-TEXT
+      PERFORM MESSAGE-SUBSTITUTION
+      PERFORM ESCAPE-SUBROUTINE
+    END-IF
+  END-IF
+*
+* Message retrieval is unsuccessful, use passed in text if avail.
+  IF CNAMSG.MSG NE ' ' THEN
+*    ASSIGN USR0320N-PARMS.S-TEXT = CNAMSG.MSG
+    ASSIGN #INITIAL-MESSAGE = CNAMSG.MSG
+    PERFORM MESSAGE-SUBSTITUTION
+  END-IF
+  ASSIGN CNAMSG.RESPONSE-CODE = USR0320N-PARMS.RESPONSE
+  PERFORM ESCAPE-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE MESSAGE-DISPLACEMENT
+************************************************************************
+*
+* Determine if only portion of message is requested
+  DECIDE ON FIRST VALUE OF #DISP-NR
+    VALUE 1
+      IGNORE /* No need to look for slash character
+    VALUE 2:15
+      /*
+      /* If we are intrested in displacement n, determine the byte
+      /* position of the n-1 slash character.
+      ASSIGN #SKIP-SLASHES = #DISP-NR - 1
+      RESET #SLASH-COUNT #CHAR-INDEX
+      REPEAT UNTIL #SKIP-SLASHES = #SLASH-COUNT OR
+          #CHAR-INDEX GE #STRING-LEN
+        ADD 1 TO #CHAR-INDEX
+        IF USR0320N-PARMS.#CHAR(#CHAR-INDEX) = #SLASH THEN
+          ADD 1 TO #SLASH-COUNT
+        END-IF
+      END-REPEAT /*
+      /*
+      IF #CHAR-INDEX = 1 THRU #STRING-LEN THEN
+        RESET USR0320N-PARMS.#CHAR(1:#CHAR-INDEX)
+      ELSE
+        RESET USR0320N-PARMS.S-TEXT /* Not found
+      END-IF
+    ANY
+      SEPARATE USR0320N-PARMS.S-TEXT LEFT INTO USR0320N-PARMS.S-TEXT
+      IGNORE /* Remainder
+        WITH DELIMITER #SLASH
+    NONE VALUE
+      IGNORE
+  END-DECIDE
+*
+END-SUBROUTINE /* MESSAGE-DISPLACEMENT
+*
+************************************************************************
+DEFINE SUBROUTINE MESSAGE-SUBSTITUTION
+************************************************************************
+*
+* Check for retrieval only
+  IF CNAMSG.RETRIEVAL-METHOD = 'R' THEN
+    RESET CNAMSG.MSG-DATA(*)
+    ASSIGN CNAMSG.MSG = USR0320N-PARMS.S-TEXT
+    IF #CENTERING-REQUESTED THEN
+      PERFORM CENTER-MESSAGE
+    END-IF
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+*
+* Substitute message data
+  ASSIGN #MESSAGE = #INITIAL-MESSAGE
+  FOR #I = 1 TO 3
+    IF CNAMSG.MSG-DATA(#I) = MASK('*'NNNN) THEN
+      RESET CNLMSG
+      ASSIGN CNLMSG.MESSAGE-LIBRARY = CNAMSG.MSG-DATA-LIBRARY(#I)
+      ASSIGN CNLMSG.MSG = CNAMSG.MSG-DATA(#I)
+      CALLNAT 'CNUMSG' CNLMSG CSASTD
+      PERFORM CHECK-ERROR
+      ASSIGN CNAMSG.MSG-DATA(#I) = CNLMSG.MSG
+      RESET INITIAL CNLMSG.MESSAGE-LIBRARY
+    END-IF
+*
+    EXAMINE CNAMSG.MSG-DATA(#I) FOR FULL ' .' REPLACE WITH #DELIMITER
+    SEPARATE CNAMSG.MSG-DATA(#I) INTO CNAMSG.MSG-DATA(#I)
+    IGNORE WITH DELIMITERS #DELIMITER
+    EXAMINE #MESSAGE FOR FULL #SUB-STRING GIVING POSITION #POS
+    IF #POS = 1
+      IF CNAMSG.MSG-DATA(#I) = ' '
+        EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK DELETE FIRST
+        EXAMINE #MESSAGE FOR #SUB-STRING DELETE FIRST
+      ELSE
+        EXAMINE #MESSAGE FOR FULL #SUB-STRING
+          REPLACE FIRST FULL #STRING2
+        EXAMINE #MESSAGE FOR FULL #UNPRINTABLE
+          REPLACE FIRST CNAMSG.MSG-DATA(#I)
+      END-IF
+    END-IF
+    IF CNAMSG.MSG-DATA(#I) = ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-L-BLANK REPLACE WITH ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK REPLACE WITH ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING REPLACE WITH ' '
+    ELSE
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-L-BLANK
+        REPLACE WITH FULL #STRING1
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK
+        REPLACE WITH FULL #STRING1
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING
+        REPLACE WITH FULL #STRING1
+      EXAMINE #MESSAGE FOR FULL #UNPRINTABLE
+        REPLACE WITH CNAMSG.MSG-DATA(#I)
+    END-IF
+  END-FOR
+  RESET CNAMSG.MSG-DATA(*)
+  ASSIGN CNAMSG.MSG = #MESSAGE
+  IF #CENTERING-REQUESTED THEN
+    PERFORM CENTER-MESSAGE
+  END-IF
+END-SUBROUTINE /* MESSAGE-SUBSTITUTION
+*
+************************************************************************
+DEFINE SUBROUTINE PARTITION-SUBSTITUTION
+************************************************************************
+*
+* Separate the different DATA(*) combinations into a temporary location
+* This routine should only be performed when the starting msg text
+* matches the *nnnn or *nnnn.n patterns.
+  SEPARATE CNAMSG.MSG INTO CNLMSG.MSG CNLMSG.MSG-DATA(1)
+    CNLMSG.MSG-DATA(2) CNLMSG.MSG-DATA(3)
+  IGNORE WITH DELIMITERS ','
+*
+* Replace the substitution data from incoming msg as override values.
+  FOR #I = 1 TO 3
+    IF CNLMSG.MSG-DATA(#I) NE ' '
+      ASSIGN CNAMSG.MSG-DATA(#I) = CNLMSG.MSG-DATA(#I)
+    END-IF
+  END-FOR
+  RESET CNLMSG
+*
+END-SUBROUTINE /* PARTITION-SUBSTITUTION
+*
+***********************************************************************
+DEFINE SUBROUTINE CENTER-MESSAGE
+***********************************************************************
+*
+* Center message
+  ASSIGN CSACENTR.#LENGTH = #LEN
+  ASSIGN CSACENTR.#STRING = CNAMSG.MSG
+  CALLNAT 'CSUCENTR' CSACENTR
+    CSASTD
+  ASSIGN CNAMSG.MSG = CSACENTR.#STRING
+*
+END-SUBROUTINE /* CENTER-MESSAGE
+*
+************************************************************************
+DEFINE SUBROUTINE ESCAPE-SUBROUTINE
+************************************************************************
+*
+  IF +MSG-TRACE NE ' ' THEN
+    PERFORM GENERATE-TRACE-INFO
+  END-IF
+  ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-SUBROUTINE /* ESCAPE-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE GENERATE-TRACE-INFO
+************************************************************************
+*
+  RESET #BEGIN-TRACE #MESSAGE #ARROW
+  IF +MSG-TRACE = #ALL-MESSAGES THEN
+    ASSIGN #BEGIN-TRACE = TRUE
+  END-IF
+  CALLNAT 'NAT00073' NAD00073
+    GENERATE-TRACE-LINES.
+  FOR #L = #MAX-TRACE-LEVELS TO 1 STEP -1
+    IF NAD00073.OBJ-NAME(#L) NE ' ' THEN
+      IF NAD00073.OBJ-NAME(#L) NE MASK('CS') THEN
+        ASSIGN #BEGIN-TRACE = TRUE
+      END-IF
+      IF NAD00073.OBJ-NAME(#L) NE *PROGRAM AND #BEGIN-TRACE THEN
+        COMPRESS #MESSAGE #ARROW NAD00073.OBJ-NAME(#L)
+          TO #MESSAGE LEAVING NO
+        ASSIGN #ARROW = '->'
+      END-IF
+    END-IF
+  END-FOR /* GENERATE-TRACE-LINES.
+  IF #MESSAGE NE ' ' THEN
+    WRITE(SRC) NOTITLE '* MSG Trace:' #MESSAGE (AL=60)
+    PRINT(SRC) NOTITLE '*     Text.:'
+      CNAMSG.MSG-NR(EM=9999 ZP=OFF) CNAMSG.MSG
+  END-IF
+END-SUBROUTINE /* GENERATE-TRACE-INFO
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+**SAG EXIT POINT BEFORE-CHECK-ERROR
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CNAMSG TO CSASTD
+  RESET CNAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CNAMSG CSASTD
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+**SAG DEFINE EXIT ADDITIONAL-INITIALIZATIONS
+*
+* SET ADDITIONAL INITIALIZATIONS
+* NOTE: When VMS is used the include code for the printer in this
+*       program may no longer work
+  #BYPASS-DEFINE-PRINTER := TRUE
+**SAG END-EXIT
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+**SAG DEFINE EXIT END-OF-PROGRAM
+**SAG END-EXIT
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

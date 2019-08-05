@@ -1,0 +1,11 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA PARAMETER
+1 IN4 (A10)
+1 OUT4 (A10)
+END-DEFINE
+MOVE *PROGRAM TO OUT4
+END 

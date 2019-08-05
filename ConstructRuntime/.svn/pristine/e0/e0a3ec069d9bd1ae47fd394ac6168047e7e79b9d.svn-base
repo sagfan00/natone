@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDMNTDFA
+   2 #REPOSITION-DISPLAY (L) /* True = Reposition the screen
+/*                                       /*        to panel 1, line 1,
+/*                                       /*        etc. whenever a new
+/*                                       /*        object is displayed.
+   2 #REPOSITION-UPDATE (L) /* True = Reposition the screen
+/*                                       /*        to panel 1, line 1,
+/*                                       /*        etc. after a modify,
+/*                                       /*        add action.
+   2 #CALLING-PROGRAM (A8) /* This parameter can be used
+/*                                       /* to default the preferences
+/*                                       /* based on a user and a program
+   2 #CLEAR-AFTER-UPDATE (L) /* True = Clear screan after
+/*                                       /*        ADD/MODIFY action.
+END-DEFINE

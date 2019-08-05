@@ -1,0 +1,142 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: CST utility
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): This routine will center a text string
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CSACENTR
+**SAG PARAMETER-NAME(2): CSASTD
+**SAG LOCAL-NAME(1): CSAEXAM
+**SAG LOCAL-NAME(2): CDLLANG
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CSUCENTR
+* System   : NATURAL-CONSTRUCT
+* Title    : CST utility
+* Generated: Jul 28,97 at 02:42 PM by DEVAC
+* Function : This routine will center a text string
+*
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CSACENTR
+  PARAMETER USING CSASTD
+  LOCAL USING CSAEXAM
+  LOCAL USING CDLLANG
+  LOCAL USING CNAMSG                  /* Message retrieval passing area
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+  01 #LEFT-STRING(A100)
+  01 REDEFINE #LEFT-STRING
+    02 #CHAR(A1/100)
+  01 #OFFSET(P3)
+  01 #TEMP(A253)
+  01 REDEFINE #TEMP
+    02 #CHAR(A1/253)
+  01 #STR-LENGTH(I1)
+  01 #STR-LENGTH-1(I1)
+  01 #DOUBLE-QUOTE(A1)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+RESET CSASTD.OUTPUTS
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+  IF CSACENTR.#STRING NE ' ' THEN
+    MOVE LEFT CSACENTR.#STRING TO #LEFT-STRING
+    /*
+    /* Change ' in string to "
+    IF #LEFT-STRING EQ SCAN '''' THEN
+      INCLUDE CU--QUOT  /* Assign #DOUBLE-QUOTE based on ASCII/EBCDIC
+      IF *LANGUAGE = CDLLANG.#MULTI-BYTE-LANGUAGE(*) THEN
+        /*
+        /* If double byte support required, set up CSAEXAM
+        ASSIGN CSAEXAM.FOR-WHAT = '''' /* single Quote
+        ASSIGN CSAEXAM.REPLACE-WITH = #DOUBLE-QUOTE
+        ASSIGN CSAEXAM.EXAMINE-WHAT = #LEFT-STRING
+        CALLNAT 'CSUEXAM' CSAEXAM
+                          CSASTD
+        PERFORM CHECK-ERROR
+        ASSIGN #LEFT-STRING =  CSAEXAM.EXAMINE-WHAT
+      ELSE
+        EXAMINE #LEFT-STRING FOR '''' REPLACE WITH #DOUBLE-QUOTE
+      END-IF
+    END-IF
+    /*
+    /* Get length of string.
+    EXAMINE #LEFT-STRING FOR ' ' GIVING LENGTH #STR-LENGTH
+    COMPUTE #STR-LENGTH-1 = #STR-LENGTH - 1
+    COMPUTE #OFFSET = (CSACENTR.#LENGTH - #STR-LENGTH) / 2 + 1
+    /*
+    IF NOT #OFFSET = 1 THRU 100 THEN
+      ASSIGN #OFFSET = 1
+    END-IF
+*
+* Center the string within the requested number of characters.
+    ASSIGN #TEMP.#CHAR(#OFFSET:#OFFSET + #STR-LENGTH-1) =
+           #LEFT-STRING.#CHAR(1:#STR-LENGTH-1 + 1)
+    /*
+    /* Copy centered string back
+    ASSIGN CSACENTR.#STRING = #TEMP
+  END-IF
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CNAMSG TO CSASTD
+  RESET CNAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CNAMSG CSASTD
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+**SAG DEFINE EXIT END-OF-PROGRAM
+**SAG END-EXIT
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

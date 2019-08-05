@@ -1,0 +1,43 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+*
+* in CCASXARR there is a call to this subroutine but since CCASXARR
+* is used within a subroutine this copy code needs to be outside
+* of the current subroutine so the copy code needs to be independent
+********************************************************************
+  DEFINE SUBROUTINE POPULATE-XARRAY-DIM-DESCRIPTION
+********************************************************************
+*   RESET +XARRAY-DIM-DESCRIPTION(+XARRAY-CURRENT-LOCATION,*)
+  #J := +PDA-RANK(#I) /* build the types of indexes being used
+  F1.
+  FOR #IND = #I TO 1 STEP -1
+    IF +PDA-LEVEL-NUMBER(#IND) >= +PDA-LEVEL-NUMBER(#I) AND #IND NE #I
+      /* then this field is not part of the dimensions of the field
+      /* being processed which is +PDA-VARIABLE-NAME(#x-pda-occ)
+      ESCAPE TOP
+    END-IF
+    MOVE +PDA-THRU-INDEX(#IND,*) TO #PDA-THRU-INDEX(*)
+    FOR #IND2 = +PDA-RANK(#IND) TO 1 STEP -1
+      IF #PDA-XARRAY(#IND2) THEN
+        +XARRAY-DIM-DESCRIPTION(#XARRAY-IND,#J) := 'A'
+        SUBTRACT 1 FROM #J
+      ELSE
+        IF #PDA-THRU-INDEX(#IND2) = 0 THEN
+          /* occurrence is not at this level
+          IGNORE
+        ELSE
+          +XARRAY-DIM-DESCRIPTION(#XARRAY-IND,#J) :=
+            #PDA-THRU-INDEX(#IND2)
+          SUBTRACT 1 FROM #J
+        END-IF
+      END-IF
+    END-FOR
+    IF #J = 0 THEN
+      /* we've found all occurrences
+      ESCAPE BOTTOM
+    END-IF
+  END-FOR
+END-SUBROUTINE /* POPULATE-XARRAY-DIM-DESCRIPTION

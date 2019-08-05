@@ -1,0 +1,53 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/*
+/*   Data Area Name: CDLSPCON                    Function
+/*   Created on....: Mar 12, 98                 ==========
+/*   Created by....: SAGA                 This data area is used by
+/*                                        model Stream subprograms which
+/*                                        are used to convert model pdas
+/*                                        between internal and streamed
+/*                                        (expanded printable) format.
+/*
+ 1 CDLSPCON
+   2 #SPC-ADABAS-ERROR-END (N4) /*End of ADABAS
+     CONST<3999>
+/*  *                                                 /* error range
+   2 #SPC-ADABAS-ERROR-START (N4) /*Start of ADABAS
+     CONST<3001>
+/*  *                                                 /* error range
+   2 #SPC-DEFAULT-DATE (A8)
+     CONST<'00000000'>
+   2 #SPC-DEFAULT-TIME (A15)
+     CONST<'000000000000000'>
+   2 #SPC-ERROR /*Parameter data errors
+     3 #SPC-FORMAT-CONVERSION (N4)
+       CONST<8450>
+     3 #SPC-DATA-LENGTH (N4)
+       CONST<8451>
+     3 #SPC-UNKNOWN-ERROR (N4)
+       CONST<8452>
+     3 #SPC-LOGIC-ERROR (N4)
+       CONST<8453>
+     3 #SPC-DYN-DATA-LEN-NOT-NUMERIC (N4) CONST
+       <8454>
+   2 #SPC-ERROR-CODE (A1) /*Error Condition
+     CONST<'I'>
+   2 #SPC-OK (A1) /*No Error occurred
+     CONST<' '>
+   2 #SPC-TRAP-ERROR /*Trappable run-time errors
+     3 #SPC-INVALID-DATA-FORMAT (N4/1:2) CONST
+       (1) <1143>
+       (2) <954>
+   2 #SPC-TRUE (L)
+     CONST<TRUE>
+   2 #SPC-VALID /*Valid (L) values
+     3 #SPC-LOGICAL (A1/1:2)
+       CONST<'0','1'>
+     3 REDEFINE #SPC-LOGICAL
+       4 #SPC-FALSE-CHAR (A1)
+       4 #SPC-TRUE-CHAR (A1)
+END-DEFINE

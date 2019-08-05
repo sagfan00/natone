@@ -1,0 +1,10 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDHASHA
+   2 #FUNC (I4)
+   2 #CTX (B156)
+   2 #TEXT (A) DYNAMIC
+END-DEFINE

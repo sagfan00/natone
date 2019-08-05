@@ -1,0 +1,9 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* This copycode member is used to flip the PF-Key area so that the
+* standard keys are not shown. This is used to reveal commands which
+* are on the screen underneath the Key Display (KD=ON) lines.
+SET CONTROL 'Y60' /* Move keys off screen.

@@ -1,0 +1,15 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA PARAMETER
+01 CODE-UNIT-LEN (I4)
+LOCAL
+01 STRUCT-CODE-LEN
+  02 VAR1 (U1)
+  02 VAR2 (U1)
+END-DEFINE
+*
+CODE-UNIT-LEN:= POS (VAR2) - POS (VAR1)
+END

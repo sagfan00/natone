@@ -1,0 +1,170 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 5.1.1
+**SAG TITLE: CST module Timestamp
+**SAG SYSTEM: SYSCST
+**SAG DESCS(1): This CST module is used to determine the time delta
+**SAG DESCS(2): in timeformat and microseconds from start time to now
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CSATIMSP
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CSUTIMSP
+* System   : SYSCST
+* Title    : CST module Timestamp
+* Generated: Jul  5,2005 at 19:15:04 by SACASH
+* Function : This CST module is used to determine the time delta
+*            in timeformat and microseconds from start time to now
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on Jul  5,2005 by CNDSHE for release ____
+* >
+* >
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+**SAG EXIT POINT PARAMETER-DATA
+  PARAMETER USING CSATIMSP
+  LOCAL USING CSASTD
+  LOCAL USING CNAMSG                  /* Message retrieval passing area
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+1 #FUNCTION       (A01)
+1 #RET-CODE       (N04)
+1 #VALUES
+  2 #TIME-I         (T)
+  2 #DATE-I         (D)
+  2 #TIMESTMP (B08)
+  2 #MICRO-SEC    (P19)
+  2 REDEFINE #MICRO-SEC
+    03 FILLER 7X
+    03 #MICRO-SECONDS (P4)
+1 #TIMESTMP-END   (B08)
+1 #MICRO-START (P19)
+1 #MICRO-END (P19)
+1 #MICRO-RESULT (P19)
+1 #MSG            (A64)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+* Calculate passed in start time in microseconds
+RESET CSATIMSP.OUTPUT
+#TIMESTMP := #TIMESTMP-START
+#FUNCTION  := 'S'
+CALLNAT 'USR1023N' #FUNCTION #RET-CODE #VALUES
+PERFORM CHECK-CONVERSION-ERROR
+#MICRO-START := #MICRO-SEC
+* Calculate current time in microseconds
+#TIMESTMP-END := *TIMESTMP
+#TIMESTMP := #TIMESTMP-END
+CALLNAT 'USR1023N' #FUNCTION #RET-CODE #VALUES
+PERFORM CHECK-CONVERSION-ERROR
+#MICRO-END   := #MICRO-SEC
+* Determine the delta between start and end
+#MICRO-RESULT := #MICRO-END - #MICRO-START
+IF #MICRO-RESULT < 0 THEN
+  #RET-CODE := 3
+END-IF
+PERFORM CHECK-CONVERSION-ERROR
+* Convert delta to date time and remaining microseconds
+#MICRO-SEC := #MICRO-RESULT
+#DATE := #DATE-I
+#TIME := #TIME-I
+#SECONDS := #MICRO-RESULT / 1000000
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+************************************************************************
+DEFINE SUBROUTINE CHECK-CONVERSION-ERROR
+************************************************************************
+*
+* Use this user exit to for specific error checking
+  DECIDE ON FIRST VALUE OF #RET-CODE
+    VALUE 1
+      CNAMSG.MSG :=
+        'Error in timestamp delta routine;:1:is an invalid function'
+      CNAMSG.MSG-DATA(1) := #FUNCTION
+      CNAMSG.MSG-NR := 8815
+    VALUE 3
+      CNAMSG.MSG :=
+        'Start time is greater than end time'
+      CNAMSG.MSG-NR := 8816
+    VALUE 2,4:9999
+      CNAMSG.MSG-NR := 8817
+      CNAMSG.MSG := 'Error in timestamp delta routine; return code:1:'
+      CNAMSG.MSG-DATA(2) := #RET-CODE
+    ANY
+      RESET #RET-CODE
+      CSATIMSP.##MSG := CNAMSG.MSG
+      #RETURN-CODE := CSLRCODE.#ERROR
+      PERFORM GET-MESSAGE
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+   NONE /* means it's zero
+     IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-CONVERSION-ERROR
+**SAG END-EXIT
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+* Determine if the conversion routine had an error
+**SAG DEFINE EXIT BEFORE-CHECK-ERROR
+**SAG END-EXIT
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CNAMSG TO CSASTD
+  RESET CNAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CNAMSG CSASTD
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+**SAG EXIT POINT ADDITIONAL-INITIALIZATIONS
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+**SAG DEFINE EXIT END-OF-PROGRAM
+  CSATIMSP.##MSG := CNAMSG.MSG
+**SAG END-EXIT
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

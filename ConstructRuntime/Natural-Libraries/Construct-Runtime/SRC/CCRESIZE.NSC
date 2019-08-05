@@ -1,0 +1,17 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+* THIS IS USED TO DETERMINE THE #XA-VARIABLES
+* &1& IS C#
+* &2& IS LDA-FIELD NAME
+* &3& IS #XA-TEMP-OCC
+* &4& IS #XA-TEMP-UND
+ IF &1& IS (N10) THEN
+   &3& := VAL(&1&)
+   RESIZE ARRAY &2& TO (1:&3&)
+ ELSE
+   &3& := 0
+   &4& := TRUE
+ END-IF

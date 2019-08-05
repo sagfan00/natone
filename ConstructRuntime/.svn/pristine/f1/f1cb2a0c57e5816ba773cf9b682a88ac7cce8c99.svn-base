@@ -1,0 +1,140 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #CODE #CODE-IN-LIST(*) #FUNCTION(*) #FUNCTION-HEADING #HEADER1
+*     #HEADER2 #HPARM CDDIALDA.#PROGRAM CDGETDCA.#DIRECT-COMMAND
+DEFINE DATA PARAMETER
+1 #CODE (A002)
+1 #CODE-IN-LIST (A002/00001:00012)
+1 #FUNCTION (A045/00001:00012)
+1 #FUNCTION-HEADING (A045)
+1 #HEADER1 (A060)
+1 #HEADER2 (A058)
+1 #HPARM (A065)
+1 CDDIALDA.#PROGRAM (A008)
+1 CDGETDCA.#DIRECT-COMMAND (A060)
+END-DEFINE
+FORMAT PS=021 LS=080 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 023080        N1NNUCN____         X        01 NCST    YL           0 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T CDDIALDA.#PROGRAM  (AD=ODL ) /*.01U008 A008 .
+ 010T #HEADER1  (AD=OIT'_' ) /*.01D060 A060 .
+ 071T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 011T #HEADER2  (AD=OI ) /*.01D058 A058 .
+ 070T *TIMX  (AD=OD EM=' 'HH':'II' 'AP ) /*.01S009 T    .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+/
+ 016T 'Code |'
+ 024T #FUNCTION-HEADING  (AD=ODL ) /*.01D045 A045 .
+/
+ 014T '+------+------------------------------------------------+'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+000)  (AD=OI ) /*.01U002 A002 .
+   /* A1000120000100001000010000100001100011001000001H
+ 021T '|'
+ 023T #FUNCTION (1+000)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+   /**A1000120000100001000010000100001100011001001000001000HV
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+001)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+001)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+002)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+002)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+003)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+003)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+004)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+004)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+005)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+005)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+006)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+006)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+007)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+007)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+008)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+008)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+009)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+009)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|'
+ 017T #CODE-IN-LIST (1+010)  (AD=OI ) /*.01U002 A002 .
+ 021T '|'
+ 023T #FUNCTION (1+010)  (AD=OD DY=<I>                            ) /*.01U045 A045 .
+ 070T '|'
+/
+ 014T '|  ?   |  Help                                          |'
+/
+ 014T '|  .   |  Terminate                                     |'
+/
+ 014T '+-------------------------------------------------------+'
+/
+ 011T 'Code:'(I)
+ 017T #CODE  (AD=MILT'_' ) /*.99D002 A002 .
+/
+ 001T 'Direct Command:'(I)
+ 017T CDGETDCA.#DIRECT-COMMAND  (AD=MILT'_' ) /*.99D060 A060 .
+* MAP2: VALIDATION *****************************************************
+RULEVAR F00#CODE
+INCDIC                                 ;
+**
+** MAKE CURSOR SENSITIVE.
+DEFINE DATA LOCAL
+  01 #SELECTION(P3)
+END-DEFINE
+IF & = ' ' THEN
+  DECIDE ON FIRST VALUE *CURS-LINE
+    VALUE 6:16
+      COMPUTE #SELECTION = *CURS-LINE - 5
+      ASSIGN & = #CODE-IN-LIST(#SELECTION)
+    VALUE 17 REINPUT USING HELP
+    VALUE 18 ASSIGN & = '.'
+    NONE IGNORE
+  END-DECIDE
+END-IF
+* MAP2: END OF MAP *****************************************************
+END

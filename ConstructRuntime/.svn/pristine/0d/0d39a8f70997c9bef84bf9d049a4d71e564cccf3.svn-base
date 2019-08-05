@@ -1,0 +1,17 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* This copycode should be included at the beginning of each new program
+* subprogram or helproutine. The purpose of this is to capture the
+* previous programs environment (window size, page size etc.) so that
+* this can be restored prior to exiting. Also defaults window and
+* PF-Keys.
+CALLNAT 'CDENVIR' CDENVIRA
+SET CONTROL 'WB' /* Reset Window.
+SET CONTROL 'YB' /* Put keys at bottom.
+SET CONTROL 'YF' /* Show keys 1:12.
+RESET CDKEYLDA.#PFKEY(*)
+ASSIGN #PROGRAM = *PROGRAM

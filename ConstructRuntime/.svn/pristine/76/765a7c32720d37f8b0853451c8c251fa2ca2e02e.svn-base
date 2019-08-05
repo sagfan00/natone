@@ -1,0 +1,18 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to
+/*  return the top stack entry.
+/*  Delimited values are returned as
+/*  one string.
+ 1 CDCHKSTA /* Used by CDCHKSTK
+   2 INPUTS
+     3 #POP-STACK-ENTRY (L)
+   2 OUTPUTS
+     3 #STACK-DATA (A249) /* data removed from the stack.
+     3 #DELIMITER (A1) /* The input delimiter character
+/*                                       /* used to delimit input values
+/*                                       /* in a stack entry.
+END-DEFINE

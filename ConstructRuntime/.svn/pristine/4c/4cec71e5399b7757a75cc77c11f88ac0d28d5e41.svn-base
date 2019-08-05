@@ -1,0 +1,53 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/* *LDA for pfkey function for
+/* *pfkeys defined in CDKEYLDA.
+ 1 CDKEYFL
+   2 TEXT
+     3 #KEY-FUNCTION (A60/1:15) INIT
+       (1) <'*8001.1'>
+       (2) <'*8002.1'>
+       (3) <'*8003.1'>
+       (4) <'*8004.1'>
+       (5) <'*8005.1'>
+       (6) <'*8006.1'>
+       (7) <'*8007.1'>
+       (8) <'*8008.1'>
+       (9) <'*8009.1'>
+       (10) <'*8010.1'>
+       (11) <'*8011.1'>
+       (12) <'*8012.1'>
+       (13) <'*8013.1'>
+       (14) <'*8014.1'>
+       (15) <'*8015.1'>
+     3 REDEFINE #KEY-FUNCTION /* REDEF. BEGIN : #KEY-DESCRIPTI
+       4 #HELP-KEY-FUNCTION (A60)
+       4 #RETURN-KEY-FUNCTION (A60)
+       4 #QUIT-KEY-FUNCTION (A60)
+       4 #ADD-KEY-FUNCTION (A60)
+       4 #FLIP-KEY-FUNCTION (A60)
+       4 #PLACE-KEY-FUNCTION (A60)
+       4 #BACKWARD-KEY-FUNCTION (A60)
+       4 #FORWARD-KEY-FUNCTION (A60)
+       4 #LEFT-KEY-FUNCTION (A60)
+       4 #RIGHT-KEY-FUNCTION (A60)
+       4 #MAIN-KEY-FUNCTION (A60)
+       4 #HARDCOPY-KEY-FUNCTION (A60)
+       4 #EXPORT-KEY-FUNCTION (A60)
+       4 #PREFERENCES-KEY-FUNCTION (A60)
+       4 #CONFIRM-KEY-FUNCTION (A60)
+   2 REDEFINE TEXT
+     3 TRANSLATION-TEXT
+       4 TEXT-ARRAY (A1/1:900)
+   2 ADDITIONAL-PARMS
+     3 #MESSAGE-LIBRARY (A8)
+       INIT<'CSTLDA'>
+     3 #LDA-NAME (A8)
+       INIT<'CDKEYFL'>
+     3 #TEXT-REQUIRED (L)
+       INIT<TRUE>
+     3 #LENGTH-OVERRIDE (N10) /*Explicite len to translate
+END-DEFINE

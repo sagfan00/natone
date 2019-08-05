@@ -1,0 +1,10 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA PARAMETER
+1 ZONE01 (A4)
+END-DEFINE
+MOVE 'aaab' TO ZONE01
+END

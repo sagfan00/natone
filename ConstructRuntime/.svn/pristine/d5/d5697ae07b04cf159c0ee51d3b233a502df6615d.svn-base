@@ -1,0 +1,19 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* This copy code is used to signal PF10/PF11 when the user puts the
+* cursor on the '< n more' ... 'n more >' information in a browse.
+ASSIGN CDMORLDA.RIGHT-COL(2) = CDMORLDA.WINDOW-WIDTH
+COMPUTE CDMORLDA.RIGHT-COL(1) = CDMORLDA.RIGHT-COL(2) - 13
+IF *CURS-LINE = CDMORLDA.MORE-LINE THEN
+  DECIDE ON FIRST VALUE *CURS-COL
+    VALUE CDMORLDA.LEFT-COL(1) : CDMORLDA.LEFT-COL(2)
+      CALLNAT 'CDSETKEY' CDKEYLDA.#LEFT-KEY
+    VALUE CDMORLDA.RIGHT-COL(1) : CDMORLDA.RIGHT-COL(2)
+      CALLNAT 'CDSETKEY' CDKEYLDA.#RIGHT-KEY
+    NONE IGNORE
+  END-DECIDE
+END-IF

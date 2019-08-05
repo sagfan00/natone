@@ -1,0 +1,18 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDCHWINA /* Used by CDCHWIN
+   2 INPUTS
+     3 #WINDOW-FUNCTION (A1) /* S=Size, P=Place, F=Remove KD
+     3 #INPUT-LINES (P3) /* Number of lines to be
+/*                                       /* reserved for END OF PAGE
+/*                                       /* INPUT
+     3 #MIN-PS (P3) /* Minimum pagesize allowed so
+/*                                       /* that window does not get
+/*                                       /* too small to show records.
+     3 #KD-OFF (L) /* True when keys are not shown.
+   2 OUTPUTS
+     3 #GLOBAL-PAGESIZE (P3) /* New Page size value.
+END-DEFINE

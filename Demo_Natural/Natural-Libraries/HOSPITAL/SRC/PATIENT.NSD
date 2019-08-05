@@ -1,0 +1,36 @@
+DB: 177 FILE: 047  - PATIENT                          DEFAULT SEQUENCE:
+TYPE: ADABAS
+
+T L DB Name                              F Leng  S D Remark
+- - -- --------------------------------  - ----  - - ------------------------
+*      >Natural Source Header 000000
+*      :CP
+*      
+*      
+*      :LineIncrement 10
+*      <Natural Source Header
+  1 AA PATIENT-ID                        N  7.0    D
+*
+  1 AB FIRST-NAME                        A   20
+  1 AC SURNAME                           A   20
+  1 AO NUMBER-OF-DAYS                    N  4.0
+  1 AD DOB                               N  6.0
+M 1 AE ADDRESS                           A   30
+  1 AF ARRIVED                           A   20
+  1 AG DUE-FOR-SURGERY                   A    6
+  1 AH RELEASED                          D    6
+G 1 AI CONTROL-DETAILS
+  2 AJ DATE-ADDED                        N  6.0
+  2 AK DATE-AMENDED                      N  6.0
+  2 AL OPID-ADDED                        A    8
+  2 AM OPID-AMENDED                      A    8
+  2 AN NEXT-ID-FOR-YEAR                  N  5.0
+  1 S1 S1-PDFS-SURNAME                   A   26    S
+*      -------- SOURCE FIELD(S) -------
+*      DUE-FOR-SURGERY(1-6)
+*      SURNAME(1-20)
+  1 AP S2-SURNAME-PATIENT-ID             A   27    S
+*      -------- SOURCE FIELD(S) -------
+*      SURNAME(1-20)
+*      PATIENT-ID(1-7)
+******DDM OUTPUT TERMINATED******

@@ -1,0 +1,16 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+INCLUDE CCDCPOP /* Pop up direct command if requested.
+*
+* Check for an new direct command on the current screen.
+* If one was entered then assign it to the global command field and
+* check if it can be executed by a Natural command processor, else
+* fetch the main menu program. First perform end-of-program functions.
+IF CDGETDCA.#DIRECT-COMMAND NE ' ' THEN
+  ASSIGN DIALOG-INFO.##COMMAND = CDGETDCA.#DIRECT-COMMAND
+  PERFORM FINAL-PROCESSING
+  CALLNAT 'CDNCPX' DIALOG-INFO MSG-INFO
+END-IF

@@ -1,0 +1,28 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CSADEFLT
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-02-03
+/*                        Short Desc:    Get user defaults
+/*                        Long Desc :    This data area is passed to
+/*                                  :    CSXDEFLT which can be updated
+/*                                  :    by customers in order to supply
+/*                                  :    default values to be used during
+/*                                  :    program generation.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CSADEFLT
+   2 INPUTS
+     3 METHOD (N2) /* 0 = Get parm by name
+/*                                       /* 1 = Get parm by number
+     3 PARM-NAME (A32) /* Parameter name
+     3 PARM-VALUE (A50)
+END-DEFINE

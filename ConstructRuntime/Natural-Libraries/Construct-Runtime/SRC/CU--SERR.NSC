@@ -1,0 +1,29 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Copycode: CU--SERR                                                   *
+* Written : Feb 19, 96                                                 *
+* Author  : SAG                                                        *
+* Function: This copycode is used to allow model subprograms to signal *
+*           error conditions.                                          *
+*           Whenever the subprogram detects an error it should pass    *
+*           the message number and message text, and optionally assign *
+*           the message data fields.                                   *
+*           This copy code to cause an escape to the calling program.  *
+*           Example:                                                   *
+*           IF #FIELD-NOT-FOUND THEN                                   *
+*             ASSIGN CNAMSG.MSG-DATA(1) = '*2705.6'  /* Field          *
+*             ASSIGN CNAMSG.MSG-DATA(2) = #PDAX-PRIMARY-KEY            *
+*             ASSIGN CNAMSG.MSG-DATA(3) = #PDAX-PRIMARY-FILE           *
+*             INCLUDE CU--SERR '8066'              /* Message number   *
+*               ''':1::2:not found on file:3:'''   /* Message text     *
+*           END-IF                                                     *
+************************************************************************
+ASSIGN CNAMSG.RETURN-CODE = CSLRCODE.#ERROR
+ASSIGN CNAMSG.MSG-NR = &1&
+ASSIGN CNAMSG.MSG = &2&
+PERFORM GET-MESSAGE
+PERFORM CHECK-ERROR

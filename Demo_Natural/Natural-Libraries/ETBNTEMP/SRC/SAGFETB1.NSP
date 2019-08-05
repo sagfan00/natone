@@ -1,0 +1,160 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA
+LOCAL USING EMP-A
+LOCAL USING VEH-A
+LOCAL
+1 #ETBCB                   /* TYPE 1 VERSION 1
+  2 #API-TYPE           (I001) INIT <1>
+  2 REDEFINE #API-TYPE
+    3 #ETBAPI           (A001)
+  2 #API-VERSION        (I001) INIT <1>
+  2 #FUNCTION           (I001)
+  2 #OPTION             (I001)
+  2 #RESERVED           (A016)
+  2 #SEND-LENGTH        (I004) INIT <500>
+  2 #RECEIVE-LENGTH     (I004) INIT <500>
+  2 #RETURN-LENGTH      (I004)
+  2 #ERRTEXT-LENGTH     (I004) INIT <40>
+  2 #BROKER-ID          (A032) INIT <'ETB200'>
+  2 #SERVER-CLASS       (A032) INIT <'BCLASS'>
+  2 #SERVER-NAME        (A032) INIT <'BSERVER'>
+  2 #SERVICE            (A032) INIT <'BSERVICE'>
+  2 #USER-ID            (A032)
+  2 #PASSWORD           (A032)
+  2 #TOKEN              (A032)
+  2 #SECURITY-TOKEN     (A032)
+  2 #CONV-ID            (A016)
+  2 #WAIT               (A008)
+  2 #ERROR-CODE         (A008)
+  2 REDEFINE #ERROR-CODE
+    3 #ERROR-CLASS      (N004)
+    3 #ERROR-NUMBER     (N004)
+  2 #ENVIRONMENT        (A032)
+*
+1 #SEND-AREA            (A250/2)   /* ZONE D'ENVOI DU SERVEUR
+*
+1 #RECEIVE-AREA         (A250/2)   /* ZONE DE RECEPTION DU SERVEUR
+1 REDEFINE #RECEIVE-AREA
+  2 #FONCTION      (A1)
+  2 #CODE-RET      (A1)
+  2 #PERSONNEL-ID  (A8)
+  2 #ADDRESS-LINE1 (A20)
+  2 REDEFINE  #ADDRESS-LINE1
+    3 #ADDRESS-LINE1-10 (A10)
+  2 #ADDRESS-LINE2 (A20)
+*
+1 #ERROR-TEXT           (A040)
+*
+END-DEFINE
+*
+PERFORM REGISTER              /* ENREGISTREMENT DES SERVICES
+*
+REPEAT
+*
+*    Listen for Requests / RECEIVE with wait (blocked)
+*
+  RESET #SEND-AREA(*) #RECEIVE-AREA(*)
+  RESET  #ETBCB.#OPTION
+  #ETBCB.#FUNCTION  :=  2              /* Receive
+  #ETBCB.#WAIT      := 'Y'
+  #ETBCB.#CONV-ID   := 'NEW'
+*
+  CALL 'BROKER' #ETBAPI #SEND-AREA (*) #RECEIVE-AREA(*) #ERROR-TEXT
+  DECIDE ON FIRST VALUE OF #ETBCB.#ERROR-CLASS
+    VALUE 0
+*
+      PERFORM TRAITEMENT
+*
+    VALUE 74           /* no request/message available
+      ESCAPE TOP       /* remise a l'ecoute
+*
+    NONE
+      ESCAPE BOTTOM    /* DEREGISTER TEMPORAIRE
+  END-DECIDE
+  PERFORM SEND                /* Renvoi de la reponse
+*
+END-REPEAT
+*
+PERFORM DEREGISTER
+*
+*
+* ======================= S U B R O U T I N E S  ===================== *
+*
+DEFINE SUBROUTINE REGISTER
+* ========================
+*
+*     ENREGISTREMENT DU SERVICE
+*
+RESET  #ETBCB.#OPTION
+#ETBCB.#USER-ID  := *USER
+#ETBCB.#FUNCTION := 6            /* REGISTER
+*
+CALL 'BROKER' #ETBAPI #SEND-AREA(*) #RECEIVE-AREA(*) #ERROR-TEXT
+*
+DECIDE ON FIRST VALUE OF #ETBCB.#ERROR-CLASS
+  VALUE 0
+    IGNORE     /* REPONSE OK
+  NONE
+    WRITE 'SERVICE STOPPED. ' #ETBCB.#ERROR-CLASS #ERROR-TEXT
+    TERMINATE
+END-DECIDE
+END-SUBROUTINE
+*
+DEFINE SUBROUTINE TRAITEMENT
+* ==========================
+*
+IF  #ADDRESS-LINE1-10 = '9999999999'
+  PERFORM DEREGISTER
+  STOP
+END-IF
+*
+#EMP-FONCTION         := #FONCTION
+#EMP-CODE-RET         := #CODE-RET
+#EMP-PERSONNEL-ID     := #PERSONNEL-ID
+#EMP-ADDRESS-LINE(1)  := #ADDRESS-LINE1
+#EMP-ADDRESS-LINE(2)  := #ADDRESS-LINE2
+*
+CALLNAT 'SPAWH01' #ZONE-PARAM-EMP #ZONE-PARAM-VEH
+*
+END-SUBROUTINE
+*
+DEFINE SUBROUTINE DEREGISTER
+* ==========================
+*
+#ETBCB.#FUNCTION  :=  7 /* Deregister
+#ETBCB.#OPTION    :=  3 /* Immediately
+*
+CALL 'BROKER' #ETBAPI #SEND-AREA (*) #RECEIVE-AREA(*) #ERROR-TEXT
+DECIDE ON FIRST VALUE OF #ETBCB.#ERROR-CLASS
+  VALUE 0
+    IGNORE
+  NONE
+    WRITE 'DEREGISTER Stopped ' #ETBCB.#ERROR-CODE #ERROR-TEXT
+    TERMINATE
+END-DECIDE
+STOP
+*
+END-SUBROUTINE
+*
+DEFINE SUBROUTINE SEND
+* ====================
+*
+RESET  #ETBCB.#OPTION
+#ETBCB.#FUNCTION := 1                 /* SEND
+#ETBCB.#WAIT     := 'NO'
+*
+CALL 'BROKER' #ETBAPI #EMP-FONCTION  #FONCTION  #ERROR-TEXT
+*
+IF  #ETBCB.#ERROR-CLASS NE 0
+  PERFORM DEREGISTER
+END-IF
+*
+END-SUBROUTINE
+*
+* ============================= F I N ================================ *
+*
+END

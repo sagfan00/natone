@@ -1,0 +1,270 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+ 1 CDKEYLDA /*Used by all dialog programs.
+/*
+/*  This data area should be used by
+/*  all objects which test the value
+/*  of *PF-KEY. Instead of comparing
+/*  *PF-KEY with a literal, it
+/*  should be compared with an
+/*  element of this table.
+/*
+/*  The copy code CCSETKEY is used
+/*  to set the key names based on
+/*  the values in this table.
+/*
+/*  Before CCSETKEY is invoked,
+/*  reset #KEY-INITS then reset
+/*  the initial values of all
+/*  keys required.
+/*
+/*  This LDA is used for the
+/*  following reasons:
+/*  1. Allow PF-Key values to be
+/*  globally changed with a
+/*  simple application recompile.
+/*  2. Enforce naming standards.
+/*  3. Allow the names of the
+/*  PF-KEYs to be made language
+/*  independent.
+/*
+/*  These scroll region labels can
+/*  be placed on an object dialog to
+/*  force forward/backward scrolling
+/*  of scroll-region 1:4 by clicking
+/*  on the label, similar to NAT GUI
+/*  See copy code CCSCROLL
+/*
+   2 #BKWRD-LABEL (A2/1:4)
+     INIT ALL<'/\'>
+   2 REDEFINE #BKWRD-LABEL /* REDEF. BEGIN : #BACKWARD-LABE
+     3 #BKWRD-LAB1 (A2)
+     3 #BKWRD-LAB2 (A2)
+     3 #BKWRD-LAB3 (A2)
+     3 #BKWRD-LAB4 (A2)
+   2 #FRWRD-LABEL (A2/1:4)
+     INIT ALL<'\/'>
+   2 REDEFINE #FRWRD-LABEL /* REDEF. BEGIN : #FRWRD-LABEL
+     3 #FRWRD-LAB1 (A2)
+     3 #FRWRD-LAB2 (A2)
+     3 #FRWRD-LAB3 (A2)
+     3 #FRWRD-LAB4 (A2)
+/*
+   2 #PF-INDX (P3)
+   2 #PF-ARRAY-SIZE (P3)
+     INIT<15>
+   2 #KEY-INITS
+     3 #HELP-KEY (A4)
+       INIT<'PF1'>
+     3 REDEFINE #HELP-KEY /* BEGIN REDEFINE: #HELP-KEY
+       4 #PF-HELP (A4)
+     3 #RETURN-KEY (A4)
+       INIT<'PF2'>
+     3 REDEFINE #RETURN-KEY /* REDEF. BEGIN : #RETURN-KEY
+       4 #PF-RETURN (A4)
+     3 #QUIT-KEY (A4)
+       INIT<'PF3'>
+     3 REDEFINE #QUIT-KEY /* REDEF. BEGIN : #QUIT-KEY
+       4 #PF-QUIT (A4)
+     3 #ADD-KEY (A4)
+       INIT<'PF4'>
+     3 #FLIP-KEY (A4)
+       INIT<'PF5'>
+     3 #PLACE-KEY (A4)
+       INIT<'PF6'>
+     3 #BACKWARD-KEY (A4)
+       INIT<'PF7'>
+     3 REDEFINE #BACKWARD-KEY /* REDEF. BEGIN : #BACKWARD-KEY
+       4 #PF-BACKWARD (A4)
+     3 #FORWARD-KEY (A4)
+       INIT<'PF8'>
+     3 REDEFINE #FORWARD-KEY /* REDEF. BEGIN : #FORWARD-KEY
+       4 #PF-FORWARD (A4)
+     3 #LEFT-KEY (A4)
+       INIT<'PF10'>
+     3 REDEFINE #LEFT-KEY /* REDEF. BEGIN : #LEFT-KEY
+       4 #PF-LEFT (A4)
+     3 #RIGHT-KEY (A4)
+       INIT<'PF11'>
+     3 REDEFINE #RIGHT-KEY /* REDEF. BEGIN : #RIGHT-KEY
+       4 #PF-RIGHT (A4)
+     3 #MAIN-KEY (A4)
+       INIT<'PF12'>
+     3 REDEFINE #MAIN-KEY /* REDEF. BEGIN : #MAIN-KEY
+       4 #PF-MAIN (A4)
+     3 #HARDCOPY-KEY (A4)
+       INIT<'PF9'>
+     3 REDEFINE #HARDCOPY-KEY /* BEGIN REDEFINE: #HARDCOPY-K
+       4 #PF-REPORT (A4)
+     3 #EXPORT-KEY (A4)
+       INIT<'PF6'>
+     3 REDEFINE #EXPORT-KEY /* BEGIN REDEFINE: #EXPORT-KEY
+       4 #PF-EXPORT (A4)
+     3 #PREFERENCES-KEY (A4)
+       INIT<'PF6'>
+/*
+/*  If you want a PF-Key to confirm
+/*  update actions, change the
+/*  initial values of #CONFIRM-KEY
+/*  and #CONFIRM-KEY-MSG
+     3 #CONFIRM-KEY (A4)
+       INIT<'ENTR'>
+   2 REDEFINE #KEY-INITS /* REDEF. BEGIN : #KEY-INITS
+     3 #PFKEY (A4/1:15)
+/*  Initialize key names with
+/*  numbers corresponding to
+/*  their literal names in User
+/*  error messages. Never insert
+/*  unrelated fields between
+/*  #KEY-NAME and #KEY-NAME-END
+   2 #KEY-NAME (A10/1:15) INIT
+     (1) <'*8430/10'>
+     (8) <'*8431/10'>
+   2 REDEFINE #KEY-NAME /* REDEF. BEGIN : #KEY-NAME
+     3 #HELP-KEY-NAME (A10)
+     3 REDEFINE #HELP-KEY-NAME /* BEGIN REDEFINE: #HELP-KEY-N
+       4 #HELP-NAME (A10)
+     3 #RETURN-KEY-NAME (A10)
+     3 REDEFINE #RETURN-KEY-NAME /* REDEF. BEGIN : #RETURN-KEY-NA
+       4 #RETURN-NAME (A10)
+     3 #QUIT-KEY-NAME (A10)
+     3 REDEFINE #QUIT-KEY-NAME /* REDEF. BEGIN : #QUIT-KEY-NAME
+       4 #QUIT-NAME (A10)
+     3 #ADD-KEY-NAME (A10)
+     3 #FLIP-KEY-NAME (A10)
+     3 #PLACE-KEY-NAME (A10)
+     3 #BACKWARD-KEY-NAME (A10)
+     3 REDEFINE #BACKWARD-KEY-NAME /* REDEF. BEGIN : #BACKWARD-KEY-
+       4 #BACKWARD-NAME (A10)
+     3 #FORWARD-KEY-NAME (A10)
+     3 REDEFINE #FORWARD-KEY-NAME /* REDEF. BEGIN : #FORWARD-KEY-N
+       4 #FORWARD-NAME (A10)
+     3 #LEFT-KEY-NAME (A10)
+     3 REDEFINE #LEFT-KEY-NAME /* REDEF. BEGIN : #LEFT-KEY-NAME
+       4 #LEFT-NAME (A10)
+     3 #RIGHT-KEY-NAME (A10)
+     3 REDEFINE #RIGHT-KEY-NAME /* REDEF. BEGIN : #RIGHT-KEY-NAM
+       4 #RIGHT-NAME (A10)
+     3 #MAIN-KEY-NAME (A10)
+     3 REDEFINE #MAIN-KEY-NAME /* REDEF. BEGIN : #MAIN-KEY-NAME
+       4 #MAIN-NAME (A10)
+     3 #HARDCOPY-KEY-NAME (A10)
+     3 #EXPORT-KEY-NAME (A10)
+     3 #PREFERENCES-KEY-NAME (A10)
+   2 REDEFINE #KEY-NAME /* REDEF. BEGIN : #KEY-NAME
+     3 CDUTRANS (A1/1:150)
+   2 #KEY-NAME-END (A8)
+     INIT<'CDKEYLDA'>
+/*
+/*  Set CONFIRM-MSG-KEY equal to the
+/*  name of the key to be used in
+/*  confirmation messages. This is
+/*  normally the same as the init
+/*  value of #CONFIRM-KEY except
+/*  for the longer form of ENTR.
+/*  This will generate msgs such as
+/*  Press ENTER to confirm purge
+/*
+   2 #CONFIRM-MSG-KEY (A5)
+     INIT<'ENTER'>
+/*
+/*
+   2 EXTENDED-KEYS
+/*  The extended keys define
+/*  PF-Keys (PF25 - PF48) intended
+/*  to be associated with push
+/*  buttons or pull-down menus
+/*  in a workstation environment.
+/*
+/*  Action related keys
+/*  ********** Warning *************
+/*  The order of the #ACTION-KEYS
+/*  must exactly match the order of
+/*  the actions in CDACTA.
+/*  ******** End of Warning ********
+     3 #ACTION-KEYS
+       4 #ADD-KEY2 (A4)
+         INIT<'PF25'>
+       4 #BROWSE-KEY (A4)
+         INIT<'PF26'>
+       4 #CLEAR-KEY (A4)
+         INIT<'PF27'>
+       4 #DISPLAY-KEY (A4)
+         INIT<'PF28'>
+       4 #MODIFY-KEY (A4)
+         INIT<'PF29'>
+       4 #NEXT-KEY (A4)
+         INIT<'PF30'>
+       4 #PURGE-KEY (A4)
+         INIT<'PF31'>
+       4 #COPY-KEY (A4) /*Not available
+         INIT<'    '>
+       4 #RECALL-KEY (A4)
+         INIT<'PF32'>
+       4 #FORMER-KEY (A4)
+         INIT<'PF33'>
+     3 REDEFINE #ACTION-KEYS /* REDEF. BEGIN : #ACTION-KEYS
+       4 #ACTION-KEY-LIST (A4/1:9)
+/*
+/*  The following keys are intended
+/*  to be used to perform backward
+/*  forward scrolling of a single
+/*  scroll region. PF7/8 will scroll
+/*  all scroll regions.
+     3 BKWRD-FRWRD-KEYS
+       4 #BACKWARD1-KEY (A4)
+         INIT<'PF33'>
+       4 #FORWARD1-KEY (A4)
+         INIT<'PF34'>
+       4 #BACKWARD2-KEY (A4)
+         INIT<'PF35'>
+       4 #FORWARD2-KEY (A4)
+         INIT<'PF36'>
+       4 #BACKWARD3-KEY (A4)
+         INIT<'PF37'>
+       4 #FORWARD3-KEY (A4)
+         INIT<'PF38'>
+       4 #BACKWARD4-KEY (A4)
+         INIT<'PF39'>
+       4 #FORWARD4-KEY (A4)
+         INIT<'PF40'>
+     3 REDEFINE BKWRD-FRWRD-KEYS /* REDEF. BEGIN : #BKWRD-FRWRD-K
+       4 #BKWRD-FRWRD-KEY-LIST (A4/1:4,1:2)
+     3 RESERVED-KEYS
+       4 #DIRECT-CMD-KEY (A4)
+         INIT<'PF41'>
+       4 #RESERVED (A4/1:2)
+         INIT<'PF42','PF43'>
+/*
+/*  The following keys can be used       Note: NATURAL currently
+/*  to position directly to a                  supports only 48 keys.
+/*  specific panel.
+/*
+/*  WARNING: The panel keys must
+/*  be contiguous.
+     3 #PANEL-KEY-LIST (A4/1:15) INIT /*PF44 - PF58
+       (1) <'PF44'>
+       (2) <'PF45'>
+       (3) <'PF46'>
+       (4) <'PF47'>
+       (5) <'PF48'>
+       (6) <'PF49'>
+       (7) <'PF50'>
+       (8) <'PF51'>
+       (9) <'PF52'>
+       (10) <'PF53'>
+       (11) <'PF54'>
+       (12) <'PF55'>
+       (13) <'PF56'>
+       (14) <'PF57'>
+       (15) <'PF58'>
+     3 REDEFINE #PANEL-KEY-LIST /* REDEF. BEGIN : #PANEL-KEY-LIS
+       4 #PANEL-KEY-STRUCTURE (1:15)
+         5 #PF-PART (A2)
+         5 #NUMBER-PART (N2)
+   2 REDEFINE EXTENDED-KEYS /* REDEF. BEGIN : CDKEYPB
+     3 #EXTENDED-KEY-LIST (A4/1:32)
+END-DEFINE

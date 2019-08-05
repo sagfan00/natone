@@ -1,0 +1,12 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA LOCAL
+1 ENTREE (A10)
+1 SORTIE (A10)
+END-DEFINE
+CALLNAT 'SP4' USING ENTREE SORTIE
+DISPLAY *PROGRAM SORTIE
+END

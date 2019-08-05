@@ -1,0 +1,21 @@
+DB: 001 FILE: 001  - COMMAND                          DEFAULT SEQUENCE:
+                              Cataloged by PWRUSR   on 2012-01-08 10:17:52
+TYPE: CMD
+T L DB Name                              F Leng  S D Remark
+- - -- --------------------------------  - ----  - - ------------------------
+*      >Natural Source Header 000000
+*      :CP
+*      
+*      
+*      <Natural Source Header
+  1 AA PROCESSOR-NAME                    A    8  N D DE    USING
+M 1 AB COMMAND-LINE                      A   80  N D MU/DE USING
+  1 AC PRIVATE-MODE                      A    8  N D DE    USING
+  1 AD PRIVATE-SYNO                      A   16  N D DE    USING
+  1 AE PRIVATE-KEYWORD                   A   50  N D DE    USING
+  1 AF GETSET-FIELD-NAME                 A   32  N D DE    USING
+  1 BA NATURAL-ERROR                     N  4.0  N         GIVING
+  1 BB RETURN-CODE                       A    4  N         GIVING
+M 1 BC RESULT-FIELD                      A   80  N   MU    GIVING
+  1 BD GETSET-FIELD-VALUE                A   32  N D       USING; GIVING
+******DDM OUTPUT TERMINATED******

@@ -1,0 +1,12 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Determine whether standard key/exit processing is required.
+IF *PF-KEY = CDKEYLDA.#QUIT-KEY OR = CDKEYLDA.#MAIN-KEY OR =
+  CDKEYLDA.#RETURN-KEY OR = CDKEYLDA.#FLIP-KEY OR
+  #FIRST-CHAR-ON-SCREEN EQ '.'
+  ASSIGN #STD-KEY-PRESSED = TRUE
+END-IF

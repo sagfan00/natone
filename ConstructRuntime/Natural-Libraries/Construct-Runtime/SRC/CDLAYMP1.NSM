@@ -1,0 +1,74 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #ACTION #HEADER1 #HEADER2 #HPARM #LEFT-PROMPT #PROTECT-CV
+*     #RIGHT-PROMPT #VAL-ACT2 CDACTA.#APPL-ACTIONS(*,*)
+*     CDDIALDA.#KD-LINE1 CDDIALDA.#KD-LINE2 CDDIALDA.#PROGRAM
+*     CDGETDCA.#DIRECT-COMMAND
+DEFINE DATA PARAMETER
+1 #ACTION (A001)
+1 #HEADER1 (A060)
+1 #HEADER2 (A058)
+1 #HPARM (A065)
+1 #LEFT-PROMPT (A009)
+1  #PROTECT-CV (C)
+1 #RIGHT-PROMPT (A009)
+1 #VAL-ACT2 (A079)
+1 CDACTA.#APPL-ACTIONS (A003/00001:00030,00001:00003)
+1 CDDIALDA.#KD-LINE1 (A079)
+1 CDDIALDA.#KD-LINE2 (A079)
+1 CDDIALDA.#PROGRAM (A008)
+1 CDGETDCA.#DIRECT-COMMAND (A060)
+END-DEFINE
+FORMAT PS=023 LS=080 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 025080        N1NNUCN____         X        01 NCST    YL           1 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T CDDIALDA.#PROGRAM  (AD=ODL ) /*.01U008 A008 .
+ 010T #HEADER1  (AD=OI ) /*.01U060 A060 .
+ 071T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T #LEFT-PROMPT  (AD=OD ) /*.01U009 A009 .
+ 011T #HEADER2  (AD=OI ) /*.01U058 A058 .
+ 070T #RIGHT-PROMPT  (AD=OD ) /*.01U009 A009 .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+ 003T CDACTA.#APPL-ACTIONS (001,001)  (AD=ON AL=001  ) /*.01U001 A003 .
+   /**A2000300000300001000010000100001120001001001000001000HV
+/
+ 001T '*Action'
+ 009T #VAL-ACT2  (AD=OD AL=018  ) /*.01U018 A079 .
+ 028T #ACTION  (AD=MYT'_' CV=#PROTECT-CV /*.99U001 A001 .
+      HE='CDACTHL2',CDACTA.#APPL-ACTIONS(*,*) )
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+ 001T 'Direct Command:'(I)
+ 017T CDGETDCA.#DIRECT-COMMAND  (AD=MILT'_' ) /*.99D060 A060 .
+/
+ 001T CDDIALDA.#KD-LINE1  (AD=ODL ) /*.01D079 A079 .
+/
+ 001T CDDIALDA.#KD-LINE2  (AD=ODL ) /*.01D079 A079 .
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

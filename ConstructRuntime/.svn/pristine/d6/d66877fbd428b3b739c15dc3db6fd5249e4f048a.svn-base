@@ -1,0 +1,17 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* If array fields are to scroll together on different panels then
+* equate these indexes.
+  FOR #I1 = 1 TO #MAX-SCROLL-REGIONS
+    IF #EQUATE-SCROLLS(#LAST-PANEL,#I1) NE 0 THEN
+      FOR #I2 = 1 TO #MAX-PANELS
+        IF #EQUATE-SCROLLS(#LAST-PANEL,#I1) = #EQUATE-SCROLLS(#I2,#I1)
+          ASSIGN #CURR-INDEX(#I2,#I1) = #CURR-INDEX(#LAST-PANEL,#I1)
+        END-IF
+      END-FOR
+    END-IF
+  END-FOR

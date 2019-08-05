@@ -1,0 +1,48 @@
+DB: 000 FILE: 012  - VEHICLES                         DEFAULT SEQUENCE:   
+TYPE: ADABAS
+ 
+T L DB Name                              F Leng  S D Remark
+- - -- --------------------------------  - ----  - - ------------------------
+*      >Natural Source Header 000000
+*      :CP
+*      
+*      
+*      :LineIncrement 10
+*      <Natural Source Header
+*      Generation started                            
+*      at 2016-04-26 05:36:59                        
+*      by user OPPPRD82                              
+*                                                    
+  1 AA REG-NUM                           A   15  N D CAR'S REGISTR. NUMBE
+*      CAR'S REGISTR. NUMBER                         
+  1 AB CHASSIS-NUM                       I    4  F   MANUFACTURER NUMBER
+*      MANUFACTURER NUMBER                           
+  1 AC PERSONNEL-ID                      A    8    D IDENT. OF CAR USER
+*      IDENT. OF CAR USER                            
+G 1 CD CAR-DETAILS                                   DESCRIPTION OF THE C
+       HD=CAR DETAILS
+*      DESCRIPTION OF THE CAR                        
+  2 AD MAKE                              A   20  N D 
+  2 AE MODEL                             A   20  N   
+  2 AF COLOR                             A   10  N D 
+  2 AF COLOUR                            A   10  N D 
+  1 AG YEAR                              N  4.0  N   MANUFACTURING YEAR
+*      MANUFACTURING YEAR                            
+  1 AH CLASS                             A    1  F D P=PRIVAT
+*      P=PRIVAT                                      
+*      C=COMPANY                                     
+  1 AI LEASE-PUR                         A    1  F   L=LEASED
+*      L=LEASED                                      
+*      P=PURCHASED                                   
+  1 AJ DATE-ACQ                          N  8.0  N   DATE THE CAR WAS ACQ
+*      DATE THE CAR WAS ACQIRED                      
+  1 AL CURR-CODE                         A    3  N   CURRENCY OF CAR COST
+*      CURRENCY OF CAR COST                          
+M 1 AM MAINT-COST                        P  7.0  N   MAINTENANCE COST
+*      MAINTENANCE COST                              
+  1 AO MODEL-YEAR-MAKE                   A   24  N S YEAR + CAR MAKE
+*      -------- SOURCE FIELD(S) -------
+*      YEAR(1-4)
+*      MAKE(1-20)
+*      YEAR + CAR MAKE                               
+******DDM OUTPUT TERMINATED******

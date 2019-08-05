@@ -1,0 +1,20 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CCDEBUGR
+* System     : NATURAL-CONSTRUCT
+* Written by : SAG
+* Description: This is a reporting mode version of CCDEBUG
+*            :
+* History    :
+************************************************************************
+IF *COM = 'DB=Y' THEN DO
+  ASSIGN CDADEBUG.PGM-LOCATION = &1&
+  ASSIGN CDADEBUG.LINE-NUM = &2&
+  COMPRESS &3& TO CDADEBUG.TRACE-DATA
+  ASSIGN CDADEBUG.PROGRAM-NAME = *PROGRAM
+  CALLNAT 'CDUDEBUG' CDADEBUG
+DOEND

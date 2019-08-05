@@ -1,0 +1,966 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**Postgen changes
+**SAG GENERATOR: CST-SHELL                        VERSION: 3.4.1
+**SAG TITLE: Help Text utility
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): Displays help text read from the Natural
+**SAG DESCS(2): Construct help file.
+**SAG PROGRAM-TYPE: N
+**SAG LOCAL-NAME(1): CDENVIRA
+**SAG LOCAL-NAME(2): CDHLPTXL
+**SAG LOCAL-NAME(3): CDPDA-M
+**SAG LOCAL-NAME(4): CDASAA
+**SAG LOCAL-NAME(5): CDFLIPA
+**SAG LOCAL-NAME(6): CDKEYLDA
+**SAG LOCAL-NAME(7): CDDIALDA
+**SAG LOCAL-NAME(8): CDSETGBA
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CD-HELP
+* System   : NATURAL-CONSTRUCT
+* Title    : Help Text utility
+* Generated: Jul 25,96 at 09:26 AM by SAG
+* Function : Displays help text read from the Natural
+*            Construct help file.
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on Jul 25,96 by SAG for release ____
+* >
+* > Description: Displays help text read from the Natural
+* >              Construct help file.
+* >              - uses the help identifier (type/major/minor)
+* >                passed by calling program
+* >              This subprogram is normally accessed via the
+* >              CD-HELPR helproutine; an exception to this
+* >              is when help is requested by a helproutine
+* >              itself. In this case, the helproutine must
+* >              CALLNAT this help display routine directly since
+* >              in Natural, a helproutine cannot invoke another
+* >              helproutine.
+* >
+* >              Supports variable dynamic attributes.
+* >              Support variable PF-keys, Flip key and
+* >              capturing/restoring the environment.
+* >
+* >              This routine is now language independent.
+* >
+* >              Supports dynamic substitution of
+* >              text from the message file.
+* >
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+**SAG DEFINE EXIT PARAMETER-DATA
+  PARAMETER
+    01 #PDA-HEADER-MAJOR-MINOR(A65)
+**SAG END-EXIT
+  LOCAL USING CDENVIRA
+  LOCAL USING CDHLPTXL
+  LOCAL USING CDPDA-M
+  LOCAL USING CDASAA
+  LOCAL USING CDKEYLDA
+  LOCAL USING CDDIALDA
+  LOCAL USING CDSETGBA
+  LOCAL
+  01 CSLRCODE
+    02 #CONTINUE (A1/1:2)CONST<' ','W'>
+    02 REDEFINE #CONTINUE
+      03 #OK(A1)
+      03 #WARNING(A1)
+    02 #INTERRUPT (A1/1:2)CONST<'C','E'>
+    02 REDEFINE #INTERRUPT
+      03 #COMMUNICATION(A1)
+      03 #ERROR(A1)
+**SAG DEFINE EXIT LOCAL-DATA
+LOCAL USING CNAMSG
+LOCAL
+*
+* Additional local variables
+*
+* Constants
+  01 #CURSOR-SELECT-LINK          (I1) CONST<1>
+  01 #EXPAND-LINK                 (I1) CONST<2>
+  01 #NUMBER-OF-DEFAULT-LANGUAGES (I1) CONST<8>
+  01 #TEXT-LENGTH                 (I2) CONST<200>
+  01 #TRANSLATION-LENGTH          (N10)CONST<1224> /* = 18 * 68
+*
+  01 #START-KEY(A69)
+  01 REDEFINE #START-KEY
+    02 #START-HEADER(A67)
+    02 REDEFINE #START-HEADER
+      03 #START-TYPE(A1)
+      03 #START-MAJOR(A32)
+      03 #START-MINOR(A32)
+      03 #START-LANGUAGE-CODE (N2)
+    02 #START-SEQ(B2)
+  01 #WRITE-LINE-FULL(A200)
+  01 REDEFINE #WRITE-LINE-FULL
+    02 #WRITE-LINE(A68)
+  01 #END-SEQ(B2)
+*
+* Miscellaneous vars
+  01 #ADJUST-LENGTH(I1)
+  01 #ATTR(C)
+  01 #CUR-PAGE(I2)
+  01 #CURS-COL(I2)
+  01 #CURSOR-LINK(A65)
+  01 #DATA-AREA-NAME(A8)
+  01 #DISPLAY-HELP-KEY(L) INIT<TRUE>
+  01 #END-OF-PAGE-LINE(I1)
+  01 #ESCAPE-READ(L)
+  01 #EXIT(L)
+  01 #EXAM-LENGTH(I2)
+  01 #EXAM-START(I2)
+  01 #HELP-EXISTS (L) INIT<FALSE>
+  01 #I(I2)
+  01 #I2(I2)
+  01 #INTENSIFY-LINE(L)
+  01 #LANGUAGE-DEFAULT (I2)
+*
+* Key to lookup hot link help header record to get
+* text to substitute for link specified in the help.
+  01 #LINK-HEADER-MAJOR-MINOR(A67)
+  01 REDEFINE #LINK-HEADER-MAJOR-MINOR
+    02 TYPE (A1)
+    02 MAJOR(A32)
+    02 MINOR(A32)
+    02 LANGUAGE-CODE(N2)
+*
+  01 #LINK-ATTRIB-BEGIN-SIZE (I1)
+  01 #LINK-ATTRIB-END-SIZE   (I1)
+  01 #LINK-BEGIN             (I1)
+  01 #LINK-END               (I1)
+  01 #LINK-HELP-EXISTS       (L)
+  01 #LINK-LENGTH            (I1)
+  01 #LINK-MASK              (A15)
+     /* *'NCST-HELP.LINK-ATTRIB-BEGIN'*'NCST-HELP.LINK-ATTRIB-END*'
+  01 #LINK-TEXT              (A65) /* text between LINK-ATTRIB-BEGIN
+  01 REDEFINE #LINK-TEXT           /*          and LINK-ATTRIB-END
+    02 #TYPE  (A1)
+    02 #MAJOR (A32)
+    02 #MINOR (A32)
+  01 REDEFINE #LINK-TEXT
+    02 #KEY   (A65)
+  01 #LINK-TEXT-BEGIN     (I2)
+  01 #LINK-TEXT-END       (I2)
+  01 #LINK-TEXT-LENGTH    (I2)
+  01 #LINK-TEXT-OLD   (A65)
+  01 #LINK-TEXT-SEPARATED (A65/1:3)
+*
+  01 #LINES-PER-PAGE(I2)
+  01 #MODE(I1)
+  01 #MSG(A79)
+  01 #MESSAGE-LIB(A8)     /* Passed to CSUTRANS
+  01 #NUM-TEXT-LINES(N3)
+  01 #PF-KEY(A4)
+  01 #SELECTED-SCREEN-LINE(I1)
+  01 #SELECTED-TEXT-LINE(I1)
+  01 #SELF(A8)
+  01 #LINK-TEXT-NEW-LENGTH(I1)
+  01 #LINK-TEXT-NEW(A70)
+  01 #TEMP(A200)
+  01 #TEXT-REQUIRED(L) INIT<TRUE>
+  01 #TOP-OF-PAGE-SCREEN-LINE(I1)
+  01 #TOP-OF-PAGE-TEXT-LINE(I1)
+  01 #WINDOW(A10)
+  01 #WINDOW-WIDTH(I2)
+  01 #USE-DYNAMICS(L)
+  01 #WORK-PAGE(I2)
+  01 REDEFINE #WORK-PAGE
+    02 #WORK-PAGE-B(B2)
+*
+* Variables used to support language independence.
+  01 #PAGE-PROMPT(A10)
+*
+* File views and associated keys
+  01 NCST-HELP-LINK VIEW OF NCST-HELP
+    02 HEADER1
+    02 HEADER2
+    02 LINK-TEXT
+    02 MESSAGE-LIBRARY
+  01 NCST-HELP-HEADER VIEW OF NCST-HELP
+    02 HEADER-MAJOR-MINOR
+  01 NCST-HELP VIEW OF NCST-HELP
+    02 HEADER1
+    02 HEADER2
+    02 TOTAL-PAGES
+    02 HELP-LINES-PER-PAGE
+    02 WINDOW-BASE
+    02 WINDOW-LENGTH
+    02 WINDOW-COLUMNS
+    02 WINDOW-FRAME
+    02 REDEFINE WINDOW-FRAME
+      03 WINDOW-FRAME-(L)
+    02 WINDOW-STAY
+    02 REDEFINE WINDOW-STAY
+      03 WINDOW-STAY-(L)
+    02 DYNAMIC-ATTRIBUTE(1:2)
+    02 REDEFINE DYNAMIC-ATTRIBUTE
+      03 #DEFAULT-CHAR(A1)
+      03 #INTENSIFY-CHAR(A1)
+    02 MESSAGE-LIBRARY
+    02 LINK-ATTRIB-BEGIN
+    02 LINK-ATTRIB-END
+  01 NCST-HELP-LINES VIEW OF NCST-HELP-LINES
+    02 LINE-SEQUENCE
+    02 C*PAGE
+    02 LINE-TEXT(1:18)
+    02 REDEFINE LINE-TEXT
+      03 LINE-TEXT-CHAR(A1/#TRANSLATION-LENGTH)  /* = 18 * 68
+    02 LINE-ATTR(1:18)
+  01 HOT-LINE VIEW OF NCST-HELP-LINES
+    02 LINE-TEXT(#SELECTED-TEXT-LINE)
+*
+  01 #POS (N2)
+  01 #CENTER-DELIMITER (A3) INIT<',+/'>
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+*
+DEFINE WINDOW ERROR TITLE  'ERROR in Help'
+*
+ON ERROR
+  IF *ERROR-NR = 888
+    INPUT WINDOW = 'ERROR'
+          'Not enough memory, increase DATSIZE'
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+END-ERROR
+*
+FORMAT KD=ON PS=24 LS=80
+ASSIGN #SELF = #DATA-AREA-NAME = *PROGRAM
+*
+PERFORM DEFINE-KEYS
+*
+FOR CDKEYLDA.#PF-INDX = 1 TO CDKEYLDA.#PF-ARRAY-SIZE
+  IF CDKEYLDA.#PFKEY(#PF-INDX) = CDKEYLDA.#FORWARD-KEY
+    SET KEY TREQ NAMED #KEY-NAME(#PF-INDX)
+    ESCAPE BOTTOM
+  END-IF
+END-FOR
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+* Make sure help exists. If not, run through the CNAMSG
+* default languages and check for help. If no help exists
+* for any of the language defaults, display error message window.
+*
+  ASSIGN #START-HEADER = #PDA-HEADER-MAJOR-MINOR
+  ASSIGN #START-SEQ = H'0000'
+  ASSIGN #START-LANGUAGE-CODE = *LANGUAGE
+  PERFORM CHECK-HELP-EXISTS
+  IF NOT #HELP-EXISTS THEN
+    FOR-LANGUAGE-DEFAULTS.
+    FOR #LANGUAGE-DEFAULT = 1 TO #NUMBER-OF-DEFAULT-LANGUAGES
+      #START-LANGUAGE-CODE:= CNAMSG.DEFAULT-LANGUAGE(#LANGUAGE-DEFAULT)
+      PERFORM CHECK-HELP-EXISTS
+      IF #HELP-EXISTS THEN
+        ESCAPE BOTTOM (FOR-LANGUAGE-DEFAULTS.) IMMEDIATE
+      END-IF
+    END-FOR
+  END-IF
+  /*
+  /* If help text does not exist, display NO HELP message.
+  IF NOT #HELP-EXISTS THEN
+    COMPRESS #START-TYPE '/' #START-MAJOR '/' #START-MINOR
+             '/' #START-LANGUAGE-CODE
+             INTO #MSG LEAVING NO
+    COMPRESS CDHLPTXL.#HELP-ID-TXT ':'  TO
+             CDHLPTXL.#HELP-ID-TXT LEAVING NO
+    COMPRESS CDHLPTXL.#HELP-ID-TXT #MSG TO #MSG
+    SET CONTROL 'WB'
+    SET CONTROL 'WF'
+    SET CONTROL 'WL80'
+    SET CONTROL 'WC4'
+    SET CONTROL 'WB3/0'
+    FORMAT KD=OFF
+    INPUT(IP=OFF) WITH TEXT *8076 #MSG(AD=O AL=65)
+    FORMAT KD=ON
+    PERFORM FINAL-PROCESSING /* Restore environment.
+    ESCAPE ROUTINE
+  END-IF
+  /*
+  /*  Do not show the help text name when testing.
+  IF NOT(#START-MAJOR = *INIT-USER AND #START-MINOR = *INIT-USER) AND
+     #DISPLAY-HELP-KEY THEN
+    COMPRESS
+    #START-TYPE '/' #START-MAJOR '/' #START-MINOR
+                '/' #START-LANGUAGE-CODE
+          TO #MSG LEAVING NO
+    COMPRESS CDHLPTXL.#HELP-FOR-TXT ':' TO
+             CDHLPTXL.#HELP-FOR-TXT LEAVING NO
+    COMPRESS CDHLPTXL.#HELP-FOR-TXT #MSG TO #MSG
+  END-IF
+*
+* Read help text header and set up window.
+  READ(1) NCST-HELP BY HEADER-MAJOR-MINOR STARTING FROM #START-HEADER
+    ASSIGN #END-SEQ = TOTAL-PAGES
+    /*
+    /* Build the Link Mask based on the profile delimiters.
+    COMPRESS '*'''   NCST-HELP.LINK-ATTRIB-BEGIN
+             '''*''' NCST-HELP.LINK-ATTRIB-END
+             '''*'
+        INTO #LINK-MASK LEAVING NO
+    /*
+    /* Find the size of the beginning and ending link delimiters.
+    EXAMINE NCST-HELP.LINK-ATTRIB-BEGIN
+        FOR ' ' GIVING LENGTH #LINK-ATTRIB-BEGIN-SIZE
+    EXAMINE NCST-HELP.LINK-ATTRIB-END
+        FOR ' ' GIVING LENGTH #LINK-ATTRIB-END-SIZE
+    /*
+    /* Set the message library.
+    ASSIGN #MESSAGE-LIB = CNAMSG.MESSAGE-LIBRARY =
+           NCST-HELP.MESSAGE-LIBRARY
+    /*
+    /* Calculate the window width for centering the headers if
+    /* they contain a message number.
+    IF NCST-HELP.WINDOW-FRAME-
+      COMPUTE #WINDOW-WIDTH = NCST-HELP.WINDOW-LENGTH - 5
+    ELSE
+      COMPUTE #WINDOW-WIDTH = NCST-HELP.WINDOW-LENGTH - 2
+    END-IF
+    /*
+    /* If the help headings contain embedded message number references,
+    /* CALLNAT CNUMSG to substitute the translated text.
+    IF NCST-HELP.HEADER1 = MASK(*'*'NNNN*)
+      MOVE LEFT NCST-HELP.HEADER1 TO CNAMSG.MSG
+      COMPRESS CNAMSG.MSG #CENTER-DELIMITER #WINDOW-WIDTH
+         INTO CNAMSG.MSG LEAVING NO
+      CALLNAT 'CNUMSG'
+               CNAMSG
+               MSG-INFO
+      NCST-HELP.HEADER1:= CNAMSG.MSG
+    END-IF
+    IF NCST-HELP.HEADER2 = MASK(*'*'NNNN*)
+      MOVE LEFT NCST-HELP.HEADER2 TO CNAMSG.MSG
+      COMPRESS CNAMSG.MSG #CENTER-DELIMITER #WINDOW-WIDTH
+         INTO CNAMSG.MSG LEAVING NO
+      CALLNAT 'CNUMSG'
+               CNAMSG
+               MSG-INFO
+      NCST-HELP.HEADER2:= CNAMSG.MSG
+    END-IF
+    /*
+    /*  Set window
+    SET CONTROL 'WB'
+    IF WINDOW-FRAME-
+      SET CONTROL 'WF'    /* Frame on
+    ELSE
+      SET CONTROL 'WM'    /* Frame off
+    END-IF
+    COMPRESS 'WL' WINDOW-LENGTH INTO #WINDOW LEAVING NO
+    SET CONTROL #WINDOW
+    IF WINDOW-COLUMNS EQ 0
+      COMPUTE WINDOW-COLUMNS = HELP-LINES-PER-PAGE + 6
+      DECIDE FOR EVERY CONDITION
+        WHEN HEADER1 NE ' ' ADD 1 TO WINDOW-COLUMNS
+        WHEN HEADER2 NE ' ' ADD 1 TO WINDOW-COLUMNS
+        WHEN ANY ADD 1 TO WINDOW-COLUMNS /* Blank line after headings
+        WHEN NONE IGNORE
+      END-DECIDE
+    END-IF
+    COMPRESS 'WC' WINDOW-COLUMNS INTO #WINDOW LEAVING NO
+    SET CONTROL #WINDOW
+    EXAMINE WINDOW-BASE FOR '/' GIVING NUMBER #I
+    IF #I NE 0
+      COMPRESS 'WB' WINDOW-BASE INTO #WINDOW LEAVING NO
+    ELSE
+      COMPRESS 'W' WINDOW-BASE INTO #WINDOW LEAVING NO
+    END-IF
+    SET CONTROL #WINDOW
+    IF WINDOW-STAY-
+      SET CONTROL 'WS'    /* Stay on
+    ELSE
+      SET CONTROL 'WN'    /* Stay off
+    END-IF
+    /*
+    /*  Adjust window if either header is missing.
+    ASSIGN #NUM-TEXT-LINES = HELP-LINES-PER-PAGE
+    DECIDE FOR EVERY CONDITION
+      WHEN HEADER1 NE ' ' ADD 1 TO #NUM-TEXT-LINES
+      WHEN HEADER2 NE ' ' ADD 1 TO #NUM-TEXT-LINES
+      WHEN ANY ADD 1 TO #NUM-TEXT-LINES /* Blank line after headings
+      WHEN NONE IGNORE
+    END-DECIDE
+  END-READ
+*
+* Outer dummy loop to allow repositioning of READ.
+  DUMMY-LOOP.
+  REPEAT
+    /*
+    /* If a link is selected, CALLNAT self using the specified link.
+    IF #CURSOR-LINK NE ' ' THEN
+      CALLNAT #SELF #CURSOR-LINK
+      IF *PF-KEY = CDKEYLDA.#QUIT-KEY
+        ESCAPE BOTTOM(DUMMY-LOOP.) IMMEDIATE
+      END-IF
+    END-IF
+*
+    NEW-READ.
+    READ NCST-HELP-LINES BY LINE-MAJOR-MINOR-SEQ FROM #START-KEY
+      ASSIGN #LINES-PER-PAGE = NCST-HELP-LINES.C*PAGE
+      IF #LINES-PER-PAGE < 1
+        ASSIGN #LINES-PER-PAGE = 1
+      END-IF
+      /*
+      /* If the help contains embedded message number references,
+      /* CALLNAT CSUTRANS to substitute the translated text.
+      IF  NCST-HELP-LINES.LINE-TEXT(1:#LINES-PER-PAGE) =
+          MASK(*'*'NNNN*) THEN
+        /*
+        /* Assign SYSERR library to the next field after the screen text
+        CALLNAT 'CSUTRANS' NCST-HELP-LINES.LINE-TEXT-CHAR(*)
+                           #MESSAGE-LIB /* Library where msgs are stored
+                           #DATA-AREA-NAME
+                           #TEXT-REQUIRED
+                           #TRANSLATION-LENGTH
+                           MSG-INFO
+      END-IF
+      /*
+      /* Write all help text on this record.
+      FOR #I = 1 TO #LINES-PER-PAGE
+        /*
+        /* Copy to temporary variable for manipulation.
+        ASSIGN #WRITE-LINE-FULL = LINE-TEXT(#I)
+        /*
+        /* Set flags to determine display parameters.
+        IF LINE-ATTR(#I) = SCAN 'I'
+          ASSIGN #INTENSIFY-LINE = TRUE
+        ELSE
+          ASSIGN #INTENSIFY-LINE = FALSE
+        END-IF
+        /*
+        /* Convert dynamic attribute characters to H'01' and H'02',since
+        /* these characters must be hardcoded in the DY parameter.
+        /* If dynamic parameters are used in attribute, then don't use
+        /* DY parameter.
+        ASSIGN #USE-DYNAMICS = TRUE
+        IF #DEFAULT-CHAR NE ' ' THEN
+          IF LINE-ATTR(#I) = SCAN #DEFAULT-CHAR THEN
+            ASSIGN #USE-DYNAMICS = FALSE
+          END-IF
+        END-IF
+        IF #INTENSIFY-CHAR NE ' ' THEN
+          IF LINE-ATTR(#I) = SCAN #INTENSIFY-CHAR THEN
+            ASSIGN #USE-DYNAMICS = FALSE
+          END-IF
+        END-IF
+        /*
+        /* If there is a hot link on the line, create the hot link text.
+        IF NCST-HELP.LINK-ATTRIB-BEGIN NE ' ' AND
+           #WRITE-LINE-FULL = MASK #LINK-MASK THEN
+          ASSIGN #MODE = #EXPAND-LINK
+          PERFORM CREATE-HOT-LINK
+        END-IF
+        /*
+        /* If the dynamic parameter use has not been disabled by placing
+        /* a dynamic parameter in the attribute field, then change the
+        /* dynamic attribute characters to H'01' and H'02'.
+        IF #USE-DYNAMICS THEN
+          IF #DEFAULT-CHAR NE ' ' THEN
+            EXAMINE #WRITE-LINE-FULL FOR #DEFAULT-CHAR
+                REPLACE WITH H'01'
+          END-IF
+          IF #INTENSIFY-CHAR NE ' ' THEN
+            EXAMINE #WRITE-LINE-FULL FOR #INTENSIFY-CHAR
+                REPLACE WITH H'02'
+          END-IF
+        END-IF
+        /*
+        /* Replace H'04' and H'05' respectively with dynamic attrib text
+        EXAMINE #WRITE-LINE-FULL FOR H'04040404'
+            REPLACE WITH NCST-HELP.LINK-ATTRIB-BEGIN
+        EXAMINE #WRITE-LINE-FULL FOR H'05050505'
+            REPLACE WITH NCST-HELP.LINK-ATTRIB-END
+        /*
+        /* Write the line based on the values of the intensify
+        /* line attribute and the dynamic parameter attribute.
+        DECIDE FOR FIRST CONDITION
+          WHEN NOT #INTENSIFY-LINE AND #USE-DYNAMICS
+            WRITE #WRITE-LINE(DY='02I'01)
+          WHEN #INTENSIFY-LINE AND #USE-DYNAMICS
+            /* Reverse attribute use.
+            WRITE #WRITE-LINE(AD=I DY='02D'01)
+          WHEN NOT #INTENSIFY-LINE AND NOT #USE-DYNAMICS
+            WRITE #WRITE-LINE
+          WHEN #INTENSIFY-LINE AND NOT #USE-DYNAMICS
+            WRITE #WRITE-LINE(AD=I)
+          WHEN NONE
+            IGNORE
+        END-DECIDE
+      END-FOR
+      /*
+      /* Fill remainder of screen with blank lines.
+      IF *LINE-COUNT LE #NUM-TEXT-LINES
+        FOR #I = *LINE-COUNT TO #NUM-TEXT-LINES
+          SKIP 1
+        END-FOR
+      END-IF
+      /*
+      /* Write one page of text per record. Cause an AT END OF PAGE.
+      NEWPAGE
+      /*
+      /* Write headings only if non-blank.
+      AT TOP OF PAGE
+        WRITE NOTITLE(ES=ON AD=I) NCST-HELP.HEADER1
+                                / NCST-HELP.HEADER2
+        IF NCST-HELP.HEADER1 NE ' ' OR
+           NCST-HELP.HEADER2 NE ' ' THEN
+          WRITE NOTITLE(ES=OFF) ' '
+        END-IF
+        ASSIGN #TOP-OF-PAGE-SCREEN-LINE = *LINE-COUNT
+        ASSIGN #TOP-OF-PAGE-TEXT-LINE = #I
+      END-TOPPAGE
+      /*
+      /* Input END OF PAGE page number prompt.
+      AT END OF PAGE
+        ASSIGN #END-OF-PAGE-LINE = *LINE-COUNT
+        ASSIGN #CUR-PAGE = LINE-SEQUENCE
+        ASSIGN #I2 = #END-SEQ
+        INPUT (SG=OFF IP=OFF CV=#ATTR HE='CD-HELPR',#HPARM)
+          WITH TEXT #MSG(AD=D)
+        #PAGE-PROMPT (AD=OI) #CUR-PAGE (NL=2 AD=ILM HE='CD-HELPR',=) '/'
+           #I2(NL=4 AD=ODL)
+          / #KD-LINE1 (AD=OD)
+          / #KD-LINE2 (AD=OD)
+        ASSIGN #SELECTED-SCREEN-LINE = *CURS-LINE
+        /* 
+        /* If the cursor was moved onto the screen, get the line on the
+        /* help file that corresponds to the line the cursor is on.
+        IF #SELECTED-SCREEN-LINE GE #TOP-OF-PAGE-SCREEN-LINE AND
+           #SELECTED-SCREEN-LINE LT #END-OF-PAGE-LINE AND
+           NCST-HELP.LINK-ATTRIB-BEGIN NE ' ' AND
+           *PF-KEY = 'ENTR' THEN
+          ASSIGN #MODE = #CURSOR-SELECT-LINK
+          ASSIGN #CURS-COL = *CURS-COL
+          ASSIGN #SELECTED-TEXT-LINE = #TOP-OF-PAGE-TEXT-LINE +
+                 #SELECTED-SCREEN-LINE - #TOP-OF-PAGE-SCREEN-LINE
+          GET HOT-LINE *ISN(NEW-READ.)
+          ASSIGN #WRITE-LINE-FULL =
+                              HOT-LINE.LINE-TEXT(#SELECTED-TEXT-LINE.1)
+          PERFORM CREATE-HOT-LINK
+          IF #CURSOR-LINK NE ' ' THEN
+            ASSIGN #START-SEQ = #CUR-PAGE
+            PERFORM NEW-READ
+          END-IF
+        END-IF
+        RESET #MSG
+        ASSIGN #ESCAPE-READ = FALSE
+        ASSIGN #EXIT = FALSE
+        PERFORM CHECK-PFKEYS
+        IF #EXIT THEN
+          ESCAPE BOTTOM(DUMMY-LOOP.) IMMEDIATE
+        END-IF /* finished help
+      END-ENDPAGE
+*
+************************************************************************
+DEFINE SUBROUTINE NEW-READ
+************************************************************************
+*
+  ESCAPE BOTTOM(NEW-READ.) IMMEDIATE
+END-SUBROUTINE
+*
+    END-READ  /* NEW-READ.
+*
+    IF *COUNTER(NEW-READ.) = 0 THEN
+      ASSIGN #EXIT = TRUE
+    END-IF
+*
+    IF #EXIT THEN
+      ESCAPE BOTTOM(DUMMY-LOOP.) IMMEDIATE
+    END-IF
+*
+    IF #PF-KEY = CDKEYLDA.#HELP-KEY
+      CALLNAT #SELF #HPARM
+    END-IF
+  END-REPEAT  /* outer dummy repeat
+*
+* Reset window settings of previous program.
+  PERFORM FINAL-PROCESSING
+*
+* Subroutines (in alphabetical order)
+*
+***********************************************************************
+DEFINE SUBROUTINE CHECK-HELP-EXISTS
+***********************************************************************
+*
+  HISTOGRAM-NCST-HELP-HEADER.
+  HISTOGRAM NCST-HELP-HEADER
+        FOR HEADER-MAJOR-MINOR
+       FROM #START-HEADER
+       THRU #START-HEADER
+  END-HISTOGRAM
+  IF *COUNTER(HISTOGRAM-NCST-HELP-HEADER.) NE 0 THEN
+    #HELP-EXISTS:= TRUE
+  END-IF
+
+*
+END-SUBROUTINE /* CHECK-HELP-EXISTS
+*
+***********************************************************************
+DEFINE SUBROUTINE CHECK-PFKEYS
+***********************************************************************
+*
+* Subroutine to check PFkeys
+  ASSIGN #PF-KEY = *PF-KEY
+  DECIDE ON FIRST VALUE OF *PF-KEY
+    VALUE CDKEYLDA.#HELP-KEY
+      ASSIGN #START-SEQ = #CUR-PAGE
+      PERFORM NEW-READ
+    VALUE CDKEYLDA.#RETURN-KEY
+      ASSIGN #EXIT = TRUE
+    VALUE CDKEYLDA.#QUIT-KEY
+      ASSIGN #EXIT = TRUE
+    VALUE CDKEYLDA.#BACKWARD-KEY
+      IF #CUR-PAGE LE 1 THEN
+        REINPUT *8001 ALARM
+      END-IF
+      COMPUTE #WORK-PAGE = #CUR-PAGE - 1
+      ASSIGN #START-SEQ = #WORK-PAGE-B
+      PERFORM NEW-READ
+    VALUE 'ENTR', CDKEYLDA.#FORWARD-KEY
+      IF #ATTR MODIFIED             /* User has changed page;
+        IF #CUR-PAGE LT 1           /* requested page LT minimum.
+          ASSIGN #CUR-PAGE = 1
+        ELSE
+          IF #CUR-PAGE GT #END-SEQ  /* Requested page GT maximum.
+            ASSIGN #CUR-PAGE = #END-SEQ
+          END-IF
+        END-IF
+        ASSIGN #START-SEQ = #CUR-PAGE
+        PERFORM NEW-READ
+      ELSE                            /* Next page read by READ loop.
+        IF #CUR-PAGE + 1 GT #END-SEQ  /* If last page, program finished.
+          ASSIGN #EXIT = TRUE
+        END-IF
+      END-IF
+    NONE
+      REINPUT *8003 ALARM
+  END-DECIDE
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE CREATE-HOT-LINK
+************************************************************************
+*
+* The current line contains hot links within NCST-HELP. Link attrib
+* characters. Replace the hyperlink with the link text, or if blank,
+* the header 2 text, or if blank, the header 1 text.
+*
+* If we are in the mode where we are selecting the link,
+* just return the LINK-ID to the caller.
+  ASSIGN #TEMP = #WRITE-LINE-FULL
+  ASSIGN #EXAM-START = 1
+  RESET #CURSOR-LINK
+  REPLACE-ALL-HOT-LINKS.
+  REPEAT
+    /*
+    /* Calculate length of remaining string to EXAMINE.
+    COMPUTE #EXAM-LENGTH = #TEXT-LENGTH - #EXAM-START + 1
+    /*
+    /* Look for start of hyperlink.
+    EXAMINE SUBSTRING (#TEMP,#EXAM-START,#EXAM-LENGTH)
+        FOR NCST-HELP.LINK-ATTRIB-BEGIN
+        GIVING POSITION #LINK-BEGIN
+    /*
+    /* If no link found, exit loop.
+    IF #LINK-BEGIN = 0 THEN
+      ESCAPE BOTTOM(REPLACE-ALL-HOT-LINKS.) IMMEDIATE /* No more links.
+    END-IF
+    /*
+    /* Calculate the starting position of the link text.
+    #LINK-TEXT-BEGIN:= #LINK-BEGIN
+                     + #LINK-ATTRIB-BEGIN-SIZE
+                     + #EXAM-START
+                     - 1
+    #LINK-BEGIN      := #LINK-BEGIN
+                     + #EXAM-START
+                     - 1
+    /*
+    /* Calculate the starting position of the link text for start
+    /* of EXAMINE for end delimiter.
+    /*
+    /* Set the start and length, and EXAMINE for the end delimiter.
+    #EXAM-START:= #LINK-TEXT-BEGIN
+    #EXAM-LENGTH:= #TEXT-LENGTH - #EXAM-START + 1
+    EXAMINE SUBSTRING (#TEMP,#EXAM-START,#EXAM-LENGTH)
+        FOR NCST-HELP.LINK-ATTRIB-END
+     GIVING POSITION #LINK-END
+    DECIDE FOR FIRST CONDITION
+      WHEN #LINK-END = 0
+        /*
+        /* No closing bracket, we are finished.
+        ESCAPE BOTTOM(REPLACE-ALL-HOT-LINKS.) IMMEDIATE
+      WHEN #LINK-END = 1
+        IGNORE /* Null link string.
+      WHEN NONE
+        #LINK-TEXT-END:= #LINK-END
+                       - 2
+                       + #EXAM-START
+        #LINK-TEXT-LENGTH:= #LINK-TEXT-END - #LINK-TEXT-BEGIN + 1
+        #LINK-END:= #LINK-END /* Start of link end attrib from EXAMINE.
+                  + #EXAM-START /* Where exam for end attrib started.
+                  + #LINK-ATTRIB-END-SIZE /* Add size of end attribute.
+                  - 2
+        /*
+        /* Extract the text between the delimiters to #LINK-TEXT
+        /* and look up text to substitute on linked help.
+        /*
+        MOVE SUBSTRING(#TEMP,#LINK-TEXT-BEGIN,#LINK-TEXT-LENGTH)
+          TO #LINK-TEXT
+        PERFORM LOOKUP-LINK-TEXT
+        /* Build old link text string for EXAMINE/REPLACE statement.
+        COMPRESS NCST-HELP.LINK-ATTRIB-BEGIN
+                 #LINK-TEXT
+                 NCST-HELP.LINK-ATTRIB-END
+            INTO #LINK-TEXT-OLD LEAVING NO
+        /* Replace original link text with new link text.
+        EXAMINE #TEMP
+                FOR #LINK-TEXT-OLD
+                REPLACE WITH #LINK-TEXT-NEW
+        /* Add 1 to link begin due to intesify attribute prefix.
+        #LINK-BEGIN := #LINK-BEGIN + 1
+        /*
+        /* Compress begin and end attributes around the new text.
+        /*
+        /* Find the position of the end of the link in the original
+        /* text, and use to calculate size of original link,
+        /* including begin and end attributes. Calculate change
+        /* in size of link, and adjust #EXAM-START for searching the
+        /* remainder of the line.
+        /*
+        /* Calculate position of last char of link end attrib in
+        /* the original text.
+        /* Calculate the length of the original link text.
+        #LINK-LENGTH:= #LINK-END - #LINK-BEGIN + 1
+        /* Find the length of the substituted link text.
+        EXAMINE #LINK-TEXT-NEW FOR ' '
+                GIVING LENGTH #LINK-TEXT-NEW-LENGTH
+        /* Calculate the difference in size between the original link
+        /* text and new link text, including the link and dyn attribs.
+        COMPUTE #ADJUST-LENGTH = #LINK-TEXT-NEW-LENGTH
+                               - #LINK-LENGTH
+                               - 2
+        /* Add the adjusted length to link end.
+        ADD #ADJUST-LENGTH TO #LINK-END
+        /*
+        /* If we are in cursor selection mode, return the link value
+        /* if the cursor is on this portion of the line.
+        IF #MODE = #CURSOR-SELECT-LINK AND
+           #CURS-COL = #LINK-BEGIN THRU #LINK-END THEN
+          ASSIGN #CURSOR-LINK = #LINK-HEADER-MAJOR-MINOR
+          ESCAPE BOTTOM(REPLACE-ALL-HOT-LINKS.) IMMEDIATE /* Found link
+        END-IF
+    END-DECIDE
+    #EXAM-START:= #LINK-END + 2 /* next char, and skip attrib byte
+    IF #EXAM-START > #TEXT-LENGTH THEN
+      ESCAPE BOTTOM (REPLACE-ALL-HOT-LINKS.) IMMEDIATE
+    END-IF
+  END-REPEAT /* REPLACE-ALL-HOT-LINKS.
+  /* Replace begin and end link attribs with hex 4 and 5
+  /* to avoid conflict with dynamic attribs. Replaced with
+  /* link attribs again prior to WRITE.
+  EXAMINE #TEMP FOR NCST-HELP.LINK-ATTRIB-BEGIN REPLACE WITH H'04040404'
+  EXAMINE #TEMP FOR NCST-HELP.LINK-ATTRIB-END   REPLACE WITH H'05050505'
+  ASSIGN #WRITE-LINE-FULL = #TEMP
+END-SUBROUTINE /* CREATE-HOT-LINK
+*
+************************************************************************
+DEFINE SUBROUTINE DEFINE-KEYS
+************************************************************************
+*
+* Specify which PF-keys are valid. Start by resetting all keys, then
+* assign desired keys using RESET INITIAL.
+  RESET CDKEYLDA.#PFKEY(*)
+  RESET INITIAL CDKEYLDA.#RETURN-KEY
+                CDKEYLDA.#QUIT-KEY
+  /*
+  /* If we are not already displaying help for help, then support the
+  /* help key.
+  IF #PDA-HEADER-MAJOR-MINOR NE #HPARM THEN
+    RESET INITIAL CDKEYLDA.#HELP-KEY
+  END-IF
+  INCLUDE CCPFUD  /* Backward/Forward keys.
+  INCLUDE CCSETKEY /* Set specified keys.
+END-SUBROUTINE /* DEFINE-KEYS
+*
+************************************************************************
+DEFINE SUBROUTINE FINAL-PROCESSING
+************************************************************************
+*
+* Restore previous environment.
+  CALLNAT 'CDENVIR' CDENVIRA
+END-SUBROUTINE /* FINAL-PROCESSING
+*
+************************************************************************
+DEFINE SUBROUTINE LOOKUP-LINK-TEXT
+************************************************************************
+*
+  SEPARATE #LINK-TEXT INTO /* Use long targets to avoid errors
+           #LINK-TEXT-SEPARATED(*)
+           IGNORE
+           WITH DELIMITER '/'
+  ASSIGN #LINK-HEADER-MAJOR-MINOR.TYPE  = #LINK-TEXT-SEPARATED(1)
+  ASSIGN #LINK-HEADER-MAJOR-MINOR.MAJOR = #LINK-TEXT-SEPARATED(2)
+  ASSIGN #LINK-HEADER-MAJOR-MINOR.MINOR = #LINK-TEXT-SEPARATED(3)
+  ASSIGN #LINK-HEADER-MAJOR-MINOR.LANGUAGE-CODE = *LANGUAGE
+  EXAMINE #LINK-HEADER-MAJOR-MINOR TRANSLATE INTO UPPER CASE
+  #LINK-HELP-EXISTS:= FALSE
+  PERFORM FIND-LINK-HELP
+  IF NOT #LINK-HELP-EXISTS THEN
+    FOR-LINK-LANGUAGE-DEFAULTS.
+    FOR #LANGUAGE-DEFAULT = 1 TO #NUMBER-OF-DEFAULT-LANGUAGES
+      #LINK-HEADER-MAJOR-MINOR.LANGUAGE-CODE
+        := CNAMSG.DEFAULT-LANGUAGE(#LANGUAGE-DEFAULT)
+      PERFORM FIND-LINK-HELP
+      IF #LINK-HELP-EXISTS THEN
+        ESCAPE BOTTOM (FOR-LINK-LANGUAGE-DEFAULTS.) IMMEDIATE
+      END-IF
+    END-FOR
+  END-IF
+  IF NOT #LINK-HELP-EXISTS THEN
+    MOVE #LINK-TEXT TO #LINK-TEXT-NEW
+  END-IF
+*
+END-SUBROUTINE /* LOOKUP-LINK-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE FIND-LINK-HELP
+************************************************************************
+*
+  FIND-NCST-HELP-LINK.
+  FIND (1) NCST-HELP-LINK WITH HEADER-MAJOR-MINOR
+                       = #LINK-HEADER-MAJOR-MINOR
+    IF NO RECORD FOUND
+      ESCAPE BOTTOM (FIND-NCST-HELP-LINK.) IMMEDIATE
+    END-NOREC
+    /*
+    #LINK-HELP-EXISTS:= TRUE
+    DECIDE FOR FIRST CONDITION
+      WHEN NCST-HELP-LINK.LINK-TEXT NE ' '
+           MOVE LEFT NCST-HELP-LINK.LINK-TEXT TO #LINK-TEXT-NEW
+      WHEN NCST-HELP-LINK.HEADER2 NE ' '
+           MOVE LEFT NCST-HELP-LINK.HEADER2 TO #LINK-TEXT-NEW
+      WHEN NCST-HELP-LINK.HEADER1 NE ' '
+           MOVE LEFT NCST-HELP-LINK.HEADER1 TO #LINK-TEXT-NEW
+      WHEN NONE IGNORE
+    END-DECIDE
+    /*
+    /* If the substitute text contains message numbers,
+    /* call CNUMSG to translate.
+    IF #LINK-TEXT-NEW = MASK(*'*'NNNN*) THEN
+      CNAMSG.MSG:= #LINK-TEXT-NEW
+      /* Use message library defined on link help.
+      CNAMSG.MESSAGE-LIBRARY:= NCST-HELP-LINK.MESSAGE-LIBRARY
+      CALLNAT 'CNUMSG'
+               CNAMSG
+               MSG-INFO
+      #LINK-TEXT-NEW:= CNAMSG.MSG
+      /* Reassign message library to this help.
+      CNAMSG.MESSAGE-LIBRARY:= NCST-HELP.MESSAGE-LIBRARY
+    END-IF
+  END-FIND
+  /* Compress link attribs and link text
+  COMPRESS
+           NCST-HELP.LINK-ATTRIB-BEGIN
+           #LINK-TEXT-NEW
+           NCST-HELP.LINK-ATTRIB-END
+      INTO #LINK-TEXT-NEW LEAVING NO
+  /* If use dynamics is true, compress intensify at start, and
+  /* default at end
+  IF #USE-DYNAMICS THEN
+    COMPRESS H'02'
+             #LINK-TEXT-NEW
+             H'01'
+        INTO #LINK-TEXT-NEW LEAVING NO
+  END-IF
+*
+END-SUBROUTINE /* FIND-LINK-HELP
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN MSG-INFO.##RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN MSG-INFO.##RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  ASSIGN MSG-INFO.##MSG = CNAMSG.MSG
+  ASSIGN MSG-INFO.##MSG-NR = CNAMSG.MSG-NR
+  ASSIGN MSG-INFO.##MSG-DATA(*) = CNAMSG.MSG-DATA(*)
+  ASSIGN MSG-INFO.##RETURN-CODE = CNAMSG.RETURN-CODE
+  RESET CNAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CNAMSG MSG-INFO
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+**SAG DEFINE EXIT ADDITIONAL-INITIALIZATIONS
+*
+* Set additional initializations
+*
+  ASSIGN CDENVIRA.#CAPTURE-PS = TRUE
+  CALLNAT 'CDENVIR' CDENVIRA
+  ASSIGN CDSETGBA.#GLOBAL-PAGESIZE = *PAGESIZE /* Set pgsize = term size
+  CALLNAT 'CDSETGB' CDSETGBA
+  SET CONTROL 'WB' /* Reset window.
+  SET CONTROL 'YB' /* Put keys at bottom.
+  SET CONTROL 'YF' /* Show keys 1:12.
+  RESET CDKEYLDA.#PFKEY(*)
+  ASSIGN #HPARM = 'P'
+*
+* Set help parameters and global program name.
+  ASSIGN #MINOR-COMPONENT = *PROGRAM
+  ASSIGN #MAJOR-COMPONENT = 'CS'
+*
+  CALLNAT 'CDUTRANS' CDHLPTXL.CDUTRANS(*) CDHLPTXL-NAME MSG-INFO
+*
+* Build ISA-SAA prompt for 'Page' to support language independence.
+  ASSIGN CDASAA.#MSG-TXT = CDHLPTXL.#HELP-PAGE-TXT
+  ASSIGN CDASAA.#MAX-MSG-LENGTH = 10
+  CALLNAT 'CDUSAA' CDASAA
+  ASSIGN #PAGE-PROMPT = CDASAA.#MSG-TXT
+*
+**SAG END-EXIT
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

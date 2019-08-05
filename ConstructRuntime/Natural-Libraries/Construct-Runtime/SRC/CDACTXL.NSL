@@ -1,0 +1,45 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  descriptions of all valid
+/*  actions.
+/*
+/*  When adding new actions always
+/*  add them to the end of this
+/*  table. Corresponding changes
+/*  would have to be made to
+/*  CDACTA and CDACT.
+/*
+ 1 CDACTXL
+/*
+   2 #ADD-TXT (A30) INIT<'*8300'> /* Add a record
+   2 #BROWSE-TXT (A30) INIT<'*8301'> /* Browse a list
+   2 #CLEAR-TXT (A30) INIT<'*8302'> /* Clear the scree
+   2 #DISPLAY-TXT (A30) INIT<'*8303'> /* Display a recor
+   2 #MODIFY-TXT (A30) INIT<'*8304'> /* Modify a record
+   2 #NEXT-TXT (A30) INIT<'*8305'> /* Display the nex
+   2 #PURGE-TXT (A30) INIT<'*8306'> /* Purge a record
+   2 #COPY-TXT (A30) INIT<'*8321'> /* Copy a record
+   2 #RECALL-TXT (A30) INIT<'*8307'> /* Recall a purged
+   2 #REPLACE-TXT (A30) INIT<'*8322'> /* Replace a purge
+   2 #SELECT-TXT (A30) INIT<'*8323'> /* Select a record
+   2 #DETAIL-TXT (A30) INIT<'*8324'> /* Detail a record
+   2 #TRANSLATE-TXT (A30) INIT<'*8325'> /* Translate recor
+   2 #FORMER-TXT (A30) INIT<'*8314'> /* Display the For
+/*
+   2 #UNKNOWN (A30) INIT<'*8308'> /* Unknown action
+/*
+/*  The following arrays are used to
+/*  support language independent
+/*  text used by CDACTHLP.
+   2 #ACT-HELP-HEADER-TXT (A35) INIT<'*8309'> /* ACTION VALUE
+   2 #ACT-HELP-INFO-TXT1 (A50) INIT<'*8310'> /* For program hel
+   2 #ACT-HELP-INFO-TXT2 (A50) INIT<'*8311'> /* on input field
+   2 #ACT-HELP-PROMPT (A40) INIT<'*8312,:'> /* ENTER ACTION
+ 1 REDEFINE CDACTXL /* REDEF. BEGIN : CDACTXL
+   2 CDUTRANS (A1/1:625)
+ 1 CDACTXL-NAME (A8) INIT<'CDACTXL'>
+END-DEFINE

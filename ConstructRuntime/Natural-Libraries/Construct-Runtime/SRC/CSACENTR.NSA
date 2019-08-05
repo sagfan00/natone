@@ -1,0 +1,13 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CSACENTR
+   2 INPUTS
+     3 #LENGTH (P3) /* Center the string based on
+/*                                       /* this given length.
+   2 INPUT-OUTPUTS
+     3 #STRING (A100) /* In  - String to be centered.
+/*                                       /* Out- The centered string.
+END-DEFINE

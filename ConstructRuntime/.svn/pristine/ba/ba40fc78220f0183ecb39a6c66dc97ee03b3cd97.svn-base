@@ -1,0 +1,54 @@
+DB: 255 FILE: 227  - NCST-HELP                        DEFAULT SEQUENCE:
+                              Cataloged by CNDKB    on 2002-06-12 21:25:58
+TYPE: ADABAS
+T L DB Name                              F Leng  S D Remark
+- - -- --------------------------------  - ----  - - ------------------------
+*      >Natural Source Header 000000
+*      :CP
+*      
+*      
+*      <Natural Source Header
+*      Generation started
+*      at 2002-06-12 21:25:58
+*      by user CNDKB
+*
+*      ********************************
+*      * HEADER FILE FIELD ELEMENTS   *
+*      ********************************
+  1 AA TYPE-COMPONENT                    A    1  F
+       HD=Type/Component
+  1 AB MAJOR-COMPONENT                   A   32  N
+       HD=Major/Component/Value
+  1 AC MINOR-COMPONENT                   A   32  N
+  1 XF LANGUAGE-CODE                     N  2.0  N
+  1 AD HEADER1                           A   62  N
+  1 AE HEADER2                           A   62  N
+  1 AF SAVE-USER                         A    8  N
+  1 AG SAVE-DATE                         A    8  N
+  1 AH SAVE-TIME                         N  7.0  N
+  1 AI TOTAL-PAGES                       P  3.0  N
+  1 AL HELP-PROFILE-NAME                 A    8  N
+  1 EC HELP-LINES-PER-PAGE               P  3.0  N
+  1 ED WINDOW-BASE                       A    7  N
+  1 EE WINDOW-LENGTH                     P  3.0  N
+  1 EF WINDOW-COLUMNS                    P  3.0  N
+  1 EG WINDOW-FRAME                      A    1  N
+  1 EH WINDOW-STAY                       A    1  N
+  1 AJ MAX-LINESIZE                      P  3.0  N
+  1 AK MAX-PAGESIZE                      P  3.0  N
+  1 AV MAX-SCREEN-WIDTH                  P  3.0  N
+  1 AW MAX-SCREEN-LENGTH                 P  3.0  N
+  1 AX DEFAULT-SCREEN-SIZE               A    1  N
+  1 A2 MESSAGE-LIBRARY                   A    8  N
+  1 A5 LINK-ATTRIB-BEGIN                 A    4  N
+  1 A6 LINK-ATTRIB-END                   A    4  N
+  1 BX LINK-TEXT                         A   60  N
+P 1 DE DYNAMIC-ATTRIBUTES
+  2 DF DYNAMIC-ATTRIBUTE                 A    1  N
+  1 S1 HEADER-MAJOR-MINOR                A   67  N S
+*      -------- SOURCE FIELD(S) -------
+*      TYPE-COMPONENT(1-1)
+*      MAJOR-COMPONENT(1-32)
+*      MINOR-COMPONENT(1-32)
+*      LANGUAGE-CODE(1-2)
+******DDM OUTPUT TERMINATED******

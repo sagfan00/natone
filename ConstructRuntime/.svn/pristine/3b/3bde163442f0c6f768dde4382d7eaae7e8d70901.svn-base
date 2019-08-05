@@ -1,0 +1,180 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**********************************************************************
+* Program    : CDERROR
+* System     : NATURAL-CONSTRUCT
+* Title      : Sample Application error processor
+* Written on : March 2, 1990
+* Description: Application error handling program
+*            : This program should be invoked by the application
+*            : error transaction (see CDERRTA). The purpose of
+*            : this program is to resume processing of the
+*            : application just prior to where the error
+*            : occurred.
+*            : The name of the last active level 1 program is
+*            : contained in the global variable
+*            : ERROR-INFO.##LAST-PROGRAM. Attempt recovery by
+*            : fetching this program.
+*            : In order to prevent error cycles, another global
+*            : variable that is used is the time of the previous
+*            : error. If the current error has occurred too soon
+*            : after the previous error (10 seconds by default),
+*            : present the user with a screen identifying the
+*            : error and do not FETCH the last program again.
+*            :
+*            : Prior to fetching this error processor, the
+*            : error transaction disables application error handling
+*            : (restores default Natural error handling) in
+*            : case an error occurs in this error processor. If
+*            : successful, this routine restores the error transaction
+*            : using SET CONTROL 'E=ON'.
+*            :
+*            : If using a gda other than CDGDA, you must
+*            : make a copy of this program with the correct
+*            : global data area.
+*            :
+* History
+**********************************************************************
+DEFINE DATA
+  GLOBAL USING CDGDA
+  LOCAL USING CDERRLDA /* Variables stacked by Natural.
+  LOCAL
+*
+* Miscellaneous variables
+  01 #ELAPSED-TIME(I4)
+  01 #ERROR-TA(A8)
+  01 #STATUS-TEXT(A35)
+* Parameters for error code 3009. To find the DBID and the Subcode.
+* CALLNAT 'NAT23019' DB_ERR_STR
+01 DB_ERR_STR (A16)
+01 REDEFINE DB_ERR_STR
+  02 DB_STATUS (A1)
+  02 DB_TYPE (A1)
+  02 DB_DBID (B2)
+  02 DB_FNR (B2)
+  02 DB_COMMAND (A2)
+  02 DB_RESP (B2)
+  02 DB_SUBCODE (B2)
+  02 DB_ADD1F2B (B2)
+END-DEFINE
+*
+FORMAT LS=250 PS=23
+*
+* Issue backout to prevent partial updates.
+BACKOUT TRANSACTION
+*
+* Input the error transaction program to provide backward compatibility
+* to prior to Construct 4.1.1 (the error ta is no longer stacked in
+* favour of using the SET CONTROL 'E=OFF' / 'E=ON' approach.
+IF *DATA = 1 THEN
+  INPUT(AD=MI) #ERROR-TA
+END-IF
+*
+* INPUT data stacked by error transaction.
+INPUT(AD=MI'_' SG=ON) CDERRLDA
+*
+DECIDE ON FIRST VALUE CDERRLDA.#ERROR-STATUS
+  VALUE 'C'
+    ASSIGN #STATUS-TEXT = '(Command Processing Error).'
+  VALUE 'L'
+    ASSIGN #STATUS-TEXT = '(Logon Processing Error).'
+  VALUE 'O'
+    ASSIGN #STATUS-TEXT = '(Object Run Time Error).'
+  VALUE 'S'
+    ASSIGN #STATUS-TEXT = '(Non-Correctable Syntax Error).'
+  NONE
+    IGNORE
+END-DECIDE
+*
+DECIDE ON FIRST VALUE CDERRLDA.#ERROR-NR
+  VALUE 1106
+    /*
+    /* Invalid direct command data::3:
+    ASSIGN MSG-INFO.##MSG-NR = 8044
+    CALLNAT 'CDUMSGU' MSG-INFO
+    RESET DIALOG-INFO.##COMMAND
+  VALUE 3145
+    /*
+    /* Requested record is currently held by another user
+    ASSIGN MSG-INFO.##MSG-NR = 8045
+    CALLNAT 'CDUMSGU' MSG-INFO
+  VALUE 3700
+    CALLNAT 'CDDB2MG2' MSG-INFO
+  VALUE 3009
+* To find the DBID and the Subcode.
+    CALLNAT 'NAT23019' DB_ERR_STR
+    ASSIGN MSG-INFO.##MSG-DATA(1) = DB_DBID
+    ASSIGN MSG-INFO.##MSG-DATA(2) = DB_SUBCODE
+    ASSIGN MSG-INFO.##MSG-NR = CDERRLDA.#ERROR-NR
+    CALLNAT 'CDUMSG' MSG-INFO
+  NONE
+    /*
+    /* Call CDUMSG to get the message text.
+    ASSIGN MSG-INFO.##MSG-NR = CDERRLDA.#ERROR-NR
+    CALLNAT 'CDUMSG' MSG-INFO
+END-DECIDE
+*
+* Check the elapsed time (ie.  Time interval from last error).
+IF ERROR-INFO.##LAST-ERROR-TIME = 0 THEN
+  ASSIGN #ELAPSED-TIME = 999999999
+ELSE
+  COMPUTE #ELAPSED-TIME = *TIMX - ERROR-INFO.##LAST-ERROR-TIME
+END-IF
+*
+* If we were just inside this error processor within the past 10
+* seconds, assume we are in an error loop and present the user with
+* the error information. Also, if a compile error occurred, assume we
+* do not want *ERROR-TA set.
+*
+DECIDE FOR FIRST CONDITION
+  WHEN CDERRLDA.#ERROR-STATUS = 'S' /* Compile error, disable error-ta.
+    PERFORM SHOW-ERROR
+    ASSIGN *ERROR-TA = ' '
+  WHEN #ELAPSED-TIME < 50 /* Errors have occurred within 5 seconds.
+    PERFORM SHOW-ERROR
+    IF #ERROR-TA NE ' ' THEN
+      ASSIGN *ERROR-TA = #ERROR-TA
+    END-IF
+    ASSIGN ERROR-INFO.##LAST-ERROR-TIME = *TIMX
+    SET CONTROL 'E=ON'  /* Enable error-ta
+  WHEN ERROR-INFO.##LAST-PROGRAM = ' '
+    PERFORM SHOW-ERROR
+    IF *DATA LT 0 THEN /* If there is a command on the stack,
+                       /* preserve error transaction, else reset it.
+      IF #ERROR-TA NE ' ' THEN
+        ASSIGN *ERROR-TA = #ERROR-TA
+      END-IF
+      SET CONTROL 'E=ON'  /* Enable error ta
+    ELSE
+      ASSIGN *ERROR-TA = ' '
+    END-IF
+    ASSIGN ERROR-INFO.##LAST-ERROR-TIME = *TIMX
+  WHEN NONE
+    ASSIGN *ERROR-TA = #ERROR-TA
+    ASSIGN ERROR-INFO.##LAST-ERROR-TIME = *TIMX
+    FETCH ERROR-INFO.##LAST-PROGRAM
+END-DECIDE
+*
+************************************************************************
+DEFINE SUBROUTINE SHOW-ERROR
+************************************************************************
+*
+  SET CONTROL 'WB0/0FL76C12B10/2'
+  INPUT(IP=OFF AD=OI SG=OFF)
+    *PROGRAM(AD=D) 10X '***** NON-RECOVERABLE ERROR *****' (I)
+     / *DATX(EM=LLL' 'DD','YY AD=D) 53X *TIMX(EM=HH':'II' 'AP AD=D)
+     /
+     /  'Error Msg.:' CDERRLDA.#ERROR-NR (EM=' NAT'9999)
+     /
+     /  'Short Text:' MSG-INFO.##MSG
+     /  'Line......:' CDERRLDA.#ERROR-LINE-NR(AD=L)
+                         'of Object' CDERRLDA.#ERROR-PROGRAM
+     /  'Level.....:' CDERRLDA.#ERROR-PROGRAM-LEVEL(AD=L)
+     /  'Status....:' CDERRLDA.#ERROR-STATUS
+                         #STATUS-TEXT (AD=OD)
+  SET CONTROL 'WB'
+END-SUBROUTINE /* SHOW-ERROR
+END

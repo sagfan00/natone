@@ -1,0 +1,18 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* This copy code is used to signal PF10/PF11 when the user puts the
+* cursor on the '< n more' ... 'n more >' information in a
+* maintenance program.
+IF *CURS-COL >= 0 THEN
+  IF *CURS-FIELD = POS(#LEFT-PROMPT) THEN
+    CALLNAT 'CDSETKEY' CDKEYLDA.#LEFT-KEY
+  ELSE
+    IF *CURS-FIELD = POS(#RIGHT-PROMPT) THEN
+      CALLNAT 'CDSETKEY' CDKEYLDA.#RIGHT-KEY
+    END-IF
+  END-IF
+END-IF

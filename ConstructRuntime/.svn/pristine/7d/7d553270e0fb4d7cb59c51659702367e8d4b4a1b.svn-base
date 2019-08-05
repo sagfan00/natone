@@ -1,0 +1,55 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #IN-PASSWORD #PROGRAM CDPASSWA.#PGM CDPASSWA.#SYSTEM
+DEFINE DATA PARAMETER
+1 #IN-PASSWORD (A008)
+1 #PROGRAM (A008)
+1 CDPASSWA.#PGM (A008)
+1 CDPASSWA.#SYSTEM (A032)
+END-DEFINE
+FORMAT PS=021 LS=079 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',=        *
+* 023079        N1NNLCN____         X        01 SYSDBA  YL           1 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',=                      /*
+                                                                       )
+ 001T #PROGRAM  (AD=OD ) /*.01U008 A008 .
+ 020T '***** SECURITY SUBSYSTEM *****'(I)
+ 061T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 020T '- PROGRAM PASSWORD REQUIRED -'(I)
+ 061T *TIMX  (AD=OD EM=HH':'II' 'AP ) /*.01S008 T    .
+/
+/
+ 001T 'A password is required for program'
+ 036T CDPASSWA.#PGM  (AD=OIL ) /*.01U008 A008 .
+/
+ 025T 'in system'
+ 036T CDPASSWA.#SYSTEM  (AD=OIL ) /*.01U032 A032 .
+/
+/
+ 001T 'Please enter the correct password:'
+ 036T #IN-PASSWORD  (AD=MN'_' ) /*.99U008 A008 .
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

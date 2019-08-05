@@ -1,0 +1,8 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+1 #P-CONFIRM-UPDATE (A1)
+1 #P-OPTION (A1)
+END-DEFINE

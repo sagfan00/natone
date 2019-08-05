@@ -1,0 +1,40 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDGETDCA /* Used by CDGETDC
+   2 INPUTS
+     3 #DIRECT-COMMAND (A60) /* Direct command as entered
+/*                                       /* by the user.
+     3 REDEFINE #DIRECT-COMMAND /* REDEF. BEGIN : #DIRECT-COMMAN
+       4 #DIRECT-COMMAND-CHAR (A1/1:60)
+   2 OUTPUTS
+     3 #STACK-DATA (A60) /* First portion of the direct
+/*                                       /* command, up to the first
+/*                                       /* blank. This may include
+/*                                       /* several pieces of data
+/*                                       /* separated by input delimiters
+/*                                       /* / characters within direct
+/*                                       /* command are replaced by ID
+/*                                       /* character.
+     3 REDEFINE #STACK-DATA /* REDEF. BEGIN : #STACK-DATA
+       4 #STACK-DATA-CHAR (A1/1:60)
+     3 #FIRST-COMMAND (A15) /* The first element of the
+/*                                       /* direct command (up to the
+/*                                       /* first blank, slash or
+/*                                       /* input delimiter character).
+/*                                       /* This can be used to determine
+/*                                       /* whether the direct command
+/*                                       /* should be processed starting
+/*                                       /* from the current menu or the
+/*                                       /* main menu.
+     3 REDEFINE #FIRST-COMMAND /* REDEF. BEGIN : #FIRST-COMMAND
+       4 #FIRST-COMMAND-CHAR (A1/1:15)
+     3 #REST-COMMAND (A60) /* All data beyond the portion
+/*                                       /* of the direct command
+/*                                       /* assigned to #STACK-DATA.
+/*                                       /* this will be used by
+/*                                       /* subsequent processes in the
+/*                                       /* invoked program chain.
+END-DEFINE

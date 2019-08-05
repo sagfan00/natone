@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/* *Used to return the names and type sofall 'stacked' NATURAL objects.
+ 1 NAD00073
+   2 OUTPUTS
+     3 LEVEL-INFO (1:12) /* nn can be from 1 to 32
+       4 OBJ-LEVEL (I1)
+       4 OBJ-NAME (A8)
+       4 OBJ-TYPE (A1)
+   2 EXTENSIONS
+     3 EXTENDED-PARMS /* Version number of the subprog
+       4 EXTENDED-DATA (A1/1:1)
+       4 REDEFINE EXTENDED-DATA /* REDEF. BEGIN : EXTENDED-DATA
+         5 VERSION (I1) /* currently 0
+/* *                                     0 is the version number for the
+/* *                                     original parameter layout.
+END-DEFINE

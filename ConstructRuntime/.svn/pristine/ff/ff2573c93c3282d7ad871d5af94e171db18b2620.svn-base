@@ -1,0 +1,148 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+*  PROGRAM: CVUSRCOP
+* FUNCTION: This routine is used to copy USR routines from SYSEXT into
+*           SYSLIBS as part of the installation process. 
+*
+*
+************************************************************************
+DEFINE DATA
+LOCAL USING CVGETFIL  /* Required by CVGETFIC
+LOCAL USING CVUSRL    /* Contains the list of USR modules used by CST
+  /* and Natural Business
+LOCAL USING CSASTD
+LOCAL
+01 PARM-AREA (A250)  /* PARM AREA FOR SYSMAIN CALL
+01 PARM-ERR (N4)     /* RETURN CODE AFTER SYSMAIN CALL
+01 PARM-MSG (A72)    /* MESSAGE AFTER SYSMAIN CALL
+01 PARM-LIB (A8)     /* LIB OF SYSMAIN UTILITY. DEFAULT TO BLANK
+*
+01 #ERROR-FLAG (L)
+01 #I (I1)
+01 #J (I1)
+01 #K (I1)
+01 #PRINT-MAX (I1) CONST<10>
+01 #PRINT-PARM-AREA (1:#PRINT-MAX)
+  02 #MODULE-NAME (A8)
+  02 #FROM-LIB (A8)
+  02 #TO-LIB (A8)
+01 #PRINT-REPORT (A1)
+01 #PRINT-REP (L)
+01 #PROGRAM (A8) INIT<*PROGRAM>
+01 #SUCCESSFUL (N4) INIT<4868>
+01 #NSC-DATA
+  02 #INSTALLED (L)
+  02 #VERSION (A10)
+  02 #DATE (A8)
+01 #NBS-DATA
+  02 #INSTALLED (L)
+  02 #VERSION (A10)
+  02 #DATE (A8)
+01 #CST-DATA
+  02 #INSTALLED (L)
+  02 #VERSION (A10)
+  02 #DATE (A8)
+  02 #INSTALL-TYPE (A1)
+01 #REPOSITORY-DATA
+  02 #INSTALLED (L)
+  02 #VERSION (A10)
+  02 #DATE (A8)
+01 #DBID (N5)
+01 #FNR (N5)
+END-DEFINE
+ON ERROR
+  IF *ERROR-NR = 3009 THEN
+    FETCH #PROGRAM
+  END-IF
+END-ERROR
+*
+* Get system files
+INCLUDE CVGETFIC
+*
+IF *DATA GT 0 THEN
+  INPUT #PRINT-REPORT
+  IF #PRINT-REPORT EQ 'Y' OR EQ 'y'
+    #PRINT-REP := TRUE
+  ELSE
+    #PRINT-REP := FALSE
+  END-IF
+ELSE
+  #PRINT-REP := FALSE
+END-IF
+*
+* Move modules by calling SYSMAIN
+ASSIGN #DBID = CVGETFIL.FNAT-DBID
+ASSIGN #FNR = CVGETFIL.FNAT-FNR
+RESET #J
+COPY-MODULES.
+FOR #I = 1 TO CVUSRL.#MAX-COPYS
+  IF (#CST-DATA.#INSTALL-TYPE = 'R' OR *MACHINE-CLASS = "PC" /* Runtime only
+      AND CVUSRL.#MODULE(#I) = 'USR1051N') /* a Predict module
+    /* this is for Open systems
+    OR (CVUSRL.#MODULE(#I) = 'USR1052N' AND *MACHINE-CLASS = "MAINFRAIME")
+    ESCAPE TOP /* don't install it for run time only
+  ELSE
+    COMPRESS
+      'COPY CAT' CVUSRL.#MODULE(#I) 'WITH XREF N REP'
+      'FROM' #SOURCE-LIB(#I)
+      'WHERE DBID' CVGETFIL.FNAT-DBID 'FNR' CVGETFIL.FNAT-FNR
+      'TO' CVUSRL.#TARGET-LIB(#I)
+      'WHERE DBID' #DBID 'FNR' #FNR
+      TO PARM-AREA
+    CALLNAT 'MAINUSER' PARM-AREA PARM-ERR PARM-MSG PARM-LIB
+    IF PARM-ERR NE #SUCCESSFUL THEN
+      IF CVUSRL.#MODULE(#I) = 'USR4011N'
+        PRINT 'USR4011N is only required for HASH LOCKING'
+        PRINT 'which is only available in NATURAL 413 or higher'
+        PRINT 'on the mainframe and higher than NATURAL 611 on Open'
+        PRINT 'Systems. If the correct version of Natural is being used'
+        PRINT 'ensure USR4011N is found in the library SYSEXT'
+      ELSE
+        IF CVUSRL.#MODULE(#I) = 'USR1051N' THEN
+           PRINT 'USR1051N is a Predict module and Predict is not'
+           PRINT 'installed. This will not restrict, but it will limit the use of NBS.' /
+        ELSE
+            PRINT NOTITLE '='(30) 'Error' '='(30) / PARM-AREA /
+            PARM-ERR PARM-MSG
+          END-IF
+          #ERROR-FLAG := TRUE
+        END-IF
+    ELSE
+      IF #PRINT-REP
+        ADD 1 TO #J
+        #PRINT-PARM-AREA.#MODULE-NAME(#J) := CVUSRL.#MODULE(#I)
+        #PRINT-PARM-AREA.#FROM-LIB(#J)    := #SOURCE-LIB(#I)
+        #PRINT-PARM-AREA.#TO-LIB(#J)      := #TARGET-LIB(#I)
+        IF #J GE #PRINT-MAX
+          FOR #K FROM 1 TO #PRINT-MAX
+            PRINT #PRINT-PARM-AREA.#MODULE-NAME(#K) 'copied from'
+              #PRINT-PARM-AREA.#FROM-LIB(#K) 'to'
+              #PRINT-PARM-AREA.#TO-LIB(#K)
+          END-FOR
+          IF *DEVICE NE 'BATCH'
+            PRINT 'Please press enter to continue'
+          END-IF
+          RESET #J
+        END-IF
+      END-IF
+    END-IF
+  END-IF
+END-FOR /* COPY-MODULES.
+*
+FOR #K FROM 1 TO #J
+  PRINT #PRINT-PARM-AREA.#MODULE-NAME(#K) 'copied from'
+    #PRINT-PARM-AREA.#FROM-LIB(#K) 'to'
+    #PRINT-PARM-AREA.#TO-LIB(#K)
+END-FOR
+RESET #J
+*
+IF #ERROR-FLAG
+  PRINT NOTITLE 'Copy completed with errors'
+ELSE
+  PRINT NOTITLE 'Copy completed successfully'
+END-IF
+END

@@ -1,0 +1,114 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #ACTION #ACTION-CV #ARRAY1 #DIRECT-COMMAND #HEADER1 #HEADER2
+*     #HPARM #KD-LINES-CV #LEFT-PROMPT #LIN(*) #NEXT-ARRAY1 #PROGRAM
+*     #RIGHT-PROMPT #SCR-CV #VAL-ACT2 CDACTA.#APPL-ACTIONS(*,*)
+*     CDDIALDA.#KD-LINES(*) CDKEYLDA.#BKWRD-LAB1 CDKEYLDA.#FRWD-LAB1
+*     CDKEYLDA.#FRWRD-LAB1 CDKEYLDA.#FRWRD-LAB2 CDKEYLDA.BKWRD-LAB2
+DEFINE DATA PARAMETER
+1 #ACTION (A002)
+1  #ACTION-CV (C)
+1  #ARRAY1 (N07.0)
+1 #DIRECT-COMMAND (A060)
+1 #HEADER1 (A060)
+1 #HEADER2 (A058)
+1 #HPARM (A065)
+1  #KD-LINES-CV (C)
+1 #LEFT-PROMPT (A009)
+1 #LIN (P03.0/00001:00030)
+1 #NEXT-ARRAY1 (P03.0)
+1 #PROGRAM (A008)
+1 #RIGHT-PROMPT (A009)
+1  #SCR-CV (C)
+1 #VAL-ACT2 (A079)
+1 CDACTA.#APPL-ACTIONS (A003/00001:00030,00001:00003)
+1 CDDIALDA.#KD-LINES (A079/00001:00002)
+1 CDKEYLDA.#BKWRD-LAB1 (A002)
+1 CDKEYLDA.#FRWD-LAB1 (A002)
+1 CDKEYLDA.#FRWRD-LAB1 (A002)
+1 CDKEYLDA.#FRWRD-LAB2 (A002)
+1 CDKEYLDA.BKWRD-LAB2 (A002)
+END-DEFINE
+FORMAT PS=021 LS=080 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'NCCSELH',#HPARM    *
+* 023080NCLAYOUTN1NNUCN____         X        01 SYSPROF YL   #SCR-CV 0 *
+************************************************************************
+INPUT          (     CV=#SCR-CV  HE='NCCSELH',#HPARM                  /*
+                                                                       )
+ 001T CDDIALDA.#KD-LINES (001)  (AD=MY' ' CV=#KD-LINES-CV /*.99D079 A079 .
+      DY='00V(NP'02                     )
+   /**A1000020000100001000010000100001100002001001000001000HV
+/
+ 001T CDDIALDA.#KD-LINES (002)  (AD=MY' ' CV=#KD-LINES-CV /*.99D079 A079 .
+      DY='00V(NP'02                     )
+/
+ 001T #PROGRAM  (AD=OD' ' ) /*.01U008 A008 .
+ 010T #HEADER1  (AD=OI' ' AL=056  ) /*.01U056 A060 .
+ 067T *PROGRAM  (AD=ODR ) /*.01S008 A008 .
+/
+ 001T #LEFT-PROMPT  (AD=OV ) /*.01U009 A009 .
+ 011T #HEADER2  (AD=OI' ' AL=054  ) /*.01U054 A058 .
+ 066T #RIGHT-PROMPT  (AD=OVR ) /*.01U009 A009 .
+/
+ 002T 'Action...........:'
+ 021T #ACTION  (AD=MYT'_' CV=#ACTION-CV /*.99U002 A002 .
+      HE='CDACTHL2',CDACTA.#APPL-ACTIONS(*,*) )
+ 024T '<--- action field optional'
+ 068T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+ 070T #VAL-ACT2  (AD=ON AL=001  ) /*.01U001 A079 .
+ 072T CDACTA.#APPL-ACTIONS (001,001)  (AD=ON AL=001  ) /*.01U001 A003 .
+   /**A2000300000300001000010000100001120001001001000001000HV
+/
+ 002T 'Order Number.....:'
+/
+/
+ 002T 'The following fields can be used to control scrolling for'
+ 060T 'scroll region 1 - 4'
+/
+ 002T 'fields in scroll region 1 must be indexed by #ARRAY1,'
+ 056T 'region 2 by #ARRAY2 etc'
+/
+ 002T '#NEXT-ARRAY1:'
+ 016T #NEXT-ARRAY1  (AD=MILT'_' NL=02.0 ) /*.99U002 P03.0.
+ 019T 'Supply new value for #ARRAY1'
+/
+ 002T '#BKWRD-LAB1.:'
+ 016T CDKEYLDA.#BKWRD-LAB1  (AD=OVL ) /*.01D002 A002 .
+ 019T 'Cursor sensitive field to scroll #ARRAY1 backward'
+/
+ 002T '#FRWRD-LAB1.:'
+ 016T CDKEYLDA.#FRWD-LAB1  (AD=OVL ) /*.01D002 A002 .
+ 019T 'Cursor sensitive field to scroll #ARRAY1 forward'
+/
+/
+/
+ 002T #LIN (#ARRAY1+000)  (AD=OD' ' NL=02.0 ) /*.01U002 P03.0.
+   /**A1000300000100001000010000100001100005001001000001000HV
+ 005T '#LIN array can be put adjacent to each scroll region to'
+ 061T 'show positioning'
+/
+ 002T #LIN (#ARRAY1+001)  (AD=OD' ' NL=02.0 ) /*.01U002 P03.0.
+ 035T CDKEYLDA.#BKWRD-LAB1  (AD=OVL ) /*.02U002 A002 .
+ 074T CDKEYLDA.BKWRD-LAB2  (AD=OVL ) /*.01U002 A002 .
+/
+ 002T #LIN (#ARRAY1+002)  (AD=OD' ' NL=02.0 ) /*.01U002 P03.0.
+ 039T 'Scrolling buttons can be placed'
+/
+ 002T #LIN (#ARRAY1+003)  (AD=OD' ' NL=02.0 ) /*.01U002 P03.0.
+ 039T 'besides each scrooling region'
+/
+ 002T #LIN (#ARRAY1+004)  (AD=OD' ' NL=02.0 ) /*.01U002 P03.0.
+ 035T CDKEYLDA.#FRWRD-LAB1  (AD=OVL ) /*.01U002 A002 .
+ 074T CDKEYLDA.#FRWRD-LAB2  (AD=OVL ) /*.01U002 A002 .
+/
+/
+ 002T 'Direct Command:'(I)
+ 018T #DIRECT-COMMAND  (AD=MILT'_' AL=057  HE='CDDCHELP' ) /*.99U057 A060 .
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+IF MSG-INFO.##MSG NE ' ' OR MSG-INFO.##MSG-NR NE 0
+  ESCAPE ROUTINE IMMEDIATE
+END-IF

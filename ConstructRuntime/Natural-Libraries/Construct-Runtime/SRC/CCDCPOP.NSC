@@ -1,0 +1,13 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Check for direct command request key to pop-up direct command.
+IF *PF-KEY = CDKEYLDA.#DIRECT-CMD-KEY THEN
+  CALLNAT 'CDDCINP' CDGETDCA DIALOG-INFO MSG-INFO
+  IF CDGETDCA.#DIRECT-COMMAND EQ ' ' THEN
+    ESCAPE TOP
+  END-IF
+END-IF

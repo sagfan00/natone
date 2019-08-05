@@ -1,0 +1,34 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This 01 level should be passed
+/*  to all subprograms in order to
+/*  exchange messages and response
+/*  code information.
+/*  In an application either message
+/*  numbers or text should be used
+/*  but not both.
+/*
+/*  This data area must match the
+/*  structure of MSG-INFO in the
+/*  application global data area.
+ 1 MSG-INFO /* Corresponds to PDA CDPDA-M
+   2 ##MSG (A79) /* Passed/Returned message or
+   2 ##MSG-NR (N4) /* Message number on SYSERR file
+   2 ##MSG-DATA (A32/1:3) /* Used to pass variables
+/*                                       /* to be substituted into msg.
+   2 REDEFINE ##MSG-DATA /* REDEF. BEGIN : ##MSG-DATA
+     3 ##MSG-DATA-STRUCT (1:3)
+       4 ##MSG-DATA-CHAR (A1/1:32)
+   2 ##RETURN-CODE (A1) /* Type of message:
+/*                                       /* ' ' = Informatory message
+/*                                       /* 'W' = Warning (can continue)
+/*                                       /* 'E' = Error (fatal)
+   2 ##ERROR-FIELD (A32) /* Name of field in error.
+   2 ##ERROR-FIELD-INDEX1 (P3) /* These indexes are used if the
+   2 ##ERROR-FIELD-INDEX2 (P3) /* field in err in an element of
+   2 ##ERROR-FIELD-INDEX3 (P3) /* an array.
+END-DEFINE

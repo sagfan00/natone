@@ -1,0 +1,45 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDDIALDA /* Parameters common to all
+/*                                       /* dialog programs.
+/*
+/*  Parm for help routine CD-HELPR
+   2 #HPARM (A65) INIT<'P'>
+   2 REDEFINE #HPARM /* REDEF. BEGIN : #HPARM
+     3 #TYPE-COMPONENT (A1) /* Type component
+     3 #MAJOR-COMPONENT (A32) /* Major component
+     3 REDEFINE #MAJOR-COMPONENT /* REDEF. BEGIN : #MAJOR-COMPONE
+       4 #SYSTEM (A32) /* System where Help is found
+     3 #MINOR-COMPONENT (A32) /* Minor component
+     3 REDEFINE #MINOR-COMPONENT /* REDEF. BEGIN : #MINOR-COMPONE
+       4 #PROGRAM (A8) /* Current object name
+       4 #MAP-NAME (A8) /* Current Map Name
+/*                                       /* Can be assigned if different
+/*                                       /* help is required for each map
+/*                                       /* used by a program. Can also
+/*                                       /* be used for language
+/*                                       /* independent help.
+/*
+   2 #KD-LINES (A79/1:2) /* lines to be placed at
+/*                                       /* at the bottom of maps, under
+/*                                       /* the standard PF-KEY lines.
+/*                                       /* the standard PF-KEY lines.
+/*                                       /* These can be assigned a list
+/*                                       /* of valid commands or whatever
+/*                                       /* is useful.
+   2 REDEFINE #KD-LINES /* REDEF. BEGIN : #KD-LINES
+     3 #KD-LINE1 (A79)
+     3 #KD-LINE2 (A79)
+/*
+   2 #INPUT-HE (A8) INIT<'CD-HELPR'> /* This is a
+/*                                       /* Variable to allow it to be
+/*                                       /* overridden in START-OF-PROG
+   2 #KD-LINES-CV (C) INIT<(AD=I)> /* use this CV
+/*                                       /* on the #KD-LINES field if
+/*                                       /* this is to be treated as
+/*                                       /* cursor sensitive push buttons
+   2 #KD-LINES-PROTECTED (C) INIT<(AD=PD)>
+END-DEFINE

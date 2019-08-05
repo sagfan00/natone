@@ -1,0 +1,45 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+ 1 CU-FLDA
+   2 #DEFINE-TRANSLATION-HEADER (A1) INIT
+     <'D'>
+   2 #GENERATE (A1) INIT
+     <'G'>
+   2 #USER-EXIT-SAMPLE (A1) INIT
+     <'U'>
+   2 #BLANK-PHASE (A1) INIT
+     <'B'>
+   2 #LOCAL-EXPORT (A1) INIT
+     <'L'>
+   2 #TRANSLATE-LOCAL-TEXT (A1) INIT
+     <'T'>
+   2 #COLUMN-EXPORT (A1) INIT
+     <'C'>
+   2 #EXPORT (A1) INIT
+     <'E'>
+   2 #KEY-TRANSLATION (A1) INIT
+     <'K'>
+   2 #ADDITIONAL-TRANSLATION (A1) INIT
+     <'A'>
+   2 #INPUT-KEY-INTERNAL (A1) INIT
+     <'I'>
+   2 #HEADER-TRANSLATION (A1) INIT
+     <'H'>
+   2 #WRITE-FIELDS (A1) INIT
+     <'W'>
+   2 #XIT-FOR-OBJECT-GENERIC (A1) INIT
+     <'X'>
+   2 #MESSAGE-INFORMATION (A1) INIT
+     <'M'>
+   2 #REPORT-DATA-FIELDS (A1) INIT
+     <'R'>
+   2 #SAMPLE (A1) INIT
+     <'S'>
+   2 #VALIDATE (A1) INIT
+     <'V'>
+   2 #READ-FROM-FILE-NO-EDITOR (A1) INIT
+     <'F'>
+END-DEFINE

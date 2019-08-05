@@ -1,0 +1,3615 @@
+NAT
+0001
+8551
+0001E :1::2:zum Auflisten von:3:eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0002E (Literale in Anfuehrungszeichen setzen)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0003E Ungueltige Programmfunktionstaste:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0004E Warnung::1:ueberlappt Schluesselfeld:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0005E Warnung::1:ueberlappt Schluesselfeld und geht darueber hinaus
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0006E Warnung: Superdeskriptor benoetigt mehr als:1:Bytes von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0007E Es wurden keine angegebenen Werte in:1:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0008E Feld:1:nicht in der Datei:2::3:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0009E Neu definierte Komponente:1:hat keinen Eintrag im UDF-Block
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0010E Feld:1:ist innerhalb der Struktur:2:in:3:nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0011E :1:Subroutinen fuer:2::3:generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0012E Dimension der Steuer-Variable:1:ist groesser als:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0013E NATURAL SECURITY-Verletzung beim Zugriff auf die Datei:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0014E Es werden keine fremden Verknuepfungen vom Objekt referenziert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0015E Fehler in:1:Verknuepfung:2:nicht in PREDICT gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0016E Mehr als:1:fremde referentielle Einschraenkungen in:2:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0017E :1::2:und:3:muessen auf derselben Zeile sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0018E :1:ist bereits in:2:vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0019E :1:ist fuer den Befehl:2:nicht zulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0020E :1:ist bereits vorhanden, druecken Sie:2:zur Bestaetigung von:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0021E :1:referenziert:2:in:3:nicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0022E Funktion:1:nur zulaessig nach der Funktion:2:oder:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0023E :1:erfolgreich editiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0024E Ungueltige(n/s):1::2:an:3:uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0025E Nur ein Report kann auf einmal erzeugt werden, geben Sie:1:an
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0026E  :1:erfolgreich geprueft
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0027E :1:erfolgreich getestet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0028E :1::2:erfolgreich ausgefuehrt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0029E :1::2:erfolgreich geleert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0030E :1:hat:2:nicht definierte Parameter fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0031E :1::2:ist bereits in:3:vorhanden, Ersetzen nicht zulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0032E :1::2:ist bereits als:3:vorhanden, Ersetzen nicht zulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0033E :1:kann nicht mit:2::3:starten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0034E :1:erfolgreich uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0035E :1:erfolgreich mit Stow gesichert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0036E :1:zum Generieren von Code druecken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0037E Angabe fuer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0038E Standard-Angaben fuer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0039E Dokumentation:1:wurde nicht ersetzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0040E Aktuelle(r/s):1::2:laeuft am:3:ab
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0041E Zahl fuer MU/MC/PE/PC-Feld oder C* (C#) fuer MC/PC-Feld eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0042E :1::2:erfolgreich mit SAVE gesichert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0043E :1::2:erfolgreich ersetzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0044E Warnung::1:unter einer anderen Version von CONSTRUCT generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0045E Warnung: :1:Zeilenlaenge:2:ueberschritten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0046E Sektor:1:ueberschreitet die Bildschirmgroesse von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0047E :1::2:wurde nicht von CONSTRUCT generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0048E Sektor:1:ueberschreitet die Zeilenlaenge:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0049E :1::2::3:wurde nicht mit SAVE gesichert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0050E Im "Structured Mode" angemeldet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0051E Berechtigt fuer:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0052E :1:ist ein ungueltiger NATURAL-Name
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0053E Warnung: Datei-Version:1:nicht zu System-Version:2:passend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0054E Bildschirm-Aenderungen wurden durchgefuehrt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0055E :1::2::3:erfolgreich geaendert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0056E :1::2::3:beendet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0057E Warnung: Diese Version von CONSTRUCT benoetigt:1:oder darueber
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0058E Warnung: Editier-Puffer enthaelt Source-Zeilen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0059E CONSTRUCT mittels vorheriger Angaben neu gestartet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0060E :1::2::3:erfolgreich gespeichert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0061E Akt. INPUT-Zuweisungszeichen "-" kann zu Gener.-Problemen fuehren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0062E :1:in:2:von unbekanntem Modell:3:generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0063E Durch Suchen von Bedingungscode-Namen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0064E Vom Editier-Puffer gelesene Angaben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0065E Keine Master-View in PREDICT fuer Benutzer-View:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0066E :1::2:beansprucht User-Exit:3:nicht mehr
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0067E Setze Generierung fort
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0068E :1::2:hat bereits Maximum von:3:Modulen erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0069E Laenge ist in PREDICT fuer Feld:1:nicht angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0070E Wenden Sie sich an den Support der SOFTWARE AG
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0071E Beim Verarbeiten von Maske:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0072E :1::2:von Verknuepfung:3:nicht in PREDICT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0074E Feld:1:nicht in NDB-Block fuer Segment-Maske
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0075E Feld:1:nicht in UDF-Block fuer Feld-Maske
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0076E Meldung bei der Verarbeitung entdeckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0078E Nur:1:IMS-Tasten koennen verwendet werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0079E 1:druecken, um:2:anzugeben, oder beliebige PF-Taste fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0080E Feld:1:nicht als Typ:2:oder:3:in PREDICT definiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0081E Fataler Fehler entdeckt. Verarbeitung beendet.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0082E :1:druecken, um:2:fortzusetzen, oder beliebige PF-Taste fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0083E Superschluessel enthaelt 3-dimensionales Feld:1:in View:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0084E Verarbeitung durch Benutzeranforderung beendet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0085E Start von:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0086E Ende von:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0087E :1:Regel hat kein(e/n):2:fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0088E Schluessel ist nicht eindeutig fuer Nicht-ADABAS Datei:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0089E Sekundaerdatei muss auf Stufe:1:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0090E :1::2:kann:3:nicht ueberschreiten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0092E Bedingungscode: Zeile:1:von:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0093E Bedingungstyp:1:in:2::3:ist ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0094E :1:in:2::3:entdeckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0096E :1::2:nicht in:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0097E Doppelte Eintraege:1:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0098E :1:fuer:2::3:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0099E Kein Feld:1:in View, Saetze nicht geschuetzt vor Parallel-Updates
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0100E User-Exit-Satz:1:in:2::3:fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0101E :1:ist kein Deskriptor
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0103E :1:kann:2::3:nicht ueberschreiten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0104E Daten wurden gepuffert aber nicht von:1::2::3:gelesen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0105E Zeilentyp:1:ist in:2::3:ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0106E Keine zugrundeliegenden Felder fuer Superdeskriptor gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0107E Verbundenes Feld nicht neu definiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0108E Verbindungs-Praefix faellt nicht auf eine Feldgrenze
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0109E Fehler in Modul:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0110E Mehr als:1:ref. Integritaetsbedingungen in Datei:2:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0111E :1::2::3:nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0112E Fehlender Rahmen bei der Generierungs-Phase
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0113E Zeiger auf Bibliothek, Programm, FUSER bereits gesetzt von:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0115E Modell:1:unterstuetzt nicht:2:, nur ein Lesen der Source
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0116E Vorhandenen Quellcode leeren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0117E NATURAL-Objekte vom Typ:1:koennen nicht gelesen werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0118E Verbundschluessellaenge:1:kleiner angef. Praefixlaenge:2:in:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0120E Nur Source oder Objekt oder beides kann an:1:uebergeben werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0121E :1:wurde aufgerufen, nachdem:2:oder:3:nicht gesetzt wurde
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0122E NAT00009 mit Funktion 12 und Index:1:nicht erfolgreich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0123E Objekt- und Source-Typen stimmen fuer:1:in:2:nicht ueberein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0125E :1:enthaelt Zeilen mit mehr als:2:Zeichen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0126E Interner Fehler in Programm:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0128E Response Code:1:zurueckgegeben von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0130E Unbekannter Fehler in:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0132E Zeile hat mehr Bedingungen als unterstuetzt, einige ignoriert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0133E Bedingungsname in Rahmen:1:ueberschreitet maximale Laenge von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0134E Mehr als:1:verschied. Bedingungsnamen gefunden, einige ignoriert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0138E Keine Meldungsnummern ausser aktueller Nummer gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0139E Meldungsnummer auf naechstverfuegbare Meldung angepasst
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0143E Parameter in Rahmen:1:ist laenger als maximale Laenge:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0144E Maximum:1:ist:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0145E Mehr als:1:verschiedene Parameter gefunden, einige ignoriert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0146E Ungueltiger Wert fuer Feld mit:1::2::3:Format
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0147E :1:ist kein gueltiges hexadezimales Zeichen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0148E In Feld:2:wiederholtes Feld:1:muss reines Anzeigefeld sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0150E :1::2:zu:3:hinzugefuegt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0153E Array-Auspraegungen von:1: muessen (1::2:) sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0155E Erwartete relative Adresse 1-9 oder A-F,gefunden:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0156E Ungueltiger Objekttyp an:1:uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0157E Erwartetes Format-Zeichen::1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0159E Zahl:1::2:muss groesser als:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0160E :1:angeforderte Uebersetzungen, Maximum ist:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0161E Pfadname:1:ueberschreitet:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0163E :1:Zeilen nicht geaendert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0166E Warnung: User-Exit-Code nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0167E :1:wird von:2:rekursiv aufgerufen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0168E Kein Hilfetext fuer:1:/:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0169E Start-Position:1:groesser als End-Position:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0170E Programm kann bei der:1:Verarbeitung nicht aufgerufen werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0171E Modell enthaelt mehr als:1:User-Exits und ist nicht lesbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0172E Zurueckgegeben an:1:von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0173E Editier-Puffer ist seit Source-Namensaenderung geleert worden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0174E :1:fuer:2:ist ungueltig oder:3:fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0175E Die Global Data Area fuer:1:wurde zerstoert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0176E :1:zum Leeren vom Source-Bereich druecken und:2:neu aufrufen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0177E Zurueck zu NATURAL und den Source-Bereich beibehalten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0178E :1::2::3:nicht ausgewaehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0179E Vom Benutzer hinzugefuegter Code fuer Modell:1:erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0180E Maximal:1:User-Exits wurden in Code-Rahmen eingefuegt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0181E :1:Verknuepfung muss sich auf:2:Auspraegungen von:3:beziehen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0182E Fehler bei:1::2:aufgetreten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0183E Modell:1:nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0184E Fehler in Parameter-Definition:1:von Modul:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0185E :1:nicht gefunden fuer:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0186E :1::2:hat mehr als:3:Parameter-Zeilen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0187E :1:fuer:2:ist ungueltig in:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0188E Zu viele Eingabezeilen fuer:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0190E Grenzzeichen fuer:1:stimmen nicht ueberein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0191E Lese:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0193E Die Maskendefinitions-Anzeige gilt nicht fuer die SUCH-Funktion
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0194E Generiere:1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0197E Verknuepfung:1:hat nicht zulaessige Kardinalitaet von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0200E :1::2::3:nicht definiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0201E Komponenten von Schluessel:1:belaufen sich nicht auf Laenge:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0203E Wenigstens eine Anzeige-Nr. muss mit *-Notation eingegeben sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0204E :1::2:muss nicht unbedingt vollstaendig:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0206E Position besetzt von Feld:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0208E :1::2:muss:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0211E Geben Sie C*, C# oder eine Anzahl anzuzeigender Auspraegungen ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0212E Zu viele Felder auf *-Anzeigen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0213E Es passt kein Feld auf die Anzeige
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0215E Zum Vergleich ausgewaehlte Nummer von:1:ist groesser als:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0217E :1:nicht uebergeben an:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0223E PDA:1:hat mehr als:2:Bedingungscodes
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0224E Statuspuffer-Ueberlauf
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0225E Ungueltiges Eingabe-Symbol:1:vor:2:entdeckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0227E Semantischer Puffer-Ueberlauf
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0229E Zu viele Komponenten in Superschluessel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0231E Kein Modell ausgewaehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0232E Nur:1:Bytes in ESIZE uebrig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0234E Wenn Sie fortfahren, werden vorhandene Source-Zeilen geloescht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0235E Urspruengliche Source-Zeilen koennen geaendert worden sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0236E Keine Source-Zeilen von:1:generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0281E Ungueltige(n) Zeilentyp(en) entdeckt. INCLUDE-Code nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0285E :1::2:erfolgreich generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0304E Modell:1:nicht in CONSTRUCT-Modelldatei
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0311E :1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0320E Verknuepfung:1:nicht generiert, Typ ist :2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0321E Verknuepfung:1:zurueckgewiesen, weil der Typ nicht:2:ist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0322E Loesch-Bedingung muss:1:fuer:2:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0323E Datei ist in einer fremden Verknuepfung bereits mit:1:definiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0324E Aktualisierungs-Bedingung muss C,L,N fuer:1:oder R fuer:2:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0325E Rekursive:1::2::3:Verknuepfung zurueckweisen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0326E Zurueckgewiesen als Teil von Objekt:1:(da nicht:2:oder:3:)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0327E :3:Benoetigt MIN:1:und MAX:2:fuer Kardinalitaet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0328E Mehr als 12 verknuepfte Dateien. Siehe CONSTRUCT-Administrator
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0329E Verknuepfung akzeptiert als Teil von Objekt:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0330E Fremde Verknuepfungen muessen Kardinalitaet:1:oder:2:haben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0331E Akzeptiert sowohl als Update- als auch als Loesch-Bedingung
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0332E Akzeptiert als Objekt:1:Bedingung gegen fremde Datei
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0334E Zurueckgewiesen als Objekt-Loeschbedingung nicht angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0335E Zurueckgewiesen als Teil v. Objekt:1:(kein mehrstufiges Loeschen)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0337E Mehr als 25 Dateien in Objekt:1:. Siehe CONSTRUCT-Administrator
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0401E :1:muss vor:2:stehen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0402E User-Exit:1:nicht ausgewaehlt, Muster-Code generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0404E :1::2:ist innerhalb von:3:ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0408E Cursor ausserhalb von Zeile fuer:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0409E Aenderungs-Versuch bei einer zum Loeschen markierten Zeile
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0411E Grenzzeichen oder Parameter zum Ausrichten fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0412E Falsche Parameterfolge
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0413E Zeilenbefehl ausserhalb von Source
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0414E Suchwert zu lang (>32) oder Grenzzeichen fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0415E Zeile mit:1:markieren, dann erst:2::3:absetzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1000E :1::2:ist ungueltige(r/s):3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1001E :1:gilt nur fuer:2:(auf beiden Systemdateien vorhanden)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1002E :1:in einem anderen Rahmen referenziert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1003E :1:gilt nur, wenn:2:auf Datei:3:vorhanden ist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1004E Fehler beim Positionieren von Zeichen:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1005E Loeschen fuehrt dazu, dass:1:aktuell wird
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1006E :1::2:ungueltig, wenn:3:geaendert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1008E :1::2:bereits vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1011E :1:muss von:2:bis:3:gehen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1012E :1:muss innerhalb von:2:und:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1016E Alle Auspraegungen von:1:sind erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1018E :1:aus:2::3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1020E :1:ist ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1024E :1::2:erfolgreich geloescht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1028E :1::2:erfolgreich angelegt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1031E :1::2:erfolgreich angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1038E :1::2:muss ein Unterprogramm oder nur Kommentarzeilen enthalten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1041E :1:nicht zulaessig beim Generieren von:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1047E :1::2:wird fuer das Modell:3:nicht unterstuetzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1048E :1::2:unterstuetzt:3:nicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1050E Cursor bei:1:positionieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1059E :1::2:wird NICHT mit SAVE gesichert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1064E :1:von Modell:2:benutzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1065E :1:referenziert von:2:Modellen, einschliesslich:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1073E Editier-Puffer leer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1076E Code-Rahmen seit letztem Lesevorgang geaendert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1077E :1:seit letztem Lesevorgang geloescht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1079E :1:enthaelt mehr als:1:User-Exits und ist nicht lesbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1080E :1::2:erfolgreich gelesen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1081E Speicher-Ueberlauf in erweitertem Puffer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1085E :1::2:erfolgreich gedruckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1086E Nummer von:1:ueberschreitet das Maximum von:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1087E Unerwartetes Aendern oder Loeschen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1088E Nicht eindeutiger Schluessel in Rahmen-Datei
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1090E Code-Rahmen vor dem Anlegen neuer User-Exits mit SAVE sichern
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1091E Befehl:1:benoetigt einen User-Exit-Typ
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1093E Vor Absetzen von Befehl:1: User-Exit-Name anlegen, ENTER druecken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1106E :1:benoetigt:2:oder:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1114E Editier-Puffer akzeptiert:1::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1122E Fehler bei der Initialisierung von CONSTRUCT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1123E SYSPROF absetzen, um korrekte CONSTRUCT-Systemdatei zu erhalten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1126E Kann nicht:1:mit Modell-Namen beim Rahmen-Abgleich benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1128E Datenbank- und Datei-Kombination muessen sich unterscheiden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1134E :1:Antwort-Code beim Zugriff auf Datei:2:in Datenbank:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1135E NAT4888: Es ist z.Zt. keine logische Datei verfuegbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1139E Hardcopy an Drucker weitergeleitet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1140E Beide:1:Objekte sind leer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1141E :1::2:ist leer
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1145E ADABAS 3009 Time-Out
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1147E :1:nicht zulaessig. Siehe CONSTRUCT-Administrator
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1173E Sprach/Typ/Haupt/Untergruppe-Komponenten fuer PURGEH erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1196E Nicht eindeutiger Schluessel in Hilfedatei
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1201E Hilfe fuer:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1208E Titel fuer Testfenster angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1209E Hilfetext-Zeile
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1211E KEIN Einfluss von Updates auf Editier-Profil ausserhalb CONSTRUCT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1307E :1:ist nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2001E :1::2::3:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2002E Objekt-Unterprogramm:1:benutzt keine externe PDA
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2003E 1:V Array-Notation benutzt, generierte Variablen evtl. falsch
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2004E :1:und:2:und:3:sind erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2005E Werte-Puffer ueberschreitet maximale Laenge von:1:Bytes
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2006E Format-Puffer ueberschreitet maximale Laenge von:1:Bytes
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2007E Von vorheriger WORK-Datei kopierte WORK-Datei-Parameter
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2008E Abhaengige Angabe:1:mit SAVE sichern
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2009E Abhaengiges Modul:1:generieren und mit SAVE sichern
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2010E :1:auf abhaengigem Modul:2:ausfuehren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2011E Abhaengige Angaben generieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2012E Abhaengige Angaben analysieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2013E Warnung: Globals in Unterprogramm initiieren neue GDA-Stufe
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2014E Warnung: Globals in Hilferoutine reduz. gemeinsame Benutzbarkeit
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2017E Name:1:wird fuer Drucker:2:benutzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2019E Kein Muster-Code generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2025E Form:1:fuer Report:2:benutzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2026E Keine Muster-User-Exits angefordert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2027E Titelzeile:1:auf einem Drucker:2:ist einem Titel:3:zugewiesen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2028E :1:und:2:erforderlich fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2033E Benutzerdefinierte Parameter ohne Eingabenanforderung unzulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2037E Wenigstens ein Benutzerfeld fuer Erst-EINGABE angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2042E :1:ueberschreitet Laenge von:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2047E :1:muss gleich:2::3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2050E Diese Option nur f. Schluessel mit mehreren Komponenten benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2051E Praefix enthaelt keine:1:Komponente
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2053E Praefix fuer Datei auf:1:Stufe angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2060E :1:erforderlich fuer Felder mit:2:Format
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2061E :1:kann nicht:2:fuer Felder mit:3:Format ueberschreiten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2062E Felder mit:1:Format koennen keine Dezimalzahlen enthalten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2064E :1:muss:2:fuer Felder mit:3:Format sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2066E Einheiten-Laenge muss:1:oder:2:fuer Felder mit:3:Format sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2070E Einheiten/Dezimalsumme fuer Felder mit:1:Format nicht groesser 29
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2071E Fehler beim Verarbeiten von Format:2:in Unterprogramm:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2080E Maximum fuer Aktion:1:fuer Felder mit Format:2:auswaehlen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2081E Kann keine Aktion fuer Felder mit:1:Format auswaehlen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2082E Warnung: Aktionen nicht ausgewaehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2083E User-Exit:1:beim Auswaehlen einer Aktion erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2090E Feld:1:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2092E Feld:1::2:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2093E Warnung: User-Exit WRITE-FIELDS nach Aenderung evtl. regenerieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2094E Aktionsparameter von Maske:1:gelesen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2095E :1:ist nicht in:2::3:vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2096E Fenster getestet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2097E Kein Datenabschnitt auf Bildschirm-Layout
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2100E :1:muss vor:2::3:angegeben werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2101E Nur  Dateityp J (Segment-Layout) fuer IMS-Datei zulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2102E Sequentielle Datei kann keinen Primaerschluessel haben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2103E Sequentielle Datei nicht zulaessig fuer Lesebereichs-Option
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2104E Physisches Lesen nicht zulaessig fuer Lesebereich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2105E Warnung: Meldungen fuer View:1:generiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2106E :1:Verknuepfung bezieht sich nicht auf Datei:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2107E :1:muss vom Typ:2:oder:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2108E Sekundaer- oder Tertiaer-Datei kann nicht sequentiell sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2110E Interner Fehler in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2111E Bezugsfeld von logisch gekoppelter hoeherstufiger Datei angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2112E :1::2:hat kein Praefix
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2113E :1::2:kann nicht durch:3:Praefix(e) begrenzt sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2114E Praefix-Laenge von:1:muss kleiner als:2:Laenge von:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2115E Warnung: User-Exits schon vorhanden, kann zu Duplikaten fuehren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2116E Datenende beim Blaettern erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2117E Logischer Schluessel:1:benoetigt wenigstens:2:feste Schluessel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2120E :1:nicht zulaessig bei:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2122E Mindestens:1::2::3:erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2123E Schluesselfelder auf erste:1:Schluessel voreingestellt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2124E Keine Schluessel in Datei gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2125E Logischer Schluessel fuer Verbundschluessel-Definitionen noetig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2126E Superdeskriptor ist nicht mit anderen Schluesseln kombinierbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2127E Nur eine Schluesselkomponente fuer HISTOGRAM-Option auswaehlbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2128E :1::2::3:nicht in aktueller Bibliothek oder STEPLIBs
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2129E :1:gilt nur fuer Superdeskriptoren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2130E :1::2:nicht Standard:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2131E :1::2:Namenskonvention ist fuer CONSTRUCT reserviert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2132E HISTOGRAM kann nicht fuer absteigende Schluessel benutzt werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2133E :1::2:ist kein(e) gueltige(s):3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2137E :1:ist ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2141E Modell:1:unterstuetzt nicht den Feldtyp:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2142E Element in einer PE ohne PE-Namen entdeckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2143E PE-Gruppenname:1:von Feld:2:ist zu benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2144E :1:oder:2::3:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2149E :1:kann nicht identisch mit:2:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2151E :1:Format ist ungueltig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2152E Ungueltiger Array-Index fuer NATURAL-Name:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2153E NATURAL-Name:1:muss:2:bis:3:Zeichen lang sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2155E :1:muss:2:bis:3:Zeichen lang sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2158E :1:markieren oder:2:und:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2164E Nur eine:1::2:Position angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2165E :1::2:ist anzugeben, wenn:3:angegeben wird
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2175E Maximal:1:Auspraegung(en) von:2:erforderlich:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2180E :1:erforderlich, wenn:2:eine numerische Konstante ist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2201E Stufennummer:1:in Zeile:2:erwartet -->:3:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2202E Redefinition von:1:enthaelt keine Felder
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2203E Laenge der Redefinition von:1::2:ist groesser als Basis-Feld:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2204E Illegales Basis-Feld:1:in Redefinition
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2205E Anweisung:1:fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2206E Struktur:1:hat keine Elemente
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2207E End-Index fuer:1:Auspraegung:2:ist kleiner als Start-Index
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2208E Erwartete obere Array-Grenzen fuer:1:nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2209E Ungueltige Array-Angabe fuer:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2210E Ungueltiger Datentyp:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2211E Klammer zu ) erwartet, nicht gefunden fuer:1:gefunden:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2212E :1:in Zeile:2:erwartet:3:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2213E :1:mit leerem Datentyp aufgerufen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2214E End-Bereich V fuer Variable:1:nur zulaessig, wenn 1:V
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2216E :1::2:oder:3:markieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2226E FORMAT-Anweisung benoetigt wenigstens einen Session-Parameter
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2227E Nur eine:1::2:Option angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2231E :1:und/oder:2:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2240E Name des zu pruefenden Feldes angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2244E :1:ist ungueltig fuer:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2250E Optionen:1:und:2:gelten, wenn:3:angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2251E :1::2:startete nicht mit:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2252E :1:fuer Bereich:2:muss sich von:2:unterscheiden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2253E :1:fuer Bereich:2:kann nicht groesser als Wert von:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2254E Blaetterparameter von Maske:1:erfolgreich gelesen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2256E :1:muss die Kardinalitaet:2:oder:3:haben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2274E :1::2:nicht in:3:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2276E :1:und:2:muessen:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2278E Datei:1:enthaelt keinen eindeutigen Deskriptor
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2279E :1:ist in PREDICT nicht redefiniert oder ist kein Superdeskriptor
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2283E Maximale Array-Auspraegungen innerhalb von:1:um:2:ueberschritten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2286E Option gilt nur, wenn:1:angegeben ist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2298E Kein entsprechender Parameterfeld-Name angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2309E :1::2::3:ist nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2319E Maximale Auspraegungen fuer Array:1:in Blaetterbereich:2:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2320E Zwei Definitionen fuer Blaetterbereich:1:vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2323E Name fuer Kennzeichner-Nummer:1:nicht angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2333E :1:nicht zulaessig fuer Format:2:oder:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2336E Blaetterbereichsrichtung muss H (horiz.) oder V (vert.) sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2337E Start-Index von Bereich:1:darf nicht groesser als:2:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2338E Start-Index muss Variablen-Name oder -Nummer mit N5-Format sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2341E :1::2:muss eindeutig sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2352E :1:oder:2:muss eine Variable sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2359E :1:oder:2:oder:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2369E Wert:1:gilt nur fuer:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2373E :1:in der ersten Zeile angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2374E Warnung: Nicht unterstuetzter Sub-Parameter:1:entdeckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2432E :1:angeben oder:2:markieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2437E Abschliessende(r/s):1:fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2440E :1::2:ist erforderlich fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2453E Entweder:1:oder:2::3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2459E Wert:1:muss:2:sein, um:3:zu erreichen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2465E Fuer diese logische Bedingung gibt es keine Steuerung
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2467E Sektoren nur im Bereich 11:16, 21:26, 31:36, 41:46, 51:56, 61:66
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2468E Ungueltige Funktion:1:an:2:uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2469E Reorganisieren erfolgreich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2470E Feldtabelle in:1:ist voll
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2480E Nur eine Option ist zulaessig fuer:1::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2489E Option:1:kann entweder:2:oder:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2491E Feld:1:gilt, wenn:2::3:angegeben ist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2492E Minimale(r/s):1:fuer Fenster:2:ist:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2495E :1:bei:2:oder:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2513E :1:kann keine eingebetteten Leerzeichen enthalten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2522E :1:in Verbindung mit:2:oder:3:benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2524E :1:und/oder:2:oder:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2526E :1:Parameter:2:ist erforderlich fuer:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2532E Zuerst:1:vor zweiter(m) und/oder dritter(m):1:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2533E Zweite(r/s):1:vor dritte(r/m):1:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2534E :1:oder:2:in Verbindung mit:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2536E :1:muss:2:oder eine Zahl groesser als:3:sein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2542E :1:oder:2:oder:3:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2545E Zur Angabe dieser Farbe, Cursor-Position markieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2547E Diese Kombination steht nicht zur Verfuegung
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2550E Entweder:1:oder:2:fuer:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2551E :1:kann die physische Bildschirmgroesse nicht ueberschreiten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2552E Minimale(r/s):1:ist:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2553E Position:1:wird gegen das Zeichen:2:geprueft
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2557E :1::2:gilt nur fuer:3:Auspraegung(en)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2560E Nur einen laufenden Index pro Array angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2565E :1:markieren oder:2:oder:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2566E :1::2:oder:3:benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2568E Ungueltige(r/s):1::2:bei Position:3:benutzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2569E :2::1:fuer Bereichspruefung bei Position:3:angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2570E :1:# bei Position:2:wird bereits bei Position:3:benutzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2572E Obergrenze Bereichspruefung bei Position:1:muss:2:Ziffer(n) haben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2573E Untergrenze groesser Obergrenze Bereichspruefung bei Position:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+2574E :1:nur mit Masken-Zeichen # von Feld:2:benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8001E Datenanfang beim Blaettern erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8002E Bildschirm hat nur eine horizontale Anzeige
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8003E Ungueltige Programmfunktionstaste
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8004E Datenende erreicht, neuen Startwert eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8005E Datenende erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8006E Dateiende erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8007E Schluessel ist kleiner als zulaessiger Mindestwert:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8008E Schluessel ist groesser als zulaessiger Hoechstwert:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8009E Eingeschobener Loeschvorgang, neuer Versuch
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8010E Eingeschobener Aenderungsvorgang, neuer Versuch
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8011E :1:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8012E :1:bereits vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8013E Ungueltiger Aktionscode:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8014E :1:ist nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8015E Maximale(r/s):1:erreicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8016E Geben Sie einen gueltigen Auswahlcode zwischen 1 und:1:ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8017E Ungueltigen Code:1:ausgewaehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8018E Es wurde kein Satz ausgewaehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8019E Kann nur bis zu:1:Saetze auswaehlen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8020E Ungueltige Auswahl
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8021E Auswahl eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8022E Zuletzt angezeigte(r/s):1:wurde neu aufgerufen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8023E :1:erfolgreich geloescht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8024E :1:erfolgreich geaendert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8025E :1:erfolgreich angelegt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8026E :1:erfolgreich angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8027E Naechste(r/s):1:angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8028E Aenderungen eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8029E Zum Bestaetigen des Loeschvorgangs:1:druecken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8030E Problem mit Programmlogik in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8031E Keine Aktion durchgefuehrt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8032E Bildschirmwerte erfolgreich geleert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8033E :1:enthaelt mehr als:2:Zeilen und kann nicht gelesen werden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8034E Doppelte Eingabe in Zeile:1:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8035E Cursor positionieren oder Bildschirmwert zur Auswahl eingeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8036E Zuletzt angezeigte(r/s):1:wurde neu aufgerufen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8037E Zuletzt angezeigte(r/s):1:neu aufgerufen,:2:zum Anlegen benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8038E Zeilenaktionen lassen sich nur zusammen mit Freigabetaste angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8039E Saetze mit beliebigen Nicht-Leerzeichen zum Verarbeiten markieren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8040E Funktion abgebrochen mittels:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8041E PF-Tastenoption erfolgreich eingerichtet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8042E :1:zum Beenden druecken,:2:zum Wiederaufnehmen von:3:druecken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8043E PF-Tastenfarben erfolgreich eingerichtet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8044E Ungueltige Direktbefehl-Daten::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8045E Angeforderter Satz z.Zt. von anderem Benutzer ins Hold gestellt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8046E :1:aufgerufen fuer NATURAL-Fehler ausser 3700
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8047E Zugriff auf Programm auf Anforderung des Benutzers beendet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8048E Ungueltiges Passwort, neuer Versuch
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8049E Zu viele Passwort-Verletzungen, Zugriff nicht zulaessig
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8050E Ungueltiger Parameter:1:an:2:Wert::3:uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8051E Fensterhoehe auf zulaessigen Mindestwert:1:angepasst
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8052E Fenster auf mittels Cursor angegebene Hoehe angepasst
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8053E PF-Tastenzeilen wurden wie angefordert entfernt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8054E Fenster-Basis auf mittels Cursor angegebene Position angepasst
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8055E Bildschirm-Titel auf Anforderung des Benutzers entfernt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8056E Geben Sie anzulegende Informationen ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8057E Geben Sie einen neuen Satz ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8058E Ungueltige Aktion, geben Sie eine(n/s) der folgenden::1:ein:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8059E NATURAL-Fehlernummer:1:in Zeile:2:von:3:aufgetreten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8060E Betreffende Informationen angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8061E Blaettern durchgefuehrt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8062E Naechste(n/s):1:angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8063E Versuchtes Aendern/Loeschen von:1:(war nicht im Hold-Status)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8064E Ungueltige Funktion:1:gab::2:an
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8065E Kennzeichner:1:ist erforderlich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8066E :1::2:nicht in Datei:3:gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8067E Datenintegritaetsfehler,:2:Auspraegungen von:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8068E Ungueltige Aktion:1:uebergeben an:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8069E Mindestens 1 Auspraegung von:2:ist erforderlich:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8070E Mindestens:1:Auspraegungen von:2:sind erforderlich:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8071E :1::2:noch in Datei:3:vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8072E Erweiterte Informationen angezeigt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8073E Keine Saetze mit Praefix:1:fuer die aktuelle Eingabe gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8074E Keine Saetze fuer die aktuelle Eingabe gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8075E :1:Saetze auf Geraet:2:ausgedruckt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8076E Kein Hilfetext fuer angefordertes Objekt eingegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8077E Eines (und nur eines) der moeglichen Formate angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8078E Eine (und nur eine) der moeglichen Zeilen:1:Farben angeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8079E Geben Sie den erforderlichen Parameter ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8080E Eingabewert fuer ein numerisches Feld ist nicht numerisch
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8081E Beenden der Verarbeitung abgebrochen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8082E Geben Sie gueltigen zu beschreibenden Aktionscode:1:ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8083E     **** Aktionswert-Hilfe *****
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8084E Programmhilfe: "HILFE" druecken (Cursor nicht im Eingabefeld)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8085E im Eingabefeld
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8086E Geben Sie eine zu beschreibende Aktion ein
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8087E Ungueltige Parameter an Hilferoutine uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8088E Druecken Sie zur Fortsetzung FREIGABE
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8089E *** Keine passende PREDICT Extended Description gefunden ***
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8090E Fehlendes Hilfetext-Profil: PREDICT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8091E Keine Felder auf dieser Anzeige
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8092E Zeitstempel ungueltig - Format JJJJ-MM-TT-HH.MM.SS.NNNNN benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8093E Ungueltige Uhrzeit. Format HH.MM.SS benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8094E Ungueltiges Datum. Format JJJJ-MM-TT benutzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8095E Keine auszudruckenden Saetze
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8096E Anlegen durch Druecken von:1:bestaetigen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8097E Aendern durch Druecken von:1:bestaetigen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8098E Aktionsleiste geaendert, keine Aktionen durchgefuehrt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8099E Kann Meldungstext fuer Fehler:1:nicht finden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8100E Bildschirmdruck-Vorgang laeuft...
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8101E Saetze erfolgreich exportiert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8102E Logischer Fehler in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8103E Ungueltiger Sortierschluessel:1:an:2:uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8104E Histogramm nicht fuer:1:unterstuetzt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8105E Startwertsuche nach:1:Versuchen nicht erfolgreich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8106E Aufruf an:1:nach Datenende-Bedingung, neuen Startwert setzen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8107E Anzahl angeforderter Zeilen ist an:1:zu uebergeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8108E :1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8500E SAG-EDITOR
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8501E Editor-Fehler in Modul:1:--> Ungueltige Anforderung
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8502E Editor-Fehler in Modul:1:--> Ungueltiger Dateityp
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8503E Editor-Fehler in Modul:1:--> Ungueltige Session-Nr.:2:angefordert
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8504E Editor-Fehler in Modul:1:--> Session:2:ist nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8505E Editor-Fehler in Modul:1:--> Session:2:bereits vorhanden & anders
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8506E Editor-Fehler in Modul:1:--> Zu viele Dateien angegeben
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8507E Editor-Fehler in Modul:1:--> Datei ist nicht vorhanden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8508E Editor-Fehler in Modul:1:--> Kein Speicherplatz mehr verfuegbar
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8509E Editor-Fehler in Modul:1:--> Eingabe/Augabe-Fehler aufgetreten
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8511E Editor-Fehler in Modul:1:--> Sondertabelle nicht gefunden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8512E Editor-Fehler in Modul:1:--> Vorh. Session:2:aktivieren erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8513E Editor-Fehler in Modul:1:--> Vorh. Datei aktivieren erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8514E Editor-Fehler in Modul:1:--> Session:2:suspendieren erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8515E Editor-Fehler in Modul:1:--> Datei suspendieren erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8516E Editor-Fehler in Modul:1:--> Nur 1 Member in Src-Bereich erlaubt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8517E Editor-Fehler in Modul:1:--> Wiederherstellungsdatei nicht aktiv
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8518E Editor-Fehler in Modul:1:--> Kein Platz in Wdherstellungsdatei
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8520E Editor-Fehler in Modul:1:--> Nicht genug Platz im Source-Bereich
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8530E Editor-Fehler in Modul:1:--> Editieren abbrechen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8531E Editor-Fehler in Modul:1:--> Editieren beenden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8532E Editor-Fehler in Modul:1:--> Datei gesichert, Session:2:abgebr.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8533E Editor-Fehler in Modul:1:--> DBID fehlt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8534E Editor-Fehler in Modul:1:--> NATURAL PROCESS ist nicht aktiv
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8535E Editor-Fehler in Modul:1:--> Sichern anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8536E Editor-Fehler in Modul:1:--> Kopieren anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8537E Editor-Fehler in Modul:1:--> Erstellen anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8538E Editor-Fehler in Modul:1:--> Session:2:ist abzubrechen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8539E Editor-Fehler in Modul:1:--> Druck anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8540E Editor-Fehler in Modul:1:--> Kein Platz fuer Datenblock
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8541E Editor-Fehler in Modul:1:--> Kein Platz fuer Index-Block
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8542E Editor-Fehler in Modul:1:--> Kein Platz zum Aktiv. v. Index-Block
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8543E Editor-Fehler in Modul:1:--> Datei-Zuweisung in BP erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8544E Editor-Fehler in Modul:1:--> Zeilenholen vom Bufferpool erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8545E Editor-Fehler in Modul:1:--> Block in Bufferpool schr. erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8546E Editor-Fehler in Modul:1:--> Block vom Bufferpool lesen erfolglos
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8547E Editor-Fehler in Modul:1:--> Exportieren anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8548E Editor-Fehler in Modul:1:--> Importieren anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8549E Editor-Fehler in Modul:1:--> Benutzer-Befehl
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8550E Editor-Fehler in Modul:1:--> Protokoll sichern anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8551E Editor-Fehler in Modul:1:--> Protokoll-Ende anstehend
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#

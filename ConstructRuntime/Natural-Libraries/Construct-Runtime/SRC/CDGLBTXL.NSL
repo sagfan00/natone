@@ -1,0 +1,21 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  language dependent text strings
+/*  used in all models.
+/*
+/*  Text translations are retrieved
+/*  from SYSTERR application CSTAPPL
+/*  based on *LANGUAGE.
+/*
+ 1 CDGLBTXL
+/*
+   2 #DIRECT-CMD-TXT (A18) INIT<'*8340,:'>
+/*                                       /* /* 'Direct Command...:'
+ 1 REDEFINE CDGLBTXL /* REDEF. BEGIN : CDGLBTXL
+   2 CDUTRANS (A1/1:18)
+ 1 CDGLBTXL-NAME (A8) INIT<'CDGLBTXL'>
+END-DEFINE

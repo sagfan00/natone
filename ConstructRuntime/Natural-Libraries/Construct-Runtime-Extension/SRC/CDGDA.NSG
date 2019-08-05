@@ -1,0 +1,63 @@
+DEFINE DATA GLOBAL
+/* >Natural Source Header 000000
+/* :Mode R
+/* :CP
+/* <Natural Source Header
+/*  This GDA is split into multiple
+/*  levels for two reasons:
+/*  1. Documentation purposes
+/*  2. Allow variables to be passed
+/*     using a structure name to
+/*     make it easy to extend the
+/*     the set of subprogram
+/*     arguments.
+/*
+/*  Whenever changes are made to
+/*  this GDA, the changes should
+/*  also be applied to the PDAs
+/*  which correspond to the levels
+/*  of this GDA.
+ 1 DIALOG-INFO /* Corresponds to PDA CDPDA-D
+   2 ##COMMAND (A60) /* Passed direct command
+   2 REDEFINE ##COMMAND /* REDEF. BEGIN : +COMMAND
+     3 ##GDA-COMMAND-CHAR (A1/1:60)
+   2 ##MAIN (A8) /* Main menu screen
+   2 ##QUIT (A8) INIT<'CD-QUIT'> /* Term. pgm.
+/*
+/*  This 01 level should be passed
+/*  to all subprograms in order to
+/*  exchange messages and response
+/*  code information.
+ 1 MSG-INFO /* Corresponds to PDA CDPDA-M
+   2 ##MSG (A79) /* Passed/Returned message or
+   2 ##MSG-NR (N4) /* Message number on SYSERR file
+   2 ##MSG-DATA (A32/1:3) /* Used to substitute
+/*                                       /* Variables into messages.
+   2 ##RETURN-CODE (A1) /* Type of message:
+/*                                       /* ' ' = Informatory message
+/*                                       /* 'W' = Warning (can continue)
+/*                                       /* 'E' = Error (fatal)
+   2 ##ERROR-FIELD (A32) /* Name of field in error.
+   2 ##ERROR-FIELD-INDEX1 (P3) /* If the field is a repeating
+   2 ##ERROR-FIELD-INDEX2 (P3) /* field, these indexes identify
+   2 ##ERROR-FIELD-INDEX3 (P3) /* the occurrence in err.
+/*
+/*  This 01 level contains fields
+/*  that could be used by an
+/*  error transaction (*ERROR-TA)
+/*  to recover from or log errors.
+ 1 ERROR-INFO /* Can be used by *ERROR-TA
+   2 ##LAST-PROGRAM (A8) /* Last active program (type p)
+/*                                       /* at level 1.
+   2 ##LAST-ERROR-TIME (T) /* For each error, check the
+/*                                       /* time of the last error to
+/*                                       /* prevent error cycles within
+/*                                       /* the error transaction.
+/*
+/*  This 01 level should contain
+/*  additional information that
+/*  you wish to make "globally"
+/*  available to all subprograms.
+ 1 PASS /* Corresponds to PDA CDPDA-P
+   2 ##USER (A8) /* Current user id.
+END-DEFINE

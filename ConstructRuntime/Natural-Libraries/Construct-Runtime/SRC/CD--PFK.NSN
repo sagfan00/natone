@@ -1,0 +1,865 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: CST module ...
+**SAG SYSTEM: APPLICATION
+**SAG DESCS(1): This CST module is used to access pfkey information
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CD1VPFKA
+**SAG PARAMETER-NAME(2): CDPDA-M
+**SAG LOCAL-NAME(1): CD--PFKM
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CD--PFK
+* System   : APPLICATION
+* Title    : CST module ...
+* Generated: May 28,97 at 01:06 PM by SAG
+* Function : This CST module is used to access pfkey information
+*
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CD1VPFKA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CD--PFKM
+  LOCAL USING CDAMSG                  /* Message retrieval passing area
+  LOCAL USING CDLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Key default values
+  01 MAX-API (I2) CONST<2>
+  01 SUPPORTED-API (A8/1:MAX-API)
+     INIT (1)<'CDSPPFK'> (2)<'CDAPPFK'>
+  01 CD--PFKA
+    02 INPUTS (A1/1:15)
+    02 REDEFINE INPUTS
+      03 METHOD(A2)
+      03 VERSION(N1)
+      03 INPUTS-PARMS(A12)
+      03 REDEFINE INPUTS-PARMS
+        04 SINGLE-PFKEY-INPUTS
+          05 SP-SOURCE-ID (A2)
+          05 SP-PFKEY-ID (N4)
+      03 REDEFINE INPUTS-PARMS
+        04 MODEL-PFKEYS-INPUTS
+          05 MP-SOURCE-ID (A2)
+          05 MP-PFKEY-ID (N4)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-SINGLE-PFKEYS-INPUTS
+          05 AS-START-SOURCE-ID (A2)
+          05 AS-START-PFKEY-ID (N4)
+          05 AS-MAX-PFKEY-REQUESTED (N4)
+          05 AS-RESTRICT-SOURCE-ID (A2)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-MODEL-PFKEYS-INPUTS
+          05 AM-START-SOURCE-ID (A2)
+          05 AM-START-PFKEY-ID (N4)
+          05 AM-MAX-PFKEY-REQUESTED (N4)
+          05 AM-RESTRICT-SOURCE-ID (A2)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-PFKEYS-INPUTS
+          05 AP-PARM1 (A12)
+      03 REDEFINE INPUTS-PARMS
+        04 MODEL-PFKEY-DETAIL-INPUTS
+          05 MD-SOURCE-ID (A2)
+          05 MD-PFKEY-ID (N4)
+    02 INPUT-OUTPUTS (A1/1:113)
+    02 OUTPUTS (A1/1:72)
+    02 REDEFINE OUTPUTS
+      03 METHOD-LIBRARY (A8)
+      03 METHOD-DESCRIPTION (A60)
+      03 OUTPUTS-PARMS(A4)
+      03 REDEFINE OUTPUTS-PARMS
+        04 ALL-SINGLE-PFKEYS-OUTPUTS
+          05 AS-MAX-PFKEY-RETURNED (N4)
+      03 REDEFINE OUTPUTS-PARMS
+        04 ALL-MODEL-PFKEYS-OUTPUTS
+          05 AM-MAX-PFKEY-RETURNED (N4)
+  01 #E (I2)  /* end byte counter
+  01 #S (I2)  /* start byte counter
+  01 #START (N4)  /* start byte counter
+  01 #END (N4)  /* end byte counter
+  01 #I (I2)
+  01 #J (I2)
+  01 #MAX-PFK (I2)
+  01 #MAX-PFK-FOUND (L)
+  01 #PFK-FOUND (L)
+  01 #TOTAL-PFK (I2)
+  01 #SPFK (I2)
+  01 #MPFK (I2)
+  01 #METHOD-NOT-FOUND (L)
+  01 #PARM-NOT-FOUND (L)
+*
+* Single key initial values Construct
+  01 SINGLE-CST
+    02 INITIAL-VALUES (A150/1:MAX-SPC)
+*   Position  \Pos var.\ Name variable/Name/ Name long/ Status override
+*              \        \           _/     \        _/                /
+*               \        \          \       \       \                /
+*                \        \          \       \       \    __________/
+*                 \        \          \       \       \  /
+     INIT (1)<'PF1/#PF-HELP/#HELP-NAME/*8001.1/*8001.2/O'>
+          (2)<'PF2/#PF-RETURN/#RETURN-NAME/*8002.1/*8002.2/O'>
+          (3)<'PF7/#PF-BACKWARD/#BACKWARD-NAME/*8003.1/*8003.2/O'>
+          (4)<'PF8/#PF-FORWARD/#FORWARD-NAME/*8004.1/*8004.2/O'>
+          (5)<'PF10/#PF-LEFT/#LEFT-NAME/*8005.1/*8005.2/O'>
+          (6)<'PF11/#PF-RIGHT/#RIGHT-NAME/*8006.1/*8006.2/O'>
+          (7)<'PF3/#PF-QUIT/#QUIT-NAME/*8007.1/*8007.2/O'>
+          (8)<'PF12/#PF-MAIN/#MAIN-NAME/*8008.1/*8008.2/O'>
+          (9)<'PF5/#PF-FLIP/#FLIP-NAME/*8009.1/*8009.2/O'>
+         (10)<'PF6/#PF-PLACE/#PLACE-NAME/*8010.1/*8010.2/O'>
+         (11)<'PF9/#PF-HARDCOPY/#HARDCOPY-NAME/*8011.1/*8011.2/O'>
+         (12)<'PF6/#PF-EXPORT/#EXPORT-NAME/*8012.1/*8012.2/O'>
+         (13)<'PF6/#PF-PREFERENCE/#PREFERENCE-NAME/*8013.1/*8013.2/O'>
+         (14)<'ENTR/#PF-CONFIRM/#CONFIRM-NAME/*8014.1/*8014.2/O'>
+         (15)<'PF41/#PF-DIRECT-CMD/#DIRECT-CMD-NAME/*8015.1/*8015.2/O'>
+         (16)<'PF25/#PF-ADD/#ADD-NAME/*8016.1/*8016.2/O'>
+         (17)<'PF26/#PF-BROWSE/#BROWSE-NAME/*8017.1/*8017.2/O'>
+         (18)<'PF27/#PF-CLEAR/#CLEAR-NAME/*8018.1/*8018.2/O'>
+         (19)<'PF28/#PF-COPY/#COPY-NAME/*8019.1/*8019.2/O'>
+         (20)<'PF29/#PF-DETAIL/#DETAIL-NAME/*8020.1/*8020.2/O'>
+         (21)<'PF30/#PF-DISPLAY/#DISPLAY-NAME/*8021.1/*8021.2/O'>
+         (22)<'PF31/#PF-MODIFY/#MODIFY-NAME/*8022.1/*8022.2/O'>
+         (23)<'PF32/#PF-NEXT/#NEXT-NAME/*8023.1/*8023.2/O'>
+         (24)<'PF33/#PF-PURGE/#PURGE-NAME/*8024.1/*8024.2/O'>
+         (25)<'PF34/#PF-RECALL/#RECALL-NAME/*8025.1/*8025.2/O'>
+         (26)<'PF35/#PF-REPLACE/#REPLACE-NAME/*8026.1/*8026.2/O'>
+         (27)<'PF36/#PF-SELECT/#SELECT-NAME/*8027.1/*8027.2/O'>
+         (28)<'PF5/#PF-ACTIONS/#ACTIONS-NAME/*8028.1/*8028.2/O'>
+         (29)<'PF9/#PF-REPORT/#REPORT-NAME/*8029.1/*8029.2/O'>
+         (30)<'PF4/#PF-TRANSLATE/#TRANSLATE-NAME/*8030.1/*8030.2/O'>
+         (31)<'PF0/#PF-NULL/#NULL-NAME/*8031.1/*8031.2/O'>
+         (32)<'PF4/#PF-STORE/#STORE-NAME/*8032.1/*8032.2/O'>
+         (33)<'PF4/#PF-UPDATE/#UPDATE-NAME/*8033.1/*8033.2/O'>
+         (34)<'PF4/#PF-MAINTAIN/#MAINTAIN-NAME/*8034.1/*8034.2/O'>
+*
+* Single pfkey layout
+  01 SL-MAX (I2) CONST<113>
+  01 SINGLE-LAYOUT (A1/1:SL-MAX)
+  01 REDEFINE SINGLE-LAYOUT
+    02 SINGLE-LAYOUT-STRUCTURE
+      03 PFKEY-POSITION (A4)
+      03 PFKEY-POSITION-VARIABLE (A32)
+      03 PFKEY-NAME-VARIABLE (A32)
+      03 PFKEY-NAME (A12)
+      03 PFKEY-NAME-LONG (A32)
+      03 PFKEY-STATUS (A1)
+*
+* Model pfkey initial values Construct
+  01 MODEL-CST
+    02 INITIAL-MODEL-VALUES (A40/1:MAX-MPC)
+*      model source id/model pfkey id/ model name /
+*                    /    __________/            /
+*                   /    /      ________________/
+*                  /    /      /
+*                 /    /      /
+    INIT (1) <'MC/0001/*8501.1'>
+*
+*
+    02 INITIAL-MODEL-PFKEY-VALUES (A15/1:MAX-MPC,1:12)
+*   Model\   source id/single pfkey id/position override/status override
+*         \          /      _________/                /               /
+*          \        /      /   ______________________/               /
+*           \       ¦     /   / ____________________________________/
+*            \      /    /   / /
+    INIT (1,1) <'SC/0001/   /R'>
+         (1,2) <'SC/0002/   /R'>
+         (1,3) <'SC/0007/   /O'>
+         (1,4) <'SC/0030/   /C'>
+         (1,5) <'SC/0028/   /C'>
+         (1,6) <'SC/0012/   /C'>
+         (1,7) <'SC/0003/   /R'>
+         (1,8) <'SC/0004/   /R'>
+         (1,9) <'SC/0029/   /C'>
+         (1,10)<'SC/0005/   /C'>
+         (1,11)<'SC/0006/   /C'>
+         (1,12)<'SC/0008/   /O'>
+*
+* Model detail layout
+  01 MD-MAX (I2) CONST<38>
+  01 MODEL-DETAIL-LAYOUT (A1/1:MD-MAX)
+  01 REDEFINE MODEL-DETAIL-LAYOUT
+    02 SOURCE-ID (A2)
+    02 PFKEY-ID (A4)
+    02 REDEFINE PFKEY-ID
+      03 PFKEY-ID-N4 (N4)
+    02 NAME (A32)
+*
+* Model pfkey layout
+  01 ML-MAX (I2) CONST<11>
+  01 MODEL-LAYOUT (A1/1:ML-MAX)
+  01 REDEFINE MODEL-LAYOUT
+    02 SOURCE-ID (A2)
+    02 PFKEY-ID (A4)
+    02 PFKEY-POSITION-OVERRIDE (A4)
+    02 PFKEY-STATUS-OVERRIDE (A1)
+*
+* Pfkey identifier layout
+  01 PI-MAX (I2) CONST<119>
+  01 PFKEY-IDENTIFIER-LAYOUT (A1/1:PI-MAX)
+  01 REDEFINE PFKEY-IDENTIFIER-LAYOUT
+    02 SOURCE-ID (A2)
+    02 PFKEY-ID (A4)
+    02 REDEFINE PFKEY-ID
+      03 PFKEY-ID-N4 (N4)
+    02 PFKEY-STRUCTURE
+      03 PFKEY-POSITION (A4)
+      03 PFKEY-POSITION-VARIABLE (A32)
+      03 PFKEY-NAME-VARIABLE (A32)
+      03 PFKEY-NAME (A12)
+      03 PFKEY-NAME-LONG (A32)
+      03 PFKEY-STATUS (A1)
+*
+**SAG END-EXIT
+**SAG DEFINE EXIT POSTGEN-LOCAL-DATA
+*
+* Single key initial values Application
+  01 SINGLE-APP
+    02 INITIAL-VALUES (A113/1:MAX-SPA)
+*   Position  \Pos var.\ Name variable/Name/ Name long/ Status override
+*              \        \           _/     \        _/                /
+*               \        \          \       \       \                /
+*                \        \          \       \       \    __________/
+*                 \        \          \       \       \  /
+     INIT (1)<'PF5/#PF-JUMP/#JUMP-NAME/*9001.1/*9001.2/O'>
+          (2)<'PF9/#PF-STOP/#STOP-NAME/*9002.1/*9002.2/O'>
+*
+* Model key initial values Application
+  01 MODEL-APP
+    02 INITIAL-MODEL-VALUES (A40/1:MAX-MPA)
+*            source id/key id/ key name /
+*                    /    __/          /
+*                   /    /      ______/
+*                  /    /      /
+*                 /    /      /
+    INIT (1) <'MA/0001/*9501.1'>
+*
+*
+    02 INITIAL-MODEL-PFKEY-VALUES (A15/1:MAX-MPA,1:12)
+*   Model\     source id/single key id/position override/status override
+*         \            /    _________/                 /               /
+*          \          /    /   _______________________/               /
+*           \        /    /   / _____________________________________/
+*            \      /    /   / /
+    INIT (1,1) <'SA/0001/   /R'>
+         (1,2) <'SA/0002/   /R'>
+         (1,3) <'SC/0003/   /O'>
+         (1,4) <'SC/0004/   /R'>
+         (1,5) <'SC/0005/   /C'>
+         (1,6) <'SC/0007/   /O'>
+         (1,7) <'SC/0008/   /O'>
+         (1,8) <'SC/0009/   /O'>
+*
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+  IF CD1VPFKA.API-NAME = SUPPORTED-API(*) THEN
+    PERFORM METHODS
+  ELSE
+    ASSIGN CDAMSG.RETURN-CODE = CDLRCODE.#ERROR
+    ASSIGN CDAMSG.MSG-DATA(1) = '*8444.1'  /* API
+    ASSIGN CDAMSG.MSG-DATA(2) = CD1VPFKA.API-NAME
+    ASSIGN CDAMSG.MSG-DATA(3) = *PROGRAM
+    INCLUDE CC--GMSG '8109'
+      '''Invalid:1::2:passed to:3:'''
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+*
+************************************************************************
+DEFINE SUBROUTINE METHODS
+************************************************************************
+*
+  RESET CD--PFKA CD1VPFKA.INPUT-OUTPUTS(*) CD1VPFKA.OUTPUTS(*)
+        MSG-INFO #METHOD-NOT-FOUND #PARM-NOT-FOUND
+  ASSIGN CD--PFKA.INPUTS(1:3) = CD1VPFKA.INPUTS(1:3)
+  DECIDE ON FIRST VALUE OF CD--PFKA.METHOD
+    VALUE CD--PFKM.SINGLE-PFKEY
+      ASSIGN CD--PFKA.INPUTS(4:9) = CD1VPFKA.INPUTS(4:9)
+      PERFORM SINGLE-PFKEY-METHOD
+      ASSIGN CD1VPFKA.INPUT-OUTPUTS(1:113) = SINGLE-LAYOUT(1:113)
+      ASSIGN CD1VPFKA.OUTPUTS(1:68) = CD--PFKA.OUTPUTS(1:68)
+    VALUE CD--PFKM.MODEL-PFKEYS
+      ASSIGN CD--PFKA.INPUTS(4:9) = CD1VPFKA.INPUTS(4:9)
+      PERFORM MODEL-PFKEY-METHOD
+    VALUE CD--PFKM.ALL-SINGLE-PFKEYS
+      ASSIGN CD--PFKA.INPUTS(4:13) = CD1VPFKA.INPUTS(4:13)
+      PERFORM ALL-SINGLE-PFKEYS-METHOD
+    VALUE CD--PFKM.ALL-MODEL-PFKEYS
+      ASSIGN CD--PFKA.INPUTS(4:13) = CD1VPFKA.INPUTS(4:13)
+      PERFORM ALL-MODEL-PFKEYS-METHOD
+    VALUE CD--PFKM.ALL-PFKEYS
+      PERFORM ALL-PFKEYS-METHOD
+    VALUE CD--PFKM.MODEL-PFKEY-DETAIL
+      ASSIGN CD--PFKA.INPUTS(4:9) = CD1VPFKA.INPUTS(4:9)
+      PERFORM MODEL-PFKEY-DETAIL-METHOD
+      ASSIGN CD1VPFKA.INPUT-OUTPUTS(1:113) = SINGLE-LAYOUT(1:113)
+      ASSIGN CD1VPFKA.OUTPUTS(1:68) = CD--PFKA.OUTPUTS(1:68)
+    NONE VALUE
+      ASSIGN #METHOD-NOT-FOUND = TRUE
+  END-DECIDE
+  DECIDE FOR FIRST CONDITION
+    WHEN #METHOD-NOT-FOUND
+      ASSIGN CDAMSG.MSG-DATA(1) = '*8444.2'  /* Method
+      ASSIGN CDAMSG.MSG-DATA(2) = CD--PFKA.METHOD
+    WHEN #PARM-NOT-FOUND
+      ASSIGN CDAMSG.MSG-DATA(1) = '*8444.3'  /* Parameter
+      ASSIGN CDAMSG.MSG-DATA(2) = CD--PFKA.INPUTS-PARMS
+    WHEN ANY
+      ASSIGN CDAMSG.RETURN-CODE = CDLRCODE.#ERROR
+      ASSIGN CDAMSG.MSG-DATA(3) = *PROGRAM
+      INCLUDE CC--GMSG '8109'
+        '''Invalid:1::2:passed to:3:'''
+      ESCAPE ROUTINE IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+*
+END-SUBROUTINE /* METHODS
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-MODEL-PFKEYS-METHOD
+************************************************************************
+*
+  ASSIGN #MAX-PFK = CD--PFKA.AM-MAX-PFKEY-REQUESTED
+  RESET #E #TOTAL-PFK
+  DECIDE ON FIRST VALUE OF CD--PFKA.AM-RESTRICT-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      PERFORM ALL-MODEL-CST-LIST
+      ASSIGN CD--PFKA.AM-MAX-PFKEY-RETURNED = #TOTAL-PFK
+    VALUE MODEL-APPLICATION
+      PERFORM ALL-MODEL-APP-LIST
+      ASSIGN CD--PFKA.AM-MAX-PFKEY-RETURNED = #TOTAL-PFK
+    NONE VALUE
+      DECIDE ON FIRST VALUE OF CD--PFKA.AM-START-SOURCE-ID
+        VALUE CD--PFKM.SINGLE-APPLICATION
+          PERFORM ALL-MODEL-APP-LIST
+          ASSIGN CD--PFKA.AM-MAX-PFKEY-RETURNED = #TOTAL-PFK
+        NONE VALUE
+          PERFORM ALL-MODEL-CST-LIST
+          IF NOT #MAX-PFK-FOUND THEN
+            PERFORM ALL-MODEL-APP-LIST
+          END-IF
+          ASSIGN CD--PFKA.AM-MAX-PFKEY-RETURNED = #TOTAL-PFK
+      END-DECIDE
+  END-DECIDE
+  ASSIGN CD--PFKA.METHOD-LIBRARY = CD--PFKD.METHOD-LIBRARY
+  ASSIGN CD--PFKA.METHOD-DESCRIPTION = CD--PFKD.METHOD-DESCRIPTION
+  ASSIGN CD1VPFKA.OUTPUTS(1:72) = CD--PFKA.OUTPUTS(1:72)
+*
+END-SUBROUTINE /* ALL-MODEL-PFKEYS-METHOD
+*
+***********************************************************************
+DEFINE SUBROUTINE ALL-MODEL-CST-LIST
+***********************************************************************
+*
+* Determine starting position
+  RESET #START #END #PFK-FOUND
+  FOR #MPFK = 1 TO CD--PFKD.MAX-MPC
+    IF CD--PFKA.AM-START-SOURCE-ID = CD--PFKM.SINGLE-CONSTRUCT AND
+           CD--PFKM.MPC-PFKEY-ID(#SPFK) = CD--PFKA.AM-START-PFKEY-ID
+      ASSIGN #PFK-FOUND = TRUE
+      COMPUTE #START = #MPFK + 1
+      COMPUTE #END = #MPFK + CD--PFKA.AM-MAX-PFKEY-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start pfkey identifier doesn't exist
+  IF NOT #PFK-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--PFKA.AM-MAX-PFKEY-REQUESTED
+  END-IF
+*
+* Retrieve pfkey detail
+  FOR #MPFK = #START TO #END
+    /*
+    /* If pfkeys requested is more than exist, then exit
+    IF #MPFK GT CD--PFKD.MAX-MPC THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-PFK
+    SEPARATE MODEL-CST.INITIAL-MODEL-VALUES(#MPFK)
+        INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+             MODEL-DETAIL-LAYOUT.PFKEY-ID
+             MODEL-DETAIL-LAYOUT.NAME
+        WITH DELIMITER '/' IGNORE
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-NAME-LONG =
+                                                MODEL-DETAIL-LAYOUT.NAME
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID = MODEL-CONSTRUCT
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                            CD--PFKM.MPC-PFKEY-ID(#MPFK)
+    ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                             PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+    COMPUTE #E = PI-MAX * #TOTAL-PFK
+    /*
+    /* If we've found enough pfkeys then we're finished
+    IF #TOTAL-PFK GE #MAX-PFK THEN
+      ASSIGN #MAX-PFK-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-MODEL-CST-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-MODEL-APP-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #PFK-FOUND
+  FOR #MPFK = 1 TO CD--PFKD.MAX-MPA
+    IF CD--PFKA.AM-START-SOURCE-ID = CD--PFKM.SINGLE-APPLICATION AND
+           CD--PFKM.MPA-PFKEY-ID(#SPFK) = CD--PFKA.AM-START-PFKEY-ID
+      ASSIGN #PFK-FOUND = TRUE
+      COMPUTE #START = #MPFK + 1
+      COMPUTE #END = #MPFK + CD--PFKA.AM-MAX-PFKEY-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start pfkey identifier doesn't exist
+  IF NOT #PFK-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--PFKA.AM-MAX-PFKEY-REQUESTED
+  END-IF
+*
+* Retrieve pfkey detail
+  FOR #MPFK = #START TO #END
+    /*
+    /* If pfkeys requested is more than exist, then exit
+    IF #MPFK GT CD--PFKD.MAX-MPA THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-PFK
+    SEPARATE MODEL-APP.INITIAL-MODEL-VALUES(#MPFK)
+        INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+             MODEL-DETAIL-LAYOUT.PFKEY-ID
+             MODEL-DETAIL-LAYOUT.NAME
+        WITH DELIMITER '/' IGNORE
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-NAME-LONG =
+                                                MODEL-DETAIL-LAYOUT.NAME
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID = MODEL-APPLICATION
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                            CD--PFKM.MPA-PFKEY-ID(#MPFK)
+    ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                             PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+    COMPUTE #E = PI-MAX * #TOTAL-PFK
+    /*
+    /* If we've found enough pfkeys then we're finished
+    IF #TOTAL-PFK GE #MAX-PFK THEN
+      ASSIGN #MAX-PFK-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-MODEL-APP-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-PFKEYS-METHOD
+************************************************************************
+*
+* Pass selected method values to PDA
+  ESCAPE ROUTINE IMMEDIATE
+*
+END-SUBROUTINE /* ALL-PFKEYS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-PFKEYS-METHOD
+************************************************************************
+*
+  ASSIGN #MAX-PFK = CD--PFKA.AS-MAX-PFKEY-REQUESTED
+  RESET #E #TOTAL-PFK
+  DECIDE ON FIRST VALUE OF CD--PFKA.AS-RESTRICT-SOURCE-ID
+    VALUE SINGLE-CONSTRUCT
+      PERFORM ALL-SINGLE-CST-LIST
+      ASSIGN CD--PFKA.AS-MAX-PFKEY-RETURNED = #TOTAL-PFK
+    VALUE SINGLE-APPLICATION
+      PERFORM ALL-SINGLE-APP-LIST
+      ASSIGN CD--PFKA.AS-MAX-PFKEY-RETURNED = #TOTAL-PFK
+    NONE VALUE
+      DECIDE ON FIRST VALUE OF CD--PFKA.AS-START-SOURCE-ID
+        VALUE CD--PFKM.SINGLE-APPLICATION
+          PERFORM ALL-SINGLE-APP-LIST
+          ASSIGN CD--PFKA.AS-MAX-PFKEY-RETURNED = #TOTAL-PFK
+        NONE VALUE
+          PERFORM ALL-SINGLE-CST-LIST
+          IF NOT #MAX-PFK-FOUND THEN
+            PERFORM ALL-SINGLE-APP-LIST
+          END-IF
+          ASSIGN CD--PFKA.AS-MAX-PFKEY-RETURNED = #TOTAL-PFK
+      END-DECIDE
+  END-DECIDE
+  ASSIGN CD--PFKA.METHOD-LIBRARY = CD--PFKD.METHOD-LIBRARY
+  ASSIGN CD--PFKA.METHOD-DESCRIPTION = CD--PFKD.METHOD-DESCRIPTION
+  ASSIGN CD1VPFKA.OUTPUTS(1:72) = CD--PFKA.OUTPUTS(1:72)
+*
+END-SUBROUTINE /* ALL-SINGLE-PFKEYS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-CST-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #PFK-FOUND
+  FOR #SPFK = 1 TO CD--PFKD.MAX-SPC
+    IF CD--PFKA.AS-START-SOURCE-ID = CD--PFKM.SINGLE-CONSTRUCT AND
+           CD--PFKM.SPC-PFKEY-ID(#SPFK) = CD--PFKA.AS-START-PFKEY-ID
+      ASSIGN #PFK-FOUND = TRUE
+      COMPUTE #START = #SPFK + 1
+      COMPUTE #END = #SPFK + CD--PFKA.AS-MAX-PFKEY-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start pfkey identifier doesn't exist
+  IF NOT #PFK-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--PFKA.AS-MAX-PFKEY-REQUESTED
+  END-IF
+*
+* Retrieve pfkey detail
+  FOR #SPFK = #START TO #END
+    /*
+    /* If pfkeys requested is more than exist, then exit
+    IF #SPFK GT CD--PFKD.MAX-SPC THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-PFK
+    SEPARATE SINGLE-CST.INITIAL-VALUES(#SPFK)
+        INTO SINGLE-LAYOUT.PFKEY-POSITION
+             SINGLE-LAYOUT.PFKEY-POSITION-VARIABLE
+             SINGLE-LAYOUT.PFKEY-NAME-VARIABLE
+             SINGLE-LAYOUT.PFKEY-NAME
+             SINGLE-LAYOUT.PFKEY-NAME-LONG
+             SINGLE-LAYOUT.PFKEY-STATUS
+         WITH DELIMITER '/' IGNORE
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID = SINGLE-CONSTRUCT
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                            CD--PFKM.SPC-PFKEY-ID(#SPFK)
+    MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO PFKEY-STRUCTURE
+    ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                                   PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+    COMPUTE #E = PI-MAX * #TOTAL-PFK
+    /*
+    /* If we've found enough pfkeys then we're finished
+    IF #TOTAL-PFK GE #MAX-PFK THEN
+      ASSIGN #MAX-PFK-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-SINGLE-CST-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-APP-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #PFK-FOUND
+  FOR #SPFK = 1 TO CD--PFKD.MAX-SPA
+    IF CD--PFKA.AS-START-SOURCE-ID = CD--PFKM.SINGLE-APPLICATION AND
+           CD--PFKM.SPA-PFKEY-ID(#SPFK) = CD--PFKA.AS-START-PFKEY-ID
+      ASSIGN #PFK-FOUND = TRUE
+      COMPUTE #START = #SPFK + 1
+      COMPUTE #END = #SPFK + CD--PFKA.AS-MAX-PFKEY-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start pfkey identifier doesn't exist
+  IF NOT #PFK-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--PFKA.AS-MAX-PFKEY-REQUESTED
+  END-IF
+*
+* Retrieve pfkey detail
+  FOR #SPFK = #START TO #END
+    /*
+    /* If pfkeys requested is more than exist, then exit
+    IF #SPFK GT CD--PFKD.MAX-SPA THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-PFK
+    SEPARATE SINGLE-APP.INITIAL-VALUES(#SPFK)
+        INTO SINGLE-LAYOUT.PFKEY-POSITION
+             SINGLE-LAYOUT.PFKEY-POSITION-VARIABLE
+             SINGLE-LAYOUT.PFKEY-NAME-VARIABLE
+             SINGLE-LAYOUT.PFKEY-NAME
+             SINGLE-LAYOUT.PFKEY-NAME-LONG
+             SINGLE-LAYOUT.PFKEY-STATUS
+         WITH DELIMITER '/' IGNORE
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID = SINGLE-APPLICATION
+    ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                            CD--PFKM.SPA-PFKEY-ID(#SPFK)
+    MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO PFKEY-STRUCTURE
+    ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                                   PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+    COMPUTE #E = PI-MAX * #TOTAL-PFK
+    IF #TOTAL-PFK GE #MAX-PFK THEN
+      ASSIGN #MAX-PFK-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+*
+END-SUBROUTINE /* ALL-SINGLE-APP-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE MODEL-PFKEY-DETAIL-METHOD
+************************************************************************
+*
+  DECIDE ON FIRST VALUE OF CD--PFKA.MD-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      IF CD--PFKA.MD-PFKEY-ID = CD--PFKM.MPC-PFKEY-ID(*) THEN
+        ASSIGN #MPFK = CD--PFKA.MD-PFKEY-ID
+        SEPARATE MODEL-CST.INITIAL-MODEL-VALUES(#MPFK)
+            INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+                 MODEL-DETAIL-LAYOUT.PFKEY-ID
+                 MODEL-DETAIL-LAYOUT.NAME
+             WITH DELIMITER '/' IGNORE
+        ASSIGN SINGLE-LAYOUT.PFKEY-NAME-LONG = MODEL-DETAIL-LAYOUT.NAME
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE MODEL-APPLICATION
+      IF CD--PFKA.MD-PFKEY-ID = CD--PFKM.MPA-PFKEY-ID(*) THEN
+        ASSIGN #MPFK = CD--PFKA.MD-PFKEY-ID
+        SEPARATE MODEL-APP.INITIAL-MODEL-VALUES(#MPFK)
+            INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+                 MODEL-DETAIL-LAYOUT.PFKEY-ID
+                 MODEL-DETAIL-LAYOUT.NAME
+             WITH DELIMITER '/' IGNORE
+        ASSIGN SINGLE-LAYOUT.PFKEY-NAME-LONG = MODEL-DETAIL-LAYOUT.NAME
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--PFKA.METHOD-LIBRARY = CD--PFKD.METHOD-LIBRARY
+      ASSIGN CD--PFKA.METHOD-DESCRIPTION = CD--PFKD.METHOD-DESCRIPTION
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+END-SUBROUTINE /* MODEL-PFKEY-DETAIL-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE MODEL-PFKEY-METHOD
+************************************************************************
+*
+  ASSIGN #MPFK = CD--PFKA.MP-PFKEY-ID
+  DECIDE ON FIRST VALUE OF CD--PFKA.MP-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      IF CD--PFKA.MP-PFKEY-ID = CD--PFKM.MPC-PFKEY-ID(*) THEN
+        IF #MPFK GT 0 OR #MPFK LE CD--PFKD.MAX-MPC THEN
+          RESET #E
+          FOR #I = 1 TO 12
+            SEPARATE MODEL-CST.INITIAL-MODEL-PFKEY-VALUES(#MPFK,#I)
+                INTO MODEL-LAYOUT.SOURCE-ID
+                     MODEL-LAYOUT.PFKEY-ID
+                     MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE
+                     MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE
+                WITH DELIMITER '/' IGNORE
+            IF MODEL-LAYOUT.PFKEY-ID IS (N4) THEN
+              ASSIGN CD--PFKA.SP-SOURCE-ID = MODEL-LAYOUT.SOURCE-ID
+              ASSIGN CD--PFKA.SP-PFKEY-ID = VAL(MODEL-LAYOUT.PFKEY-ID)
+              PERFORM SINGLE-PFKEY-METHOD
+              IF #PARM-NOT-FOUND THEN
+                RESET #PARM-NOT-FOUND
+              ELSE
+                ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID =
+                                              CD--PFKA.SP-SOURCE-ID
+                ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                                         CD--PFKA.SP-PFKEY-ID
+                IF MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.PFKEY-POSITION =
+                               MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE
+                END-IF
+                IF MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.PFKEY-STATUS =
+                               MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE
+                END-IF
+                MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO PFKEY-STRUCTURE
+                ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                                      PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+              END-IF
+            END-IF
+            COMPUTE #E = PI-MAX * #I
+          END-FOR
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE MODEL-APPLICATION
+      IF CD--PFKA.MP-PFKEY-ID = CD--PFKM.MPA-PFKEY-ID(*) THEN
+        IF #MPFK GT 0 OR #MPFK LE CD--PFKD.MAX-MPA THEN
+          RESET #E
+          FOR #I = 1 TO 12
+            SEPARATE MODEL-APP.INITIAL-MODEL-PFKEY-VALUES(#MPFK,#I)
+                INTO MODEL-LAYOUT.SOURCE-ID
+                     MODEL-LAYOUT.PFKEY-ID
+                     MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE
+                     MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE
+                WITH DELIMITER '/' IGNORE
+            IF MODEL-LAYOUT.PFKEY-ID IS (N4) THEN
+              ASSIGN CD--PFKA.SP-PFKEY-ID = VAL(MODEL-LAYOUT.PFKEY-ID)
+              ASSIGN CD--PFKA.SP-SOURCE-ID = MODEL-LAYOUT.SOURCE-ID
+              PERFORM SINGLE-PFKEY-METHOD
+              IF #PARM-NOT-FOUND THEN
+                RESET #PARM-NOT-FOUND
+              ELSE
+                ASSIGN PFKEY-IDENTIFIER-LAYOUT.SOURCE-ID =
+                                              CD--PFKA.SP-SOURCE-ID
+                ASSIGN PFKEY-IDENTIFIER-LAYOUT.PFKEY-ID-N4 =
+                                         CD--PFKA.SP-PFKEY-ID
+                IF MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.PFKEY-POSITION =
+                               MODEL-LAYOUT.PFKEY-POSITION-OVERRIDE
+                END-IF
+                IF MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.PFKEY-STATUS =
+                               MODEL-LAYOUT.PFKEY-STATUS-OVERRIDE
+                END-IF
+                MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO PFKEY-STRUCTURE
+                ASSIGN CD1VPFKA.INPUT-OUTPUTS(1 + #E:PI-MAX + #E) =
+                                      PFKEY-IDENTIFIER-LAYOUT(1:PI-MAX)
+              END-IF
+            END-IF
+            COMPUTE #E = PI-MAX * #I
+          END-FOR
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--PFKA.METHOD-LIBRARY = CD--PFKD.METHOD-LIBRARY
+      ASSIGN CD--PFKA.METHOD-DESCRIPTION = CD--PFKD.METHOD-DESCRIPTION
+      ASSIGN CD1VPFKA.OUTPUTS(1:68) = CD--PFKA.OUTPUTS(1:68)
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+*
+END-SUBROUTINE /* MODEL-PFKEY-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE SINGLE-PFKEY-METHOD
+************************************************************************
+*
+  ASSIGN #SPFK = CD--PFKA.SP-PFKEY-ID
+  DECIDE ON FIRST VALUE OF CD--PFKA.SP-SOURCE-ID
+    VALUE SINGLE-CONSTRUCT
+      IF CD--PFKA.SP-PFKEY-ID = CD--PFKM.SPC-PFKEY-ID(*) THEN
+        IF #SPFK GT 0 OR #SPFK LE CD--PFKD.MAX-SPC THEN
+          SEPARATE SINGLE-CST.INITIAL-VALUES(#SPFK)
+              INTO SINGLE-LAYOUT.PFKEY-POSITION
+                   SINGLE-LAYOUT.PFKEY-POSITION-VARIABLE
+                   SINGLE-LAYOUT.PFKEY-NAME-VARIABLE
+                   SINGLE-LAYOUT.PFKEY-NAME
+                   SINGLE-LAYOUT.PFKEY-NAME-LONG
+                   SINGLE-LAYOUT.PFKEY-STATUS
+              WITH DELIMITER '/' IGNORE
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE SINGLE-APPLICATION
+      IF CD--PFKA.SP-PFKEY-ID = CD--PFKM.SPA-PFKEY-ID(*) THEN
+        IF #SPFK GT 0 OR #SPFK LE CD--PFKD.MAX-SPA THEN
+          SEPARATE SINGLE-APP.INITIAL-VALUES(#SPFK)
+              INTO SINGLE-LAYOUT.PFKEY-POSITION
+                   SINGLE-LAYOUT.PFKEY-POSITION-VARIABLE
+                   SINGLE-LAYOUT.PFKEY-NAME-VARIABLE
+                   SINGLE-LAYOUT.PFKEY-NAME
+                   SINGLE-LAYOUT.PFKEY-NAME-LONG
+                   SINGLE-LAYOUT.PFKEY-STATUS
+              WITH DELIMITER '/' IGNORE
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--PFKA.METHOD-LIBRARY = CD--PFKD.METHOD-LIBRARY
+      ASSIGN CD--PFKA.METHOD-DESCRIPTION = CD--PFKD.METHOD-DESCRIPTION
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+*
+END-SUBROUTINE /* SINGLE-PFK-METHOD
+**SAG END-EXIT
+**SAG DEFINE EXIT POSTGEN-GENERATE-CODE
+*
+***********************************************************************
+DEFINE SUBROUTINE USER-DEFINED-METHOD
+***********************************************************************
+*
+  ESCAPE ROUTINE IMMEDIATE
+*
+END-SUBROUTINE /* USER-DEFINED-METHOD
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CDAMSG TO MSG-INFO
+  RESET CDAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CDAMSG MSG-INFO
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

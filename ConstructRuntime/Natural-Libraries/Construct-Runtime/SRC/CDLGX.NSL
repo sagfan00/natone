@@ -1,0 +1,35 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  DATA AREA NAME: CDLGX                      Function
+/*  Created on....: Oct 21, 2003              ==========
+/*  Created by....: SAG                  This data area is used by
+/*                                       CST-PROXY model subprograms that
+/*                                       are used to convert model pdas
+/*                                       between internal and streamed
+/*                                       (expanded printable) format.
+/*
+ 1 CDLGX
+   2 #MSG-LIB (A8) INIT<'CSTAPPL'> /* Deafultmsg.
+/* *                                                      /* library
+   2 #CURRENT-OFFSET (I4) /* Offset of field causing error
+   2 #EXPECTED (I1) /* Holding value of current
+/* *                                     /*block ID
+   2 #EXPECTED-LENGTH (I4) /* Length expected in errant fld
+   2 #XV-DATE (D) /* Empty date field
+   2 #XV-I (I1) /* Loop counter
+   2 #XV-I1 (I4) /* Loop counter
+   2 #XV-I2 (I4) /* Loop counter
+   2 #XV-IDX1 (I2) /* Indexes for MOVE EDITED of
+   2 #XV-IDX2 (I2) /* L,B,D,T,F
+   2 #XV-IDX3 (I2)
+   2 #INSIDE-ON-ERROR (L) /* Error occurred in ON ERROR?
+   2 #XV-CV-C (C)
+   2 REDEFINE #XV-CV-C /* REDEF. BEGIN : #XV-CV-C
+     3 #XV-CV-B (B2)
+   2 REDEFINE #XV-CV-C /* REDEF. BEGIN : #XV-CV-C
+     3 #XV-CV-A2 (A2)
+END-DEFINE

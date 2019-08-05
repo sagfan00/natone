@@ -1,0 +1,100 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #AVAILABLE-COMMANDS-CV #CHANGE-COLOUR #CHANGE-INTENSITY
+*     #CHANGE-REVERSE #CHANGE-SENSITIVITY #CHANGE-1-12 #CHANGE-13-24
+*     #HPARM #KEY-FORMATS.#AVAILABLE-COMMANDS #KEY-FORMATS.#ISA-HALF
+*     #KEY-FORMATS.#ISA-1-12 #KEY-FORMATS.#PC #KEY-FORMATS.#SAA
+*     #PGM-NAME #SCR-CV
+DEFINE DATA PARAMETER
+1  #AVAILABLE-COMMANDS-CV (C)
+1 #CHANGE-COLOUR (L)
+1 #CHANGE-INTENSITY (L)
+1 #CHANGE-REVERSE (L)
+1 #CHANGE-SENSITIVITY (L)
+1 #CHANGE-1-12 (L)
+1 #CHANGE-13-24 (L)
+1 #HPARM (A065)
+1 #KEY-FORMATS.#AVAILABLE-COMMANDS (L)
+1 #KEY-FORMATS.#ISA-HALF (L)
+1 #KEY-FORMATS.#ISA-1-12 (L)
+1 #KEY-FORMATS.#PC (L)
+1 #KEY-FORMATS.#SAA (L)
+1 #PGM-NAME (A008)
+1  #SCR-CV (C)
+END-DEFINE
+FORMAT PS=021 LS=079 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 023079        N1NNLCN____         X        01 SYSDBA  YL   #SCR-CV 1 *
+************************************************************************
+INPUT          (     CV=#SCR-CV  HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T #PGM-NAME  (AD=OD ) /*.01U008 A008 .
+ 024T 'PF-Key Display Options'(I)
+ 061T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 061T *TIMX  (AD=OD EM=HH':'II' 'AP ) /*.01S008 T    .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+/
+ 004T 'PF-key Formats'(I)
+/
+ 007T #KEY-FORMATS.#ISA-1-12  (AD=MI'_' ) /*.99D001 L    .
+ 009T 'Enter-PF1---PF2---PF3---PF4---PF5'
+ 046T '...'
+ 052T '(Two line ISA)'
+/
+ 015T 'help  retrn quit  etc.  etc.'
+/
+/
+ 007T #KEY-FORMATS.#ISA-HALF  (AD=MI'_' ) /*.99D001 L    .
+ 015T 'help'
+ 021T 'retrn quit'
+ 033T 'etc.'
+ 039T 'etc.'
+ 046T '...'
+ 052T '(Half display)'
+/
+/
+ 007T #KEY-FORMATS.#SAA  (AD=MI'_' ) /*.99D001 L    .
+ 009T 'PF1=help,PF2=retrn,PF3=quit,PF4=etc. ...'
+ 052T '(keys 1-24 SAA)'
+/
+/
+ 007T #KEY-FORMATS.#PC  (AD=MI'_' ) /*.99D001 L    .
+ 009T 'F1=help,F2=retrn,F3=quit,F4=etc.'
+ 046T '...'
+ 052T '(keys 1-24 PC)'
+/
+/
+ 007T 'Display Characteristics'(I)
+/
+ 009T #CHANGE-INTENSITY  (AD=MI'_' ) /*.99D001 L    .
+ 011T 'Intensify'
+ 030T #CHANGE-SENSITIVITY  (AD=MIL'_' ) /*.99D001 L    .
+ 032T 'Cursor sensitivity'
+ 055T #CHANGE-1-12  (AD=MIL'_' ) /*.99D001 L    .
+ 057T 'Keys 1-12'
+/
+ 009T #CHANGE-REVERSE  (AD=MIL'_' ) /*.99D001 L    .
+ 011T 'Reverse video'
+ 030T #CHANGE-COLOUR  (AD=MI'_' ) /*.99D001 L    .
+ 032T 'Color'
+ 055T #CHANGE-13-24  (AD=MIL'_' ) /*.99D001 L    .
+ 057T 'Keys 13-24'
+/
+/
+/
+ 004T #KEY-FORMATS.#AVAILABLE-COMMANDS  (AD=MYL'_' /*.99D001 L    .
+      CV=#AVAILABLE-COMMANDS-CV )
+ 006T 'Available Commands'
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

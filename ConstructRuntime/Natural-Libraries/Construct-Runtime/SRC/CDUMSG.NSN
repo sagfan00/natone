@@ -1,0 +1,111 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program   : CDUMSG
+* System    : NATURAL-CONSTRUCT
+* Written on: Feb 5, 1990
+* Function  : Error message handler.
+* Desc      : This routine is used to return the text information
+*           : associated with a given Natural message. The error text
+*           : returned is based on the current value of *LANGUAGE.
+*           :
+*           : This routine can be invoked by error processing modules
+*           : in order to obtain the text associated with a Natural
+*           : error.
+*           :
+*           : Input : MSG-INFO.##MSG-NR
+*           : Output: MSG-INFO.##MSG
+*           :
+*           :
+*           : This routine changed to invoke USR* routines to
+*           : get error message information. These USR routines
+*           : are delivered with Natural in the library SYSEXT.
+*           : Copy USR1020N, USR1012N to steplib library.
+*
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDPDA-M
+  LOCAL
+  01 #FOUND(I1)
+  01 #LONG-STRING(A250)
+  01 #PLACEHOLDER(A3) INIT<' ' - H'01' - ' '>
+  01 REDEFINE #PLACEHOLDER
+    02 #CHAR(A1/1:3)
+  01 #SKIP(L)
+  01 #SUB(A3) INIT<':n:'>
+  01 REDEFINE #SUB
+    02 FILLER 1X
+    02 #N(N1)
+  01 #TEMP-MSG-NR (N4)
+  01 USR0120N-PARMS
+    02 ERROR-NUMBER(N4)
+    02 LANGUAGE(I1)
+    02 RESPONSE(N4)
+    02 S-TEXT(A65)
+  01 USR1012N-PARMS
+    02 ERR-PARM(A34)
+    02 RESPONSE(N4)
+END-DEFINE
+*
+IF *LANGUAGE LT 1 OR *LANGUAGE GT 60 THEN
+  ASSIGN *LANGUAGE = 1
+END-IF
+*
+ASSIGN USR0120N-PARMS.ERROR-NUMBER = MSG-INFO.##MSG-NR
+ASSIGN MSG-INFO.##MSG-NR = USR0120N-PARMS.ERROR-NUMBER
+CALLNAT 'USR0120N' USR0120N-PARMS
+DECIDE FOR FIRST CONDITION
+  WHEN USR0120N-PARMS.RESPONSE NE 0
+    RESET MSG-INFO
+    COMPRESS 'Response' USR0120N-PARMS.RESPONSE
+      'received from USR0120N in' *PROGRAM
+      TO MSG-INFO.##MSG
+  WHEN USR0120N-PARMS.S-TEXT = ' '
+    ASSIGN #TEMP-MSG-NR = MSG-INFO.##MSG-NR
+    RESET MSG-INFO
+    COMPRESS 'No text returned by USR0120N for message'
+      #TEMP-MSG-NR
+      TO MSG-INFO.##MSG
+  WHEN USR0120N-PARMS.S-TEXT NE SCAN ':1:'
+    RESET MSG-INFO
+    ASSIGN MSG-INFO.##MSG = USR0120N-PARMS.S-TEXT
+  WHEN NONE
+    PERFORM PLUG-SUB-TEXT
+END-DECIDE
+*
+************************************************************************
+DEFINE SUBROUTINE PLUG-SUB-TEXT /* Get text to substitute :1: in msg
+************************************************************************
+*
+* If replace string exists use a long variable to avoid NAT1308
+* on replace.
+  ASSIGN #LONG-STRING = USR0120N-PARMS.S-TEXT
+  REPLACE-SUBSTITUTIONS.
+  FOR #SUB.#N = 1 TO 3
+    EXAMINE #LONG-STRING FOR #SUB
+            REPLACE WITH FULL #PLACEHOLDER
+            GIVING NUMBER #FOUND
+    IF #FOUND GT 0 THEN
+      IF MSG-INFO.##MSG-DATA(#N) NE ' ' THEN
+        /*
+        /* Add 1 blank on either side of substitution
+        EXAMINE #LONG-STRING FOR #PLACEHOLDER.#CHAR(2)
+                REPLACE WITH MSG-INFO.##MSG-DATA(#N)
+        RESET MSG-INFO.##MSG-DATA(#N)
+      ELSE
+        EXAMINE #LONG-STRING FOR #PLACEHOLDER.#CHAR(2) DELETE
+      END-IF
+    ELSE
+      /*
+      /* Replace entire substitution with one blank.
+      EXAMINE #LONG-STRING FOR FULL #PLACEHOLDER
+              REPLACE WITH ' '
+    END-IF
+  END-FOR /* REPLACE-SUBSTITUTIONS.
+  RESET MSG-INFO.##MSG
+  ASSIGN MSG-INFO.##MSG = #LONG-STRING
+END-SUBROUTINE /* PLUG-SUB-TEXT
+END

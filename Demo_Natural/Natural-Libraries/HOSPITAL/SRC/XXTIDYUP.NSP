@@ -1,0 +1,13 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+READ PATIENT
+WRITE "=" PATIENT-ID
+ / "=" SURNAME
+ / "=" NEXT-ID-FOR-YEAR
+ / "="  ADDRESS(1:4)
+* DELETE(0006)
+* END TRANSACTION
+END

@@ -1,0 +1,546 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program  : CDNCPH
+* System   : NATURAL-CONSTRUCT
+* Title    : Command Processor Keywords Help routine.
+* Written  : Sep 08,92 by devdm
+* Function : Displays a list of available Command Processor commands,
+*            also called subsystem commands.  Keywords or Functions (two
+*            or more keywords) can be selected to be expanded in a
+*            pop-up window which displays more detail information.  A
+*            selected command can be returned to the calling direct
+*            command line.
+*
+* Mod Date   Mod By    Description of Changes
+* MMM DD YY  ________ ______________________________________________
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDNCPHA
+*
+  LOCAL USING CDNCPV    /* Used to execute command processor functions.
+  LOCAL USING CDENVIRA  /* Used to capture/restore previous environment.
+  LOCAL USING CDPDA-M   /* Used for error procesing.
+  LOCAL USING CDDIALDA  /* Common data for dialog objects.
+  LOCAL USING CDFLIPA   /* Used to change the KD lines.
+  LOCAL USING CDKEYLDA  /* Used to set function keys and names.
+  LOCAL
+*
+* Scalar Constants.
+  01 #MAX-PAGES(P3) CONST<10>
+  01 #MAX-LINES(P3) CONST<9>
+  01 #MAX-PANELS(P3) CONST<1>
+  01 #MAX-SCROLL-REGIONS(P1) CONST<1>
+*
+* Screen Variables.
+  01 #FIRST-CHAR-ON-SCREEN(A1)
+  01 #SEARCH-VALUE(A60)             /* Processor Command.
+  01 #SEARCH-VALUE-CV(C)            /* search-value control variable.
+  01 #KEYWORD-HEADING(A16/1:2)
+  01 SCREEN-ARRAYS (1:9)
+    02 #SEL-COL(L)             /* Mark to select function column.
+    02 #SEL-COL-CV(C)          /* Select column control variable.
+    02 #KEYWORD(A16/1:2)       /* Keyword(s) that make a function.
+    02 #DESCRIPTION(A30/1:2)   /* Keyword's description.
+    02 #SHORT-FORM(A16/1:2)    /* Keyword's unique short form.
+    02 #IKN(A4/1:2)            /* Keyword's IKN#.
+*
+  01 KEYWORD-ARRAY (1:8)
+    02 #SYNONYMS(A16/1:2)      /* Keyword's synonymns
+*
+  01 #HEADER1(A56)
+       INIT<'        ***** GLOBAL PROCESSOR COMMANDS *****'>
+  01 #HEADER2(A54)
+       INIT<'             - Function  Information -'>
+  01 #RIGHT-PROMPT(A9)
+  01 #LEFT-PROMPT(A9)
+*
+* Miscellaneous variables.
+  01 #I(P2)                        /* Array indices
+  01 #J(P2)
+  01 #K(P2)
+  01 #POS(P2)
+  01 #IDX(P2)
+*
+  01 #COMMAND-PROCESSOR(A8)        /* Current command processor name.
+  01 #COMMAND-LINE(A32/1:2)        /* Used as input to PROCESS COMMAND
+                                   /* statements.
+  01 #START-VALUE(A32)             /* Function start search value.
+*
+  01 #SCROLL-TBL(A32/1:#MAX-PAGES) /* Table used to keep previous top
+                                   /* of screen function values, used
+                                   /* to enable backwards scrolling.
+*
+  01 #SCROLL-INDX(P3)  INIT <0>    /* Current index in #SCROLL-TBL.
+  01 #BKWRD-TABLE-DECREMENT(P2)    /* Bkwrd scroll table decrement.
+  01 #END-OF-KEYWORDS(L)           /* End of keywords flag.
+  01 #STACK(L)                     /* Last input had data stacked.
+*
+* Scroll variables.
+  01 #CURS-C(P3/1:#MAX-PANELS,1:#MAX-SCROLL-REGIONS,1:2) /* Cursor Col
+         CONST (1,1,1)<3> (1,1,2)<73>
+  01 #CURS-L(P3/1:#MAX-PANELS,1:#MAX-SCROLL-REGIONS,1:2) /* Cursor Line
+         CONST (1,1,1)<9> (1,1,2)<16>
+  01 #MAX-INDEX-VAL(P3/1:#MAX-PANELS,1:#MAX-SCROLL-REGIONS)
+         CONST (1,1)<17>
+  01 #MAX-SCREEN-OCCURS(P3/1:#MAX-PANELS,1:#MAX-SCROLL-REGIONS)
+         CONST (1,1)<16>
+  01 #ARRAY-INDEXES(N7/1:#MAX-SCROLL-REGIONS)
+  01 REDEFINE #ARRAY-INDEXES
+    02 #ARRAY1(N7)
+  01 #CURSOR-SET(L) /* Cursor put into scroll region
+  01 #FIRST-PANEL(P3)
+  01 #LAST-PANEL(P3)
+  01 #FIRST-REGION(P1)
+  01 #LAST-REGION(P1)
+*
+  01 #I1(P3) /* Temporary Counters
+  01 #I2(P3)
+  01 #I3(P3)
+  01 #LIN(P3/1:#MAX-LINES)
+*
+* NEXT variables can be placed on the map to allow user to "jump'
+* from panel to panel
+  01 #NEXT-DEPTH(P3)
+  01 #NEXT-INDEXES(P3/1:#MAX-SCROLL-REGIONS)
+  01 REDEFINE #NEXT-INDEXES
+    02 #NEXT-ARRAY1(P3)
+  01 #SCROLL-REGION(P1)     /* Scroll region where cursor was.
+  01 #SCROLL-VARS           /* Scroll variables on map.
+    02 #CURR-INDEX(P3/1:#MAX-PANELS,1:#MAX-SCROLL-REGIONS) INIT ALL <1>
+    02 #PANEL(N7) INIT <1>
+  01 #SCROLLING(L/1:3)
+  01 REDEFINE #SCROLLING
+    02 #BACKWARD-FORWARD-SCROLLING(L)
+END-DEFINE
+*
+* Define Formats
+FORMAT PS=23 KD=ON LS=133 ZP=OFF IP=OFF
+*
+DEFINE WINDOW KEYWORD-INFO
+  SIZE 16*76
+  BASE 8/5
+  TITLE 'KEYWORD INFORMATION'
+  CONTROL SCREEN
+  FRAMED ON
+*
+PERFORM INITIALIZATIONS
+*
+********************* Start of main program logic **********************
+*
+PROG.
+REPEAT   /* Escape this repeat with indexes set as desired.
+IF NOT CDNCPHA.#NCP-ACTIVE THEN
+  ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-IF
+NEW-SCREEN.
+  REPEAT
+    PERFORM VALIDATE-INDEXES
+    /*
+    /* If error field is set then stack data so that subsequent REINPUT
+    /* can position the cursor in the error field.
+    IF MSG-INFO.##ERROR-FIELD NE ' ' THEN
+      STACK TOP DATA ' '
+    END-IF
+    /*
+    /* Detect whether data has been stacked by anyone.
+    IF *DATA GT 0 THEN
+      ASSIGN #STACK = TRUE
+    END-IF
+    MOVE EDITED *TIMX(EM=' 'HH':'II' 'AP) TO #RIGHT-PROMPT
+    /*
+    /* Input the screen, if scrolling left/right and cursor has not been
+    /* put in the scroll region, mark default field.
+    INPUT WITH TEXT MSG-INFO.##MSG,
+          MSG-INFO.##MSG-DATA(1),MSG-INFO.##MSG-DATA(2),
+          MSG-INFO.##MSG-DATA(3) USING MAP 'CDNCPH1'
+    /*
+    /* If data was stacked, reset error and message variables.
+    IF NOT #STACK THEN
+      RESET MSG-INFO
+    END-IF
+    RESET #STACK
+    /* If error occurred, REINPUT with a message.
+    IF MSG-INFO.##ERROR-FIELD NE ' ' THEN
+      PERFORM REINPUT-SCREEN
+          REINPUT MSG-INFO.##MSG,
+                  MSG-INFO.##MSG-DATA(1), MSG-INFO.##MSG-DATA(2),
+                  MSG-INFO.##MSG-DATA(3) ALARM
+    ELSE
+      /*
+*     /* Check standard PF-Keys or '.' action.
+      IF *PF-KEY EQ CDKEYLDA.#RETURN-KEY OR #FIRST-CHAR-ON-SCREEN EQ '.'
+        ESCAPE BOTTOM(PROG.) IMMEDIATE
+      END-IF
+*
+   END-IF
+      /*
+      PERFORM SCROLLING /* Determine type of scrolling.
+      /*
+      /* Trap invalid PF-Keys.
+      IF NOT #SCROLLING(*) AND *PF-KEY NE 'ENTR' THEN
+        REINPUT *8003
+      END-IF
+      /*
+      /* If ENTER was pressed, process the specified action.
+      IF #SCROLLING(*)
+        ASSIGN MSG-INFO.##MSG-NR = 8061 /* Scrolling performed.
+      ELSE
+        PERFORM PROCESS-ACTIONS
+      END-IF
+*
+************************************************************************
+DEFINE SUBROUTINE NEW-SCREEN
+************************************************************************
+*
+* Subroutine to allow escaping from screen loop.
+  ESCAPE BOTTOM(NEW-SCREEN.) IMMEDIATE
+END-SUBROUTINE /* NEW-SCREEN
+*
+  END-REPEAT /* on NEW-SCREEN
+END-REPEAT /* on Repeat of Program.
+*
+PERFORM FINAL-PROCESSING
+*
+************************************************************************
+DEFINE SUBROUTINE GET-PROCESSOR-FUNCTIONS
+************************************************************************
+*
+* Subroutine to retrieve command processor attributes and assign
+* valid keyword combinations (FUNCTIONS) to screen arrays.
+*
+* If new search value entered, reset backwards scrolling index.
+  IF (#SEARCH-VALUE-CV MODIFIED) THEN
+    ASSIGN #START-VALUE = #SEARCH-VALUE
+    RESET #SCROLL-TBL(*) #END-OF-KEYWORDS
+    ASSIGN #SCROLL-INDX = 0
+    ASSIGN #BKWRD-TABLE-DECREMENT = 1
+  END-IF
+  IF #END-OF-KEYWORDS THEN
+    REINPUT *8004 ALARM /* End of data reached.
+  END-IF
+    /*
+    /* 'G+' will return a list of global functions defined for a
+    /* command processor, nine at a time, starting with the next
+    /* function after the one specified in #START-VALUE, 'G' will
+    /* begin the list with the value in #START-VALUE.
+    /*
+  RESET SCREEN-ARRAYS(*)
+  ASSIGN #SEL-COL-CV(*) = (AD=NP)
+  IF (#SEARCH-VALUE-CV MODIFIED) THEN
+    ASSIGN #COMMAND-LINE(1) = 'G'
+  ELSE
+    ASSIGN #COMMAND-LINE(1) = 'G+'
+  END-IF
+  ASSIGN #COMMAND-LINE(2) = #START-VALUE
+  PROCESS CDNCPV ACTION HELP
+    USING
+      PROCESSOR-NAME = #COMMAND-PROCESSOR
+      COMMAND-LINE (1:2) = #COMMAND-LINE(1:2)
+    /*
+    /* RESULT-FIELD(1-9) will contain the valid keyword combinations,
+    /* starting after the value specified in #START-VALUE.  The first
+    /* blank field indicates the end of the list.
+    /*
+  G-ACTION.
+  FOR #I = 1 TO 9
+    IF CDNCPV.RESULT-FIELD(#I) EQ ' ' THEN /* have reached end of list
+      ASSIGN #END-OF-KEYWORDS = TRUE
+      ASSIGN MSG-INFO.##MSG-NR = 8004 /* End of data reached.
+      ESCAPE BOTTOM(G-ACTION.) IMMEDIATE
+    END-IF
+    /*
+    /*
+    SEPARATE CDNCPV.RESULT-FIELD(#I) LEFT INTO
+      SCREEN-ARRAYS.#KEYWORD(#I,*) IGNORE  /* ignore 3rd keyword if any
+      WITH DELIMITERS ' '
+    ASSIGN SCREEN-ARRAYS.#SEL-COL-CV(#I) = (AD=I)
+  END-FOR  /* (G-ACTION.)
+  /*
+  IF (*PF-KEY NE CDKEYLDA.#BACKWARD-KEY)
+    ADD 1 TO #SCROLL-INDX
+    ASSIGN #SCROLL-TBL(#SCROLL-INDX) = #START-VALUE
+    ASSIGN #BKWRD-TABLE-DECREMENT = 1
+    /*
+    /* If scroll table is filled, shift out oldest entry.
+    IF #SCROLL-INDX GT #MAX-PAGES  THEN
+      ASSIGN #SCROLL-INDX = #MAX-PAGES
+      MOVE #SCROLL-TBL(2:#MAX-PAGES)
+        TO #SCROLL-TBL(1:#MAX-PAGES - 1)
+    END-IF
+  END-IF
+  /*
+  IF NOT #END-OF-KEYWORDS
+    ASSIGN #START-VALUE = CDNCPV.RESULT-FIELD(9)
+  END-IF
+  /*
+  /* Get keyword descriptions for each function.
+  /*
+  DESCRIPTIONS.
+  FOR #I = 1 TO 9     /* Max of nine functions per screen.
+    FOR #J = 1 TO 2   /* Max of two keywords per function.
+      IF SCREEN-ARRAYS.#KEYWORD(#I,1) EQ ' '
+        ESCAPE BOTTOM(DESCRIPTIONS.) IMMEDIATE
+      END-IF
+      PROCESS CDNCPV ACTION TEXT
+        USING
+          PROCESSOR-NAME = #COMMAND-PROCESSOR
+          CDNCPV.COMMAND-LINE (1) = SCREEN-ARRAYS.#KEYWORD(#I,#J)
+      IF CDNCPV.NATURAL-ERROR > 0 THEN
+        /*
+        /* Should never happen.
+        ESCAPE ROUTINE IMMEDIATE
+      END-IF
+      MOVE CDNCPV.RESULT-FIELD(1) TO #DESCRIPTION(#I,#J)
+      MOVE CDNCPV.RESULT-FIELD(3) TO #SHORT-FORM(#I,#J)
+      MOVE CDNCPV.RESULT-FIELD(5) TO #IKN(#I,#J)
+    END-FOR
+  END-FOR  /* (DESCRIPTIONS.)
+*
+END-SUBROUTINE /* GET-PROCESSOR-FUNCTIONS
+*
+************************************************************************
+DEFINE SUBROUTINE PROCESS-ACTIONS
+************************************************************************
+*
+* Invoke pop-up window to display specific information for the selected
+* function.
+  IF (#SEL-COL-CV(*) MODIFIED) THEN
+  RESET #END-OF-KEYWORDS MSG-INFO
+  MARKED.
+    FOR #I = 1 TO #MAX-LINES
+      IF #SEL-COL(#I) THEN
+        RESET SCREEN-ARRAYS.#SEL-COL(#I)
+        COMPRESS SCREEN-ARRAYS.#KEYWORD(#I,1)
+                 SCREEN-ARRAYS.#KEYWORD(#I,2) TO #SEARCH-VALUE
+        PERFORM DISPLAY-DETAIL  /* Display detail information.
+      END-IF
+    END-FOR /* (MARKED.)
+  ELSE
+    PERFORM GET-PROCESSOR-FUNCTIONS
+  END-IF
+END-SUBROUTINE /* PROCESS-ACTIONS
+*
+************************************************************************
+DEFINE SUBROUTINE DISPLAY-DETAIL
+************************************************************************
+* Expand the Global Function selected into a maximum of 2 keywords, and
+* display keyword information in a pop-up window.
+*
+  RESET CDNCPV.COMMAND-LINE(*) KEYWORD-ARRAY.#SYNONYMS(*,*)
+  /*
+  /* Get keyword information for the selected function.
+  FOR #J = 1 TO 2
+    IF SCREEN-ARRAYS.#KEYWORD(#I,#J) NE ' '
+      /*
+      /* Retrieve up to 8 keyword synonyms.
+      ASSIGN #COMMAND-LINE(1) = 'S'
+      ASSIGN #COMMAND-LINE(2) = SCREEN-ARRAYS.#IKN(#I,#J) /* Keyword IKN
+      PROCESS CDNCPV ACTION HELP
+        USING
+          PROCESSOR-NAME = #COMMAND-PROCESSOR
+          CDNCPV.COMMAND-LINE (1:2) = #COMMAND-LINE(1:2)
+      FOR #K = 2 TO 9
+        MOVE CDNCPV.RESULT-FIELD(#K)
+        TO KEYWORD-ARRAY.#SYNONYMS(#K - 1,#J)
+      END-FOR
+    END-IF
+  END-FOR
+  /*
+  /* Display retrieved information in pop-up window.
+  SET WINDOW 'KEYWORD-INFO'
+  INPUT WINDOW = 'KEYWORD-INFO' USING MAP 'CDNCPH21'
+  SET WINDOW OFF
+  SET CONTROL 'WBFL80C23' /* Set window size and base.
+END-SUBROUTINE /* DISPLAY-DETAIL
+*
+************************************************************************
+DEFINE SUBROUTINE CLEAR
+************************************************************************
+*
+ESCAPE ROUTINE IMMEDIATE
+END-SUBROUTINE /* CLEAR
+*
+************************************************************************
+DEFINE SUBROUTINE FINAL-PROCESSING
+************************************************************************
+*
+  ASSIGN CDNCPHA.#DIRECT-COMMAND = #SEARCH-VALUE
+  INCLUDE CCEND /* Restore environment.
+END-SUBROUTINE /* FINAL-PROCESSING
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  INCLUDE CCBEGIN /* Capture Environment.
+  SET CONTROL 'WBFL80C23' /* Set window size and base.
+*
+* Intialize line number array.
+  FOR #I1 = 1 TO #MAX-LINES
+    ASSIGN #LIN(#I1) = #I1
+  END-FOR
+*
+* Initialize help parameters and current program name.
+  ASSIGN #SYSTEM = 'SYSTEM'
+  MOVE EDITED *DATX(EM=LLL' 'DD','YY) TO #LEFT-PROMPT
+*
+* Reset screen variables.
+  PERFORM CLEAR
+  ASSIGN #SEARCH-VALUE = CDNCPHA.#DIRECT-COMMAND /* Passed Direct CMD.
+  ASSIGN CDFLIPA.#AVAILABLE-COMMANDS = FALSE /* Allow extra flip option.
+*
+* Specify which PF-KEYS are valid, start by resetting all keys, then
+* assign desired keys using RESET INITIAL.
+* INCLUDE CCPFSTD
+  RESET INITIAL CDKEYLDA.#HELP-KEY CDKEYLDA.#RETURN-KEY
+  PERFORM SET-KEYS
+*
+* Get active Natural Command Processor name.
+  PROCESS CDNCPV ACTION GET
+    USING
+      PROCESSOR-NAME = ' '
+      GETSET-FIELD-NAME = 'NAME'
+      IF NATURAL-ERROR > 0 THEN   /* No command processor is active.
+        ASSIGN CDNCPHA.#NCP-ACTIVE = FALSE
+      ELSE
+        ASSIGN #COMMAND-PROCESSOR = CDNCPV.GETSET-FIELD-VALUE
+        ASSIGN CDNCPHA.#NCP-ACTIVE = TRUE
+        ASSIGN #BKWRD-TABLE-DECREMENT = 1
+        PERFORM GET-PROCESSOR-FUNCTIONS
+      END-IF
+END-SUBROUTINE /* INITIALIZATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE SET-KEYS
+************************************************************************
+*
+  INCLUDE CCPFRTN  /* Set Return key
+  INCLUDE CCPFUD   /* Set Up/Down scroll keys.
+  INCLUDE CCSETKEY /* Set specified keys.
+  INCLUDE CCSETHLP /* Set PF1=HELP
+END-SUBROUTINE /* SET-KEY
+*
+************************************************************************
+DEFINE SUBROUTINE REINPUT-SCREEN
+************************************************************************
+*
+* For each field on map, REINPUT if field = ##ERROR-FIELD.
+   RESET MSG-INFO.##ERROR-FIELD
+END-SUBROUTINE /* REINPUT-SCREEN
+*
+************************************************************************
+DEFINE SUBROUTINE DETERMINE-SCROLL-REGION
+************************************************************************
+*
+* Determine whether cursor was within a scroll region.
+  RESET #SCROLL-REGION
+  MATCH-CURSOR.
+  FOR #I1 = #MAX-SCROLL-REGIONS TO 1 STEP -1
+    IF *CURS-LINE = #CURS-L(1,#I1,1) THRU #CURS-L(1,#I1,2) AND
+       *CURS-COL  = #CURS-C(1,#I1,1) THRU #CURS-C(1,#I1,2) THEN
+      ASSIGN #SCROLL-REGION = #I1
+      ESCAPE BOTTOM(MATCH-CURSOR.) IMMEDIATE
+    END-IF
+  END-FOR
+END-SUBROUTINE /* DETERMINE-SCROLL-REGION
+*
+************************************************************************
+DEFINE SUBROUTINE SCROLLING
+************************************************************************
+*
+* Process scrolling keys and index changes.
+  RESET #SCROLLING(*)
+  PERFORM DETERMINE-SCROLL-REGION
+*
+* Vertical Scrolling.
+  IF *PF-KEY = CDKEYLDA.#BACKWARD-KEY OR = CDKEYLDA.#FORWARD-KEY THEN
+    IF #SCROLL-REGION = 0 THEN
+      ASSIGN #FIRST-REGION = 1
+      ASSIGN #LAST-REGION = #MAX-SCROLL-REGIONS
+    ELSE
+      ASSIGN #FIRST-REGION = #LAST-REGION = #SCROLL-REGION
+      ASSIGN #CURSOR-SET = TRUE
+    END-IF
+  END-IF
+  DECIDE FOR FIRST CONDITION
+    WHEN *PF-KEY = CDKEYLDA.#BACKWARD-KEY /* Backward Scroll
+      /*
+      /* Reduce indexes by size of scroll regions, wrap around.
+      FOR #I1 = #FIRST-REGION TO #LAST-REGION
+        IF #CURR-INDEX(#PANEL,#I1) = 1 THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = #MAX-INDEX-VAL(#PANEL,#I1)
+        ELSE
+          SUBTRACT #MAX-SCREEN-OCCURS(#PANEL,#I1) FROM
+                   #CURR-INDEX(#PANEL,#I1)
+        END-IF
+      END-FOR
+      /*
+      /* Get previous starting value from the table.
+      RESET  #END-OF-KEYWORDS
+      IF #SCROLL-INDX LE #BKWRD-TABLE-DECREMENT THEN
+        REINPUT *8001 ALARM  /* Top of current scroll session reached.
+      END-IF
+      SUBTRACT #BKWRD-TABLE-DECREMENT FROM #SCROLL-INDX
+      ASSIGN #START-VALUE = #SCROLL-TBL(#SCROLL-INDX)
+      /*
+    WHEN *PF-KEY = CDKEYLDA.#FORWARD-KEY  /* Forward Scroll
+      /*
+      /* Increment indexes by size of scroll regions, wrap around
+      FOR #I1 = #FIRST-REGION TO #LAST-REGION
+        IF #CURR-INDEX(#PANEL,#I1) = #MAX-INDEX-VAL(#PANEL,#I1) THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = 1
+        ELSE
+          ADD #MAX-SCREEN-OCCURS(#PANEL,#I1)
+           TO #CURR-INDEX(#PANEL,#I1)
+        END-IF
+      END-FOR
+      /*
+      IF #END-OF-KEYWORDS THEN
+        REINPUT *8004 ALARM  /* End of data reached, enter a new start
+      END-IF                 /* value.
+      /*
+    WHEN NOT (#NEXT-INDEXES(*) = #ARRAY-INDEXES(*))
+      ASSIGN #CURSOR-SET = TRUE
+      FOR #I1 = 1 TO #MAX-SCROLL-REGIONS
+        IF #CURR-INDEX(#PANEL,#I1) NE #NEXT-INDEXES(#I1) THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = #NEXT-INDEXES(#I1)
+        END-IF
+      END-FOR
+    WHEN ANY
+      ASSIGN #BACKWARD-FORWARD-SCROLLING = TRUE
+      /*
+      PERFORM GET-PROCESSOR-FUNCTIONS
+      /*
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* SCROLLING
+************************************************************************
+DEFINE SUBROUTINE VALIDATE-INDEXES
+************************************************************************
+  IF #SCROLL-REGION NE 0 THEN
+    IF #CURSOR-SET AND #SCROLL-REGION NE 0 THEN
+      ASSIGN *CURS-LINE = #CURS-L(#PANEL,#SCROLL-REGION,1)
+      ASSIGN *CURS-COL  = #CURS-C(#PANEL,#SCROLL-REGION,1)
+    END-IF
+  END-IF
+*
+* Ensure scroll region index values are valid for current panel.
+  FOR #I1 = 1 TO #MAX-SCROLL-REGIONS
+    DECIDE ON FIRST VALUE #CURR-INDEX(#PANEL,#I1)
+      VALUES 1:#MAX-INDEX-VAL(#PANEL,#I1) /* OK
+        IGNORE
+      VALUES -999:0                       /* Too Low
+        ASSIGN #CURR-INDEX(#PANEL,#I1) = 1
+      NONE                                /* Too High
+        ASSIGN #CURR-INDEX(#PANEL,#I1) = #MAX-INDEX-VAL(#PANEL,#I1)
+    END-DECIDE
+  END-FOR
+  ASSIGN #NEXT-INDEXES(*) = #ARRAY-INDEXES(*) = #CURR-INDEX(#PANEL,*)
+END-SUBROUTINE /* VALIDATE-INDEXES
+*
+END

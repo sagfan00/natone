@@ -1,0 +1,68 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**Postgen changes
+**SAG GENERATOR: CST-SHELL                        VERSION: 3.4.1
+**SAG TITLE: Pass valid actions to CST
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): This CST module is used for passing valid actions to
+**SAG DESCS(2): be displayed in the browse-select* models
+**SAG PROGRAM-TYPE: N
+************************************************************************
+* Program  : CDACTCST
+* System   : NATURAL-CONSTRUCT
+* Title    : Pass valid actions to CST
+* Generated: Aug 30,96 at 09:06 AM by SAG
+* Function : This CST module is used for passing valid actions to
+*            be displayed in the browse-select* models
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+**SAG DEFINE EXIT PARAMETER-DATA
+  PARAMETER USING CDACTD
+  PARAMETER USING CDPDA-M
+**SAG END-EXIT
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+  LOCAL USING CDACTL
+  LOCAL
+  01 #CODES (I1)
+  01 #MAX-CODES (I1) CONST <60>
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT GENERATE-CODE
+  ASSIGN CDACTD.#ACTION-COUNT = CDACTC.#USED-CODES
+  IF CDACTD.#ACTION-COUNT GT #MAX-CODES THEN
+    ASSIGN CDACTD.#ACTION-COUNT = #MAX-CODES
+  END-IF
+  ASSIGN #CODES = CDACTD.#ACTION-COUNT
+  ASSIGN CDACTD.#ACTION-INIT(1:#CODES) = CDACTL.#ACTION-INIT(1:#CODES)
+  ASSIGN CDACTD.#MESSAGE-LIBRARY = CDACTL.#MESSAGE-LIBRARY
+  ASSIGN CDACTD.#LDA-NAME = CDACTL.#LDA-NAME
+  ASSIGN CDACTD.#TEXT-REQUIRED = CDACTL.#TEXT-REQUIRED
+  ASSIGN CDACTD.#LENGTH-OVERRIDE = CDACTL.#LENGTH-OVERRIDE
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

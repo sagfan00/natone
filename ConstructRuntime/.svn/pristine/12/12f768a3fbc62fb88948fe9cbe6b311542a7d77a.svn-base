@@ -1,0 +1,68 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDDCINP   /* Input new direct command
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 27 Jan. 1993
+* Description: This subprogram is normally associated with an
+*            : extended PF-Key that is used to pop-up a direct
+*            : command line.
+*            :
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDGETDCA
+  PARAMETER USING CDPDA-D
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDGLBTXL
+  LOCAL USING CDENVIRA
+END-DEFINE
+FORMAT KD=OFF
+SET KEY ALL
+INCLUDE CCSETHLP
+PERFORM CAPTURE-RESTORE-ENVIRONMENT
+SET CONTROL 'WBL79C4FB18/0'
+CALLNAT 'CDUTRANS' CDGLBTXL.CDUTRANS(*) CDGLBTXL-NAME MSG-INFO
+INPUT(AD=MI'_' IP=OFF) WITH TEXT *MSG-INFO.##MSG-NR,
+      MSG-INFO.##MSG-DATA(1), MSG-INFO.##MSG-DATA(2),
+      MSG-INFO.##MSG-DATA(3)
+   CDGLBTXL.#DIRECT-CMD-TXT(AD=O)
+   CDGETDCA.#DIRECT-COMMAND(AL=58 AD=M'_' HE='CDDCHELP')
+  RESET MSG-INFO.##MSG
+*
+  IF *PF-KEY NE 'ENTR' THEN
+    RESET CDGETDCA.#DIRECT-COMMAND
+    ASSIGN MSG-INFO.##MSG-NR = 8040 /* Function canceled using:1:
+    ASSIGN MSG-INFO.##MSG-DATA(1) = *PF-KEY
+    PERFORM SET-USER-MSG
+    SET CONTROL 'K0' /* Set *PF-KEY = ENTR
+    PERFORM CAPTURE-RESTORE-ENVIRONMENT
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+PERFORM CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE CAPTURE-RESTORE-ENVIRONMENT
+************************************************************************
+*
+  INCLUDE CCENVIR
+END-SUBROUTINE /* CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE FINAL-PROCESSING /* Required by CCDCOUT
+************************************************************************
+*
+  ESCAPE ROUTINE
+END-SUBROUTINE /* CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE SET-USER-MSG
+************************************************************************
+*
+  CALLNAT 'CDUMSG' MSG-INFO
+END-SUBROUTINE /* SET-USER-MSG
+END

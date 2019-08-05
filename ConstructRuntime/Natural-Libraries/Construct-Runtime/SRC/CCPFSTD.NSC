@@ -1,0 +1,9 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Assign standard PF Keys used.
+RESET INITIAL CDKEYLDA.#HELP-KEY CDKEYLDA.#RETURN-KEY CDKEYLDA.#QUIT-KEY
+              CDKEYLDA.#MAIN-KEY CDKEYLDA.#FLIP-KEY

@@ -1,0 +1,13 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* This subprogram is used to capture and restore the current window
+* setting, pagesize etc. in a online dialog environment. The first
+* call of CDENVIR captures the current environment, the second call
+* restores it to what it was.
+IF *LEVEL GT 1 THEN
+  CALLNAT 'CDENVIR' CDENVIRA
+END-IF

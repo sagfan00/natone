@@ -1,0 +1,315 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**Postgen changes
+**SAG GENERATOR: CST-SHELL                        VERSION: 3.4.1
+**SAG TITLE: All with sizable windows
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): Change window size based on cursor.
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDCHWINA
+**SAG PARAMETER-NAME(2): CDPDA-M
+**SAG LOCAL-NAME(1): CDSETPSA
+************************************************************************
+* Program  : CDCHWIN
+* System   : NATURAL-CONSTRUCT
+* Title    : All with sizable windows
+* Generated: Aug 22,96 at 09:34 AM by SAG
+* Function : Change window size based on cursor.
+*
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on Aug 22,96 by SAG for release ____
+* >
+* >   Description: This subprogram is used by browse programs that
+* >              | wish to support the dynamic sizing of windows.
+* >              | This subprogram determines where the cursor was
+* >              | placed by the user and ajusts the window size
+* >              | and location accordingly. This subproutine also
+* >              | adjusts the global pagesize so that the end of
+* >              | page input for the browse remains inside the
+* >              | current window setting.
+* >              |
+* >              | This technique of dynamically sizing and
+* >              | positioning browse windows can be used to
+* >              | provide built-in record compare capabilities into
+* >              | generated browse routines. As well, if nested
+* >              | browse routines continually use smaller windows
+* >              | these windows can be dynamically enlarged to allow
+* >              | the user to view more information on each screen.
+* >
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDCHWINA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDSETPSA
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+  01 #BASE-LINE(N6)
+  01 #BASE-COL(N6)
+  01 #CURS-COL(N3)
+  01 #CURS-LINE(N3)
+  01 #DECREASE-PS(N3)
+  01 #FUNCTION-KEY(A1) CONST<'F'>
+  01 #INCREASE-PS(N3)
+  01 #LINESIZE(N3)
+  01 #LOWER-BASE(N3)
+  01 #MIN-WINDOW-HEIGHT(P3)
+  01 #POSITION(A1) CONST<'P'>
+  01 #RIGHT-COL(N3)
+  01 #SET-WINDOW(A50)
+  01 #SHIFT-RIGHT(N3)
+  01 #SIZE(A1) CONST<'S'>
+  01 #WINDOW-FRAME(L)
+  01 #WINDOW-LS(N3)
+  01 #WINDOW-PS(N3)
+  01 #WINDOW-POS(N6)
+  01 #HEADER(A1) CONST<'H'>
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+  RESET MSG-INFO
+*
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+*
+  IF *CURS-LINE < 0 THEN  /* Only need ABS value.
+    COMPUTE #CURS-LINE = *CURS-LINE * -1
+  ELSE
+    ASSIGN #CURS-LINE = *CURS-LINE
+  END-IF
+  ASSIGN #CURS-COL  = *CURS-COL
+*
+  PERFORM GET-CURRENT-WINDOW-SETTINGS
+*
+  DECIDE ON FIRST CDCHWINA.#WINDOW-FUNCTION
+    VALUE #SIZE
+      PERFORM CHANGE-WINDOW-SIZE
+    VALUE #FUNCTION-KEY
+      INCLUDE CCKDOFF /* Turn KD lines off.
+      IF *MACHINE-CLASS = 'UNIX' OR = 'PC'      /* UNIX or C Platform
+        SET CONTROL 'MB'
+      END-IF
+      /*
+      /* PF-KEY lines have been removed as requested.
+      ASSIGN MSG-INFO.##MSG = '8053'
+      PERFORM GET-MESSAGE-INFO
+    VALUE #POSITION
+      PERFORM CHANGE-WINDOW-BASE
+      /*
+      /* Window base has been adjusted to cursor specified location
+      ASSIGN MSG-INFO.##MSG-NR = 8054
+      PERFORM GET-MESSAGE-INFO
+    VALUE #HEADER
+      /*
+      /* Screen headings removed at users request
+      ASSIGN MSG-INFO.##MSG-NR = 8055
+      PERFORM GET-MESSAGE-INFO
+    NONE
+      /*
+      /* Invalid:1:parameter passed to:2:value::3:
+      ASSIGN MSG-INFO.##MSG-NR = 8050
+      ASSIGN MSG-INFO.##MSG-DATA(1) = '#WINDOW-FUNCTION'
+      ASSIGN MSG-INFO.##MSG-DATA(2) = *PROGRAM
+      ASSIGN MSG-INFO.##MSG-DATA(3) = CDCHWINA.#WINDOW-FUNCTION
+      PERFORM GET-MESSAGE-INFO
+  END-DECIDE
+  PERFORM SET-WINDOW
+  ASSIGN CDSETPSA.#INPUT-LINES = CDCHWINA.#INPUT-LINES
+  CALLNAT 'CDSETPS' CDSETPSA
+  ASSIGN CDCHWINA.#GLOBAL-PAGESIZE = CDSETPSA.#GLOBAL-PAGESIZE
+*
+************************************************************************
+DEFINE SUBROUTINE GET-CURRENT-WINDOW-SETTINGS
+************************************************************************
+  IF *MACHINE-CLASS = 'UNIX' OR = 'PC'   /* UNIX or C Platform
+    SET CONTROL 'WO'    /* *WINDOW is not correct until a set control
+                        /* 'W*' is issued. WO is harmless.
+  END-IF
+  ASSIGN #WINDOW-LS  = *WINDOW-LS
+  ASSIGN #WINDOW-PS  = *WINDOW-PS
+  ASSIGN #WINDOW-POS = *WINDOW-POS
+  ASSIGN #LINESIZE   = *LINESIZE
+  DIVIDE #LINESIZE INTO #WINDOW-POS
+                 GIVING #BASE-LINE
+              REMAINDER #BASE-COL
+*
+* Determine whether or not framing was on by turning it on and
+* then checking to see if the *WINDOW-LS changed.
+  SET CONTROL 'WF'
+  IF #WINDOW-LS = *WINDOW-LS THEN
+    ASSIGN #WINDOW-FRAME = TRUE
+  ELSE
+    SET CONTROL 'WM'
+    RESET #WINDOW-FRAME
+  END-IF
+*
+* Adjust the window height and width according to the framing status.
+  IF #WINDOW-FRAME THEN
+    SET CONTROL 'WF'
+    COMPUTE #WINDOW-PS = #WINDOW-PS + 2
+    IF *MACHINE-CLASS = 'UNIX' OR = 'PC'   /* UNIX or C Platform
+      COMPUTE #WINDOW-LS = #WINDOW-LS + 2
+      /* On UNIX, the reported Base Position is inside the frame.
+      /* Adjust up and left one position.
+      SUBTRACT 1 FROM #BASE-LINE
+      SUBTRACT 1 FROM #BASE-COL
+    ELSE
+      COMPUTE #WINDOW-LS = #WINDOW-LS + 4
+    END-IF
+  ELSE
+    SET CONTROL 'WM'
+    COMPUTE #WINDOW-LS = #WINDOW-LS + 1
+  END-IF
+  COMPUTE #LOWER-BASE = #WINDOW-PS + #BASE-LINE
+*
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE CHANGE-WINDOW-SIZE
+************************************************************************
+*
+  IF *CURS-COL LT 0 THEN
+    /*
+    /* Cursor is outside the current window.
+    /*
+    DECIDE FOR FIRST CONDITION
+      WHEN #CURS-LINE = 1 THRU #BASE-LINE
+           OR (#CURS-LINE = 0 AND ( *MACHINE-CLASS = 'UNIX' OR = 'PC'))
+        /*
+        /* If the cursor is above the current window, change base line
+        /* to be smaller and increase the window height so that the
+        /* bottom of the window stays as before.
+        COMPUTE #INCREASE-PS  = #BASE-LINE + 1 - #CURS-LINE
+        COMPUTE #BASE-LINE = #CURS-LINE - 1
+        COMPUTE #WINDOW-PS = #WINDOW-PS + #INCREASE-PS
+      WHEN #CURS-LINE GT #BASE-LINE AND #CURS-LINE LE #LOWER-BASE
+        COMPUTE #DECREASE-PS  = #LOWER-BASE - #CURS-LINE
+        COMPUTE #WINDOW-PS = #WINDOW-PS - #DECREASE-PS
+      WHEN #CURS-LINE GT #LOWER-BASE
+        /*
+        /* If the cursor is below the current window, increase the
+        /* window height corresponds to the new cursor position.
+        COMPUTE #WINDOW-PS = #WINDOW-PS + #CURS-LINE - #LOWER-BASE
+      WHEN NONE
+        IGNORE
+    END-DECIDE
+  END-IF
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE CHANGE-WINDOW-BASE
+************************************************************************
+*
+* This subroutine changes the base settings for the current window.
+* Determine the base line.
+  DECIDE FOR FIRST CONDITION
+    WHEN #CURS-COL LE 0
+      /*
+      /* Cursor lies outside the current window.
+      COMPUTE #BASE-LINE = #CURS-LINE - 1
+    WHEN #CURS-COL GT 0 AND #CURS-LINE GT 0
+      /*
+      /* Cursor lies inside the current window.
+      COMPUTE #BASE-LINE = #BASE-LINE + #CURS-LINE + 1
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+*
+* Determine the base column.
+  DECIDE FOR FIRST CONDITION
+    WHEN #CURS-COL = 0
+      ASSIGN #BASE-COL = 0
+    WHEN #CURS-COL LT 0
+      /*
+      /* Cursor lies outside the current window.
+      MULTIPLY #CURS-COL BY -1
+      COMPUTE #BASE-COL = #CURS-COL - 1
+    WHEN #CURS-COL GT 0 AND #CURS-COL NE 255
+      /*
+      /* Cursor lies inside the current window.
+      COMPUTE #BASE-COL = #BASE-COL + #CURS-COL + 1
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+*
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE SET-WINDOW
+************************************************************************
+*
+* Add 1 for msg line.
+  COMPUTE #MIN-WINDOW-HEIGHT = CDCHWINA.#MIN-PS +
+          CDCHWINA.#INPUT-LINES + 1
+  IF #WINDOW-FRAME THEN
+     /*
+     /* Add 1 each for top and bottom of frame.
+    ADD 2 TO #MIN-WINDOW-HEIGHT
+  END-IF
+  IF NOT CDCHWINA.#KD-OFF THEN
+    /*
+    /* Add 2 for KD lines.
+    ADD 2 TO #MIN-WINDOW-HEIGHT
+  END-IF
+  IF #WINDOW-PS LT #MIN-WINDOW-HEIGHT THEN
+    IF MSG-INFO.##MSG-NR = 0 THEN
+      /*
+      /* Window height adjusted to minimum allowed value:1:
+      ASSIGN MSG-INFO.##MSG-NR = 8051
+      COMPRESS #MIN-WINDOW-HEIGHT TO MSG-INFO.##MSG-DATA(1)
+      PERFORM GET-MESSAGE-INFO
+    END-IF
+    ASSIGN #WINDOW-PS = #MIN-WINDOW-HEIGHT
+  ELSE
+    IF MSG-INFO.##MSG-NR = 0 THEN
+      /*
+      /* Window has been adjusted to cursor specified height
+      ASSIGN MSG-INFO.##MSG-NR = 8052
+      PERFORM GET-MESSAGE-INFO
+    END-IF
+  END-IF
+  COMPRESS 'WC' #WINDOW-PS 'L' #WINDOW-LS 'B' #BASE-LINE
+           '/' #BASE-COL TO #SET-WINDOW LEAVING NO
+  SET CONTROL 'WB'
+  SET CONTROL #SET-WINDOW
+*
+END-SUBROUTINE
+/* PERFORM GET-MESSAGE-INFO
+*
+************************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-INFO
+************************************************************************
+*
+* Get the local language message text.
+  CALLNAT 'CDUMSGU' MSG-INFO
+*
+END-SUBROUTINE /* GET-MESSAGE-INFO
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

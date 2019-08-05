@@ -1,0 +1,25 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDLPROXC
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-02
+/*                        Short Desc:    Proxy trace commands
+/*                        Long Desc :    This data area defines
+/*                                  :    valid trace commands that can be
+/*                                  :    sent to the proxy.
+/*
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDLPROXC
+   2 DATASIZES (A10) INIT<'DATASIZES'>
+   2 INITIALIZE (A10) INIT<'INITIALIZE'>
+   2 LOADTEST (A10) INIT<'LOADTEST'>
+END-DEFINE

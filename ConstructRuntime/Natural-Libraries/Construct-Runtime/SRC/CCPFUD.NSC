@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Assign Up/Down Scrolling PF Keys used.
+RESET INITIAL CDKEYLDA.#BACKWARD-KEY CDKEYLDA.#FORWARD-KEY

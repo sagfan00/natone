@@ -1,0 +1,602 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDUTRANS
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : Mar 1, 93
+* Description: This subprogram receives a variable length array
+*            : containing message numbers defined to SYSERR under
+*            : the application CSTAPPL. This routine uses the message
+*            : number, together with *LANGUAGE to determine the
+*            : text to be substituted into the message.
+*            : The syntax admitted in this routine is as follows
+*            : (those included in a bracket () are optional):
+*            :          *nnnn(.n)(,>)(/mm)
+*            :                     <
+*            :                     +
+*            :                     :
+*            :                     .
+*            : where * indicates that a message number follows;
+*            :       nnnn is the message number;
+*            :       . indicates that a message displacement follows
+*            :         to determine which message item to use. Message
+*            :         items are delimited with the / char in the msg.
+*            :       , indicates that a text formatting symbol follows;
+*            :       > - Right justify
+*            :       < - Left justify
+*            :       + - Center
+*            :       : - Prompt
+*            :       . - Dot
+*            :       / indicates that delimited text to be read;
+*            :       mm is the length slated for each delimited text
+*            :             portion.
+*            : Example -
+*            :           *8013,+/20
+*            : means that read the text corresponding to message
+*            : number 8013 and *LANGUAGE; if the text contains /,
+*            : then divide it into portions separated by /; each
+*            : portion is then centered and placed into a 20-byte
+*            : field.
+* Mod Date   Mod By   Description of Changes
+*
+************************************************************************
+DEFINE DATA
+  PARAMETER
+  01 #TRANSLATION-DATA(A1/1:V) /* String containing message numbers
+  01 #DATA-AREA-NAME(A8)       /* Name of the data area itself
+  PARAMETER USING CDPDA-M
+*
+  LOCAL /* Constants
+  01 #ADABAS-MSG-RETRIEVAL(L) CONST<FALSE>
+  01 #COMMA(A1) CONST<','> /* Comma between number and format
+  01 #SYSERR-APPL(A8) INIT<'CSTAPPL'>
+  01 #DISPLACEMENT-CHAR(A1) CONST<'.'>
+  01 #DEFAULT-SYSERR-APPL(A8) INIT<'CSTLDA'>
+  01 #MAX-LENGTH(I4) CONST<200> /* Max length of a field
+  01 #MAX-TRANSLATIONS(I4) CONST<40>
+*
+  01 #AVAIL-LEN(I4)
+  01 #CHAR-PTR(I4)
+  01 #CUR-FLD(I4)
+  01 #DELIMITER-CHAR(A1) INIT <'/'>
+  01 #EOF(L)               /* End of translation array
+  01 #ERROR(L)             /* Error in initial values
+  01 #EXPANDED-TRANS-TBL(1:#MAX-TRANSLATIONS)
+    02 #SYSERR-NR(N4)
+    02 REDEFINE #SYSERR-NR
+      03 #SYSERR-NR-A(A4)
+    02 #OFFSET(I4)
+    02 #TRANS-LENGTH(I4)
+    02 #DISPLACEMENT(N1)
+    02 #SPECIAL-FORMATING(A1)
+    02 #TEXT-DELIMITER(A1)
+    02 #SEGMENT-NUMBER(P2)
+  01 #FLD-CNT(I4)
+  01 #FORMAT-CHAR(A1/1:6) INIT <'>',':','.','+','<',' '>
+  01 REDEFINE #FORMAT-CHAR
+    02 #RIGHT(A1)
+    02 #PROMPT(A1)
+    02 #DOT(A1)
+    02 #CENTER(A1)
+    02 #LEFT(A1/1:2) /* Allow < or blank
+  01 #I(I4)
+  01 #J(I4)
+  01 #K(I4)
+  01 #LANGUAGE(I1)
+  01 #LAST-NUMBER-START(I4)
+  01 #LEN(I4)
+  01 #NAT1316-MSG(A79)
+  01 #NUMBER(N4)
+  01 REDEFINE #NUMBER
+    02 #ALPHA-STRING(A4)
+  01 REDEFINE #NUMBER
+    02 #CHAR(A1/1:4)
+  01 #NUMBERS-TO-GET(P1)
+  01 #OFFSET-START(I4) INIT<1>
+  01 #POS(I4)
+  01 #POS1(I4)
+  01 #POS2(I4)
+  01 #SIZE(I4)
+  01 #START-TRANSLATION(A1) INIT <'*'>
+  01 #STATE(P1)
+  01 #STATES /* Valid parsing states
+    02 #EXPECTING-NUMBER(P1) INIT<1>
+    02 #CHECK-FOR-COMMA(P1) INIT<2>
+    02 #EXPECTING-FORMAT(P1) INIT<3>
+    02 #EXPECTING-DELIMITER(P1) INIT<4>
+    02 #GET-FIELD-LENGTH(P1) INIT<5>
+    02 #SKIP-NON-STAR(P1) INIT<6>
+    02 #CHECK-FOR-DISPLACEMENT(P1) INIT<7>
+    02 #EXPECTING-DISPLACEMENT(P1) INIT<8>
+  01 #TEMP-TEXT-AREAS
+    02 #BUILT-TEXT(A200)
+    02 REDEFINE #BUILT-TEXT
+      03 #BT-CHAR(A1/1:#MAX-LENGTH)
+    02 #FORMATED-TEXT(A200)
+    02 REDEFINE #FORMATED-TEXT
+      03 #FT-CHAR(A1/1:#MAX-LENGTH)
+    02 #TEMP-TEXT(A200)
+    02 REDEFINE #TEMP-TEXT
+      03 #TT-CHAR(A1/1:#MAX-LENGTH)
+    01 REDEFINE #TEMP-TEXT-AREAS
+      02 #BLOCK(A65/1:9)
+  01 USR0320N-PARMS
+    02 APPLICATION(A8)
+    02 ERROR-NUMBER(N4)
+    02 LANGUAGE(I1)
+    02 RESPONSE(N4)
+    02 S-TEXT(A65)
+    02 REDEFINE S-TEXT
+      03 #CHAR(A1/1:65)
+  01 #SYSTEM-DEFAULT-LANGUAGE (I1) CONST<1>
+  01 #CURRENT-ERROR-NUMBER (N4)
+  01 #CURRENT-MSG-TEXT (A65)
+*
+* Note: This view of the message file has been included here to
+*       avoid multiple CALLNATs to USR0320N. If this DDM is available
+*       then uncomment this view, uncomment the marked IF condition in
+*       SUBROUTINE INITIALIZATIONS, uncomment the marked WHEN condition
+*       in SUBROUTINE GET-MSG. You must also set the initial value for
+*       #ADABAS-MSG-RETRIEVAL to TRUE.
+*
+* 01 MSG-VIEW VIEW OF NCST-SYSTEM-FUSER
+*   02 MSG-TEXT(#SYSTEM-DEFAULT-LANGUAGE)
+*   02 MSG-TEXT(#LANGUAGE)
+*   02 MSG-KEY
+*   02 REDEFINE MSG-KEY
+*     03 TYPE-X(A1)
+*     03 APPLICATION(A8)
+*     03 ERROR-NUMBER(N4)
+END-DEFINE
+DEFINE WINDOW ERROR
+*
+ON ERROR
+  ASSIGN MSG-INFO.##MSG = ':1:occurred at line:2:of subprogram:3:'
+  ASSIGN #NUMBER = *ERROR-NR
+  COMPRESS 'NAT' #NUMBER.#ALPHA-STRING
+        TO MSG-INFO.##MSG-DATA(1) LEAVING NO
+  COMPRESS *ERROR-LINE TO MSG-INFO.##MSG-DATA(2)
+  ASSIGN MSG-INFO.##MSG-DATA(3) = *PROGRAM
+  IF *ERROR-NR = 1316 THEN /* Index out of bounds
+    COMPRESS 'Check array occurrences in redefinition of:'
+              #DATA-AREA-NAME ' expected: (1:' #SIZE ')'
+    TO #NAT1316-MSG LEAVING NO
+    PERFORM ERROR
+  END-IF
+END-ERROR
+*
+* This title will be used by the display statement in the event that
+* someone has passed invalid data to this program.
+WRITE TITLE LEFT 'Current progress at time of error...' /
+*
+PERFORM INITIALIZATIONS
+*
+PERFORM PARSE-TRANSLATIONS
+*
+PERFORM TRANSFER-ERROR-MESSAGES
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+* Determine size of translation array
+  COMPUTE #POS1 = POS(#TRANSLATION-DATA(1))
+  COMPUTE #POS2 = POS(#DATA-AREA-NAME)
+  IF #POS1 GT #POS2 THEN
+    COMPUTE #SIZE = #POS1 - #POS2
+  ELSE
+    COMPUTE #SIZE = #POS2 - #POS1
+  END-IF
+*
+* If the Data Area Name matches the Default SYSERR application then
+* use it to be the SYSERR library name
+  IF #DATA-AREA-NAME = #DEFAULT-SYSERR-APPL THEN
+    ASSIGN #SYSERR-APPL = #DEFAULT-SYSERR-APPL
+  END-IF
+*
+* Set default message library
+  ASSIGN USR0320N-PARMS.APPLICATION = #SYSERR-APPL
+*
+* Uncomment this IF condition if MSG-VIEW is available
+* IF #ADABAS-MSG-RETRIEVAL THEN
+*   ASSIGN MSG-VIEW.APPLICATION = #SYSERR-APPL
+*   ASSIGN MSG-VIEW.TYPE-X = 'X'
+* END-IF
+*
+  IF *LANGUAGE LT 1 OR *LANGUAGE GT 60 THEN
+    ASSIGN *LANGUAGE = 1
+  END-IF
+*
+  ASSIGN #LANGUAGE = *LANGUAGE
+END-SUBROUTINE /* INITIALIZATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE PARSE-TRANSLATIONS
+************************************************************************
+*
+ASSIGN #CHAR-PTR = 1
+ASSIGN #STATE = #STATES.#SKIP-NON-STAR   /* State 6
+REPEAT UNTIL #ERROR OR #EOF
+  DECIDE ON FIRST VALUE #STATE
+    VALUE #STATES.#EXPECTING-NUMBER /* State = 1
+      ASSIGN #LAST-NUMBER-START = #CHAR-PTR
+      ASSIGN #NUMBERS-TO-GET = 4
+      PERFORM GET-NUMBER
+      ASSIGN #EXPANDED-TRANS-TBL.#OFFSET(#FLD-CNT) =
+             #LAST-NUMBER-START
+      IF #ERROR THEN
+        ESCAPE ROUTINE
+      END-IF
+      ASSIGN #EXPANDED-TRANS-TBL.#SYSERR-NR(#FLD-CNT) = #NUMBER
+        ASSIGN #STATE = #STATES.#CHECK-FOR-DISPLACEMENT
+      VALUE #STATES.#CHECK-FOR-DISPLACEMENT /* State = 7
+        IF #TRANSLATION-DATA(#CHAR-PTR) = #DISPLACEMENT-CHAR THEN
+          ASSIGN #STATE = #STATES.#EXPECTING-DISPLACEMENT
+          PERFORM INCREMENT-PTR
+        ELSE
+          ASSIGN #STATE = #STATES.#CHECK-FOR-COMMA
+        END-IF
+      VALUE #STATES.#EXPECTING-DISPLACEMENT /* State = 8
+        IF #TRANSLATION-DATA(#CHAR-PTR) = '1' THRU '9' THEN
+          ASSIGN #EXPANDED-TRANS-TBL.#DISPLACEMENT(#FLD-CNT) =
+                VAL(#TRANSLATION-DATA(#CHAR-PTR))
+        ELSE
+          ASSIGN MSG-INFO.##MSG-DATA(1) = #TRANSLATION-DATA(#CHAR-PTR)
+          ASSIGN MSG-INFO.##MSG = 'Expecting displacement 1-9,found:1:'
+          PERFORM ERROR
+        END-IF
+        ASSIGN #STATE = #STATES.#CHECK-FOR-COMMA
+        PERFORM INCREMENT-PTR
+    VALUE #STATES.#CHECK-FOR-COMMA /* State = 2
+      IF #TRANSLATION-DATA(#CHAR-PTR) = #COMMA THEN
+        ASSIGN #STATE = #STATES.#EXPECTING-FORMAT
+        PERFORM INCREMENT-PTR
+      ELSE
+        ASSIGN #STATE = #STATES.#EXPECTING-DELIMITER
+      END-IF
+    VALUE #STATES.#EXPECTING-FORMAT /* State = 3
+      IF #TRANSLATION-DATA(#CHAR-PTR) = #FORMAT-CHAR(*) THEN
+        ASSIGN #EXPANDED-TRANS-TBL.#SPECIAL-FORMATING(#FLD-CNT) =
+               #TRANSLATION-DATA(#CHAR-PTR)
+        ASSIGN #STATE = #STATES.#EXPECTING-DELIMITER
+        PERFORM INCREMENT-PTR
+      ELSE
+        ASSIGN MSG-INFO.##MSG = 'Expecting format character::1:'
+        COMPRESS #FORMAT-CHAR(*) TO MSG-INFO.##MSG-DATA(1)
+                 WITH DELIMITER ','
+        PERFORM ERROR
+      END-IF
+    VALUE #STATES.#EXPECTING-DELIMITER  /* State = 4
+      IF #TRANSLATION-DATA(#CHAR-PTR) = #DELIMITER-CHAR THEN
+        ASSIGN #EXPANDED-TRANS-TBL.#TEXT-DELIMITER(#FLD-CNT)
+             = #TRANSLATION-DATA(#CHAR-PTR)
+        ASSIGN #NUMBERS-TO-GET = 2
+        PERFORM GET-NUMBER
+        IF #ERROR THEN
+          ESCAPE ROUTINE
+        END-IF
+        ASSIGN #EXPANDED-TRANS-TBL.#SEGMENT-NUMBER(#FLD-CNT) = #NUMBER
+      END-IF
+      ASSIGN #STATE = #STATES.#GET-FIELD-LENGTH
+    VALUE #STATES.#GET-FIELD-LENGTH   /* State = 5
+      REPEAT UNTIL #TRANSLATION-DATA(#CHAR-PTR) NE ' ' OR #EOF
+        PERFORM INCREMENT-PTR
+      END-REPEAT
+      IF #FLD-CNT GT 0 AND #LAST-NUMBER-START GT 0 AND NOT #EOF THEN
+      /* Determine length of the current field
+        COMPUTE #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#FLD-CNT) =
+                #CHAR-PTR - #LAST-NUMBER-START
+        RESET #LAST-NUMBER-START
+      END-IF
+      ASSIGN #STATE = #STATES.#SKIP-NON-STAR
+    VALUE #STATES.#SKIP-NON-STAR  /* State = 6
+      REPEAT UNTIL #TRANSLATION-DATA(#CHAR-PTR) EQ #START-TRANSLATION
+                   OR #EOF
+        PERFORM INCREMENT-PTR
+      END-REPEAT
+      IF #CHAR-PTR LT #SIZE THEN
+        IF #TRANSLATION-DATA(#CHAR-PTR + 1) = MASK(N) THEN
+          ASSIGN #STATE = #STATES.#EXPECTING-NUMBER
+        ELSE
+          PERFORM INCREMENT-PTR
+        END-IF
+      ELSE
+        PERFORM INCREMENT-PTR
+      END-IF
+    ANY
+      IF #EOF AND #FLD-CNT GT 0 AND #LAST-NUMBER-START GT 0 THEN
+        /* Calculate the last field length
+        COMPUTE #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#FLD-CNT) =
+                #CHAR-PTR - #LAST-NUMBER-START + 1
+        RESET #LAST-NUMBER-START
+      END-IF
+    NONE
+      ASSIGN MSG-INFO.##MSG = 'Problem with state logic in program:1:'
+      ASSIGN MSG-INFO.##MSG-DATA(1) = *PROGRAM
+      PERFORM ERROR
+  END-DECIDE
+END-REPEAT /* PARSE-TRANSLATIONS
+END-SUBROUTINE /* PARSE-TRANSLATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE GET-NUMBER
+************************************************************************
+*
+RESET #NUMBER.#ALPHA-STRING #I
+PERFORM INCREMENT-PTR
+GET-NUMBER.
+REPEAT UNTIL #EOF
+  ADD 1 TO #I
+  IF #TRANSLATION-DATA(#CHAR-PTR) = MASK(N) THEN
+    ASSIGN #NUMBER.#CHAR(#I) = #TRANSLATION-DATA(#CHAR-PTR)
+    PERFORM INCREMENT-PTR
+  ELSE
+    ESCAPE BOTTOM(GET-NUMBER.) IMMEDIATE
+  END-IF
+  IF #I = #NUMBERS-TO-GET THEN
+    ESCAPE BOTTOM(GET-NUMBER.) IMMEDIATE
+  END-IF
+END-REPEAT
+MOVE RIGHT #NUMBER.#ALPHA-STRING TO #NUMBER.#ALPHA-STRING
+IF #NUMBER.#CHAR(1) = ' ' THEN
+  ADD 0 TO #NUMBER  /* Replace leading blanks with zeros
+END-IF
+DECIDE ON FIRST VALUE #NUMBERS-TO-GET
+  VALUE 4
+    IF #NUMBER = 0 OR #NUMBER.#ALPHA-STRING NE MASK(NNNN) THEN
+      ASSIGN MSG-INFO.##MSG = 'Invalid number detected::1:'
+      ASSIGN MSG-INFO.##MSG-DATA(1) = #NUMBER.#ALPHA-STRING
+      PERFORM ERROR
+    ELSE
+      PERFORM INCREMENT-FIELD-COUNTER
+    END-IF
+  VALUE 2
+    IF #NUMBER = 0 THEN
+      ASSIGN MSG-INFO.##MSG = 'Segment number must be greater than 0'
+      PERFORM ERROR
+    END-IF
+  NONE VALUE
+    IGNORE
+END-DECIDE
+END-SUBROUTINE /* GET-NUMBER
+*
+************************************************************************
+DEFINE SUBROUTINE ERROR
+************************************************************************
+*
+  ASSIGN #ERROR = TRUE
+  INPUT
+    WINDOW = 'ERROR' (AD=OI SG=OFF IP=OFF)
+    WITH TEXT MSG-INFO.##MSG,
+              MSG-INFO.##MSG-DATA(1),
+              MSG-INFO.##MSG-DATA(2),
+              MSG-INFO.##MSG-DATA(3)
+    'Invalid data passed to translation subprogram:' *PROGRAM
+   / #NAT1316-MSG
+  / 'Error detected at byte' #CHAR-PTR(NL=5) 'in data area:'
+     #DATA-AREA-NAME
+  / 'Currently processing field number:' #FLD-CNT
+  IF #FLD-CNT GT 1 THEN
+    DISPLAY (ES=ON ZP=OFF)
+      'SYSERR/Number'(I) #EXPANDED-TRANS-TBL.#SYSERR-NR(*)
+      'Field/Length'(I) #EXPANDED-TRANS-TBL.#TRANS-LENGTH(*)
+      'Special/Formating'(I) #EXPANDED-TRANS-TBL.#SPECIAL-FORMATING(*)
+  END-IF
+END-SUBROUTINE /* ERROR
+*
+************************************************************************
+DEFINE SUBROUTINE INCREMENT-FIELD-COUNTER
+************************************************************************
+*
+  IF #FLD-CNT GE #MAX-TRANSLATIONS THEN
+    ASSIGN MSG-INFO.##MSG = 'More than:1:translations passed, ' -
+                            'increase table in:2:'
+    ASSIGN MSG-INFO.##MSG-DATA(1) = #MAX-TRANSLATIONS
+    ASSIGN MSG-INFO.##MSG-DATA(2) = *PROGRAM
+    PERFORM ERROR
+  ELSE
+    ADD 1 TO #FLD-CNT
+  END-IF
+END-SUBROUTINE /* INCREMENT-FIELD-COUNTER
+*
+************************************************************************
+DEFINE SUBROUTINE INCREMENT-PTR
+************************************************************************
+*
+  IF #CHAR-PTR GE #SIZE THEN
+    ASSIGN #EOF = TRUE
+  ELSE
+    ADD 1 TO #CHAR-PTR
+  END-IF
+END-SUBROUTINE /* INCREMENT-PTR
+*
+************************************************************************
+DEFINE SUBROUTINE TRANSFER-ERROR-MESSAGES
+************************************************************************
+*
+COPY-MSG.
+FOR #CUR-FLD = 1 TO #FLD-CNT
+  PERFORM GET-FORMATED-TEXT
+  ASSIGN #OFFSET-START = #EXPANDED-TRANS-TBL.#OFFSET(#CUR-FLD)
+  IF #K GT #MAX-LENGTH THEN
+    ASSIGN #K = #MAX-LENGTH
+  END-IF
+  FOR #I = 1 TO #K
+     ASSIGN #TRANSLATION-DATA(#OFFSET-START) =
+            #TEMP-TEXT-AREAS.#FT-CHAR(#I)
+    ADD 1 TO #OFFSET-START
+  END-FOR
+END-FOR
+END-SUBROUTINE /* TRANSFER-ERROR-MESSAGES
+*
+************************************************************************
+DEFINE SUBROUTINE EXTRACT-EMBEDDED-MSG-COMPONENT
+************************************************************************
+*
+* If only a portion of the message is to be extracted, pull out the
+* desired portion.
+  IF #EXPANDED-TRANS-TBL.#DISPLACEMENT(#CUR-FLD) NE 0 THEN
+    SEPARATE USR0320N-PARMS.S-TEXT INTO #TEMP-TEXT-AREAS.#BLOCK(*)
+             IGNORE /* Remainder
+             WITH DELIMITER '/'
+    ASSIGN #J = #EXPANDED-TRANS-TBL.#DISPLACEMENT(#CUR-FLD)
+    ASSIGN USR0320N-PARMS.S-TEXT = #TEMP-TEXT-AREAS.#BLOCK(#J)
+  END-IF
+END-SUBROUTINE /* EXTRACT-EMBEDDED-MSG-COMPONENT
+*
+************************************************************************
+DEFINE SUBROUTINE GET-FORMATED-TEXT
+************************************************************************
+*
+  RESET USR0320N-PARMS.S-TEXT
+  ASSIGN USR0320N-PARMS.ERROR-NUMBER =
+         #EXPANDED-TRANS-TBL.#SYSERR-NR(#CUR-FLD)
+*
+* Get translation of number for SYSERR application CSTAPPL
+  PERFORM GET-MSG
+  IF USR0320N-PARMS.S-TEXT EQ ' ' THEN
+    RESET #TEMP-TEXT-AREAS
+    COMPRESS #EXPANDED-TRANS-TBL.#SYSERR-NR(#CUR-FLD)
+        TO #FORMATED-TEXT
+    ASSIGN #K = #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD)
+    ESCAPE ROUTINE
+  END-IF
+  PERFORM EXTRACT-EMBEDDED-MSG-COMPONENT
+  RESET #TEMP-TEXT-AREAS
+  IF #EXPANDED-TRANS-TBL.#SEGMENT-NUMBER(#CUR-FLD) LE 0 THEN
+    ASSIGN #TEMP-TEXT = USR0320N-PARMS.S-TEXT
+    EXAMINE #TEMP-TEXT FOR ' ' GIVING LENGTH #LEN
+    ASSIGN #AVAIL-LEN = #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD)
+    EXAMINE #TEMP-TEXT FOR #DELIMITER-CHAR REPLACE WITH ' '
+    PERFORM BUILD-FORMAT
+    ASSIGN #FORMATED-TEXT = #BUILT-TEXT
+  ELSE
+    COMPUTE #AVAIL-LEN = #EXPANDED-TRANS-TBL.#SEGMENT-NUMBER(#CUR-FLD)
+    ASSIGN #J = 0
+    REPEAT
+      EXAMINE USR0320N-PARMS.S-TEXT FOR
+          #EXPANDED-TRANS-TBL.#TEXT-DELIMITER(#CUR-FLD) GIVING
+          POSITION IN #POS
+      IF #POS GT 0 THEN
+        RESET USR0320N-PARMS.#CHAR(#POS) #TEMP-TEXT
+        MOVE ALL USR0320N-PARMS.S-TEXT TO #TEMP-TEXT UNTIL #POS
+        MOVE ALL ' ' TO USR0320N-PARMS.S-TEXT UNTIL #POS
+        MOVE LEFT JUSTIFIED USR0320N-PARMS.S-TEXT TO
+                                                USR0320N-PARMS.S-TEXT
+      ELSE
+        MOVE USR0320N-PARMS.S-TEXT TO #TEMP-TEXT
+        RESET USR0320N-PARMS.S-TEXT
+      END-IF
+      EXAMINE #TEMP-TEXT FOR ' ' GIVING LENGTH #LEN
+      PERFORM BUILD-FORMAT
+      COMPUTE #K = #J + #AVAIL-LEN
+      IF #K GT #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD) THEN
+        ASSIGN #K = #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD)
+      END-IF
+      ASSIGN #TEMP-TEXT-AREAS.#FT-CHAR(#J + 1:#K)
+                        = #TEMP-TEXT-AREAS.#BT-CHAR(1:#K - #J)
+      ASSIGN #J = #K
+    UNTIL #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD) LE #K OR
+         USR0320N-PARMS.S-TEXT = ' '
+    END-REPEAT
+  END-IF
+  IF #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD) LT #MAX-LENGTH THEN
+    ASSIGN #K = #EXPANDED-TRANS-TBL.#TRANS-LENGTH(#CUR-FLD)
+  ELSE
+    ASSIGN #K = #MAX-LENGTH
+  END-IF
+END-SUBROUTINE /* GET-#FORMATED-TEXT
+*
+***********************************************************************
+DEFINE SUBROUTINE BUILD-FORMAT
+***********************************************************************
+*
+* length cannot be zero for assignment of array
+IF #LEN = 0
+  #LEN := 1
+END-IF
+*
+RESET #BUILT-TEXT
+*
+* Build trailing dots if requested
+DECIDE ON FIRST VALUE #EXPANDED-TRANS-TBL.#SPECIAL-FORMATING(#CUR-FLD)
+  VALUE #FORMAT-CHAR.#PROMPT /* : character, add '.........:' to end
+    MOVE ALL '.' TO #BUILT-TEXT UNTIL #AVAIL-LEN
+    ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(#AVAIL-LEN) = ':'
+    ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(1:#LEN) =
+           #TEMP-TEXT-AREAS.#TT-CHAR(1:#LEN)
+  VALUE #FORMAT-CHAR.#DOT /* . character, add ' .........' to end
+    MOVE ALL '.' TO #BUILT-TEXT UNTIL #AVAIL-LEN
+    ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(1:#LEN) =
+    #TEMP-TEXT-AREAS.#TT-CHAR(1:#LEN)
+    IF #LEN LT #AVAIL-LEN THEN
+      ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(#LEN + 1 ) = ' '
+    END-IF
+  VALUE #FORMAT-CHAR.#RIGHT  /* > character
+    COMPUTE #I = #AVAIL-LEN - #LEN + 1
+    IF #I LT 1 THEN
+      ASSIGN #BUILT-TEXT = #TEMP-TEXT
+    ELSE
+      ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(#I:#AVAIL-LEN) =
+             #TEMP-TEXT-AREAS.#TT-CHAR(1:#LEN)
+    END-IF
+  VALUE #FORMAT-CHAR.#CENTER /* + character, center text
+    COMPUTE #I = (#AVAIL-LEN - #LEN) / 2 /* Determine available space
+    IF #I LT 1 THEN
+      ASSIGN #BUILT-TEXT = #TEMP-TEXT
+    ELSE
+      ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(#I + 1:#I + #LEN) =
+             #TEMP-TEXT-AREAS.#TT-CHAR(1:#LEN)
+    END-IF
+  NONE /* Left
+    ASSIGN #TEMP-TEXT-AREAS.#BT-CHAR(1:#LEN) =
+           #TEMP-TEXT-AREAS.#TT-CHAR(1:#LEN)
+END-DECIDE
+END-SUBROUTINE /* BUILD-FORMAT
+*
+************************************************************************
+DEFINE SUBROUTINE GET-MSG
+************************************************************************
+*
+* If the message number is the same as last time, don't bother
+* looking it up again.
+  DECIDE FOR FIRST CONDITION
+    WHEN #CURRENT-ERROR-NUMBER = USR0320N-PARMS.ERROR-NUMBER
+      ASSIGN USR0320N-PARMS.S-TEXT = #CURRENT-MSG-TEXT
+    /*
+    /* Uncomment this WHEN condition if MSG-VIEW is available
+*   WHEN #ADABAS-MSG-RETRIEVAL
+*     ASSIGN MSG-VIEW.ERROR-NUMBER = USR0320N-PARMS.ERROR-NUMBER
+*     FIND MSG-VIEW WITH MSG-KEY = MSG-VIEW.MSG-KEY
+*       IF NO RECORDS FOUND
+*         ASSIGN MSG-VIEW.TYPE-X = 'X'
+*         ASSIGN MSG-VIEW.APPLICATION = USR0320N-PARMS.APPLICATION
+*       END-NOREC
+*     END-FIND
+*     IF MSG-VIEW.MSG-TEXT(#LANGUAGE.1) NE ' ' THEN
+*       ASSIGN USR0320N-PARMS.S-TEXT = MSG-VIEW.MSG-TEXT(#LANGUAGE.1)
+*     ELSE
+*       ASSIGN USR0320N-PARMS.S-TEXT = MSG-VIEW.MSG-TEXT(1.1)
+*       ASSIGN MSG-VIEW.MSG-TEXT(#LANGUAGE.1) = MSG-VIEW.MSG-TEXT(1.1)
+*     END-IF
+*     ASSIGN #CURRENT-ERROR-NUMBER = USR0320N-PARMS.ERROR-NUMBER
+*     ASSIGN #CURRENT-MSG-TEXT = USR0320N-PARMS.S-TEXT
+    WHEN NONE
+      CALLNAT 'USR0320N' USR0320N-PARMS
+      IF USR0320N-PARMS.S-TEXT = ' ' AND
+         #LANGUAGE NE #SYSTEM-DEFAULT-LANGUAGE THEN
+        /*
+        /* Try again with system language default of english
+        ASSIGN USR0320N-PARMS.LANGUAGE = #SYSTEM-DEFAULT-LANGUAGE
+        CALLNAT 'USR0320N' USR0320N-PARMS
+        ASSIGN USR0320N-PARMS.LANGUAGE = #LANGUAGE
+      END-IF
+      ASSIGN #CURRENT-ERROR-NUMBER = USR0320N-PARMS.ERROR-NUMBER
+      ASSIGN #CURRENT-MSG-TEXT = USR0320N-PARMS.S-TEXT
+  END-DECIDE
+END-SUBROUTINE /* GET-MSG
+END

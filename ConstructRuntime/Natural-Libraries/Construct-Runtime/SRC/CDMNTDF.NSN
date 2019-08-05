@@ -1,0 +1,27 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDMNTDF /* Set maintenance dialog defaults.
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 18 Oct. 1991
+* Description: This subprogram is used to set the desired default
+*            | behaviour for a maintenance dialog. Currently these
+*            | defaults are hard-coded. This can be customized
+*            | in order to store the defaults on a file and
+*            | retrieve them from this file.
+*            |
+*            | CDMNTPR is used to alter the preferences.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDMNTDFA
+END-DEFINE
+ASSIGN CDMNTDFA.#CLEAR-AFTER-UPDATE = FALSE
+ASSIGN CDMNTDFA.#REPOSITION-DISPLAY = FALSE
+ASSIGN CDMNTDFA.#REPOSITION-UPDATE = FALSE
+END

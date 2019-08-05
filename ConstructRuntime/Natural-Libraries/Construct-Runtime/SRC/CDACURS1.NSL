@@ -1,0 +1,14 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  Used by CSUCURS1 to translate a
+/*  SYSERR message
+ 1 CDACURS1
+   2 TEXT-ARRAY (A1/1:70)
+   2 REDEFINE TEXT-ARRAY /* REDEF. BEGIN : TEXT
+     3 MESSAGE (A70)
+   2 MESSAGE-LIBRARY (A8) INIT<'CSTAPPL'>
+END-DEFINE

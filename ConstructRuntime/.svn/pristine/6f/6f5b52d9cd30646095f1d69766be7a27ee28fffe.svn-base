@@ -1,0 +1,9 @@
+#Natural Workspace Structure
+#Thu May 03 10:44:20 EDT 2012
+/Construct-Runtime=SYSTEM
+/Screen-Prompt-Text=CSTLDA
+/Construct-Application-Text=CSTAPPL
+/Action-Text=CSTACT
+/Construct-Runtime-Extension=SYSTEM
+/Message-Text=CSTMSG
+/PF-Key-Text=CSTPFK

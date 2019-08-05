@@ -1,0 +1,13 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Set all PF-Keys except PA2 to allow Print Screen.
+SET KEY ALL
+SET KEY PA2=OFF
+*
+* Equate keys PF13:PF24 = PF1:PF12 as the default.
+SET KEY PF13='%K1' PF14='%K2' PF15='%K3' PF16='%K4' PF17='%K5'
+ PF18='%K6' PF19='%K7' PF20='%K8' PF21='%K9' PF22='%K10'
+ PF23='%K11' PF24='%K12'

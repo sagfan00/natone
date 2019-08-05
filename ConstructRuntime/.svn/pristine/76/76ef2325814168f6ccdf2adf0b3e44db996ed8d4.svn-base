@@ -1,0 +1,18 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/* *
+/* *This LDA contains the codes for
+/* *actions logged by the object
+/* *subprogram. The initial values
+/* *for these log action codes can
+/* *be modified here or reassigned
+/* *in your object subprogram to
+/* *suit your own code.
+ 1 CDACTLOG
+   2 #ADD (A1) INIT<'A'>
+   2 #MODIFY (A1) INIT<'M'>
+   2 #PURGE (A1) INIT<'P'>
+END-DEFINE

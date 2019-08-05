@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Help key must be hardcoded. Change PF-KEY value to change default
+* help key.
+SET KEY PF1=HELP

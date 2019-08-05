@@ -1,0 +1,83 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CS-RVSM
+* System     : Natural Construct
+* Written by : SAG
+* Function   : Returns Construct product information from SYSPROD.
+* Description: Returns Construct version, SM level, IUPD level from
+*              SYSPROD.
+*
+*
+*  Mod Date   Mod By   Description of Changes
+*  MMM DD YY  ________ ______________________________________________
+*                      ______________________________________________
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CSRRVSM
+  LOCAL
+  01 OUTPUT-DATA       /*  Output Elements
+    02 PN (A20/1:12)   /*  Product Name
+    02 VS (A04/1:12)   /*  Product Version and Release
+    02 SM (A02/1:12)   /*  SM Level
+    02 DT (A08/1:12)   /*  SM Release Date
+    02 IU (A02/1:12)   /*  Update Level
+    02 RC (P01)        /*  Response Code
+    02 TX (A48)        /*  Explanation to RC
+  01 INC-VAL (A3)
+  01 REDEFINE INC-VAL
+    02 OFF-INDIC (A01)
+    02 OFF-VALUE (N02)
+  01 FIRST   (L)       INIT <TRUE>
+  01 #I (N2)
+  01 #IUPD (I1)
+  01 #SM (I1)
+END-DEFINE
+*
+REPEAT
+  /*
+  RESET PN (*) VS (*) SM (*) DT (*) IU (*)
+  /*
+  CALLNAT 'USR0050N' OUTPUT-DATA     /*  Read Product Information
+  /*
+  IF RC = 1
+    IF FIRST
+      OFF-INDIC := '+'
+      OFF-VALUE := 12
+      FIRST  := FALSE
+    ELSE
+      OFF-INDIC := '+'
+      ADD 11 TO OFF-VALUE
+    END-IF
+    MOVE INC-VAL TO TX
+  END-IF
+  /*
+  FOR #I = 1 TO 12
+    EXAMINE PN(#I) TRANSLATE INTO UPPER CASE
+    IF PN(#I) = "NATURAL CONSTRUCT" THEN
+      CSRRVSM.#PRODUCT-NAME := PN(#I)
+      IF SM(#I) IS (N2)
+        #SM := VAL(SM(#I))
+      END-IF
+      COMPRESS VS(#I) '.' #SM
+            TO CSRRVSM.#VERSION-NUMBER LEAVING NO
+      IF IU(#I) NE ' ' THEN
+        IF IU(#I) IS (N2)
+          #IUPD := VAL(IU(#I))
+        END-IF
+        COMPRESS CSRRVSM.#VERSION-NUMBER '.' #IUPD
+              TO CSRRVSM.#VERSION-NUMBER LEAVING NO
+        CSRRVSM.#INPL-UPDATE-LEVEL := IU(#I)
+      END-IF
+    END-IF
+  END-FOR
+  IF RC = 0 THEN
+    ESCAPE BOTTOM /* No further processing required
+  END-IF
+*
+END-REPEAT
+*
+END

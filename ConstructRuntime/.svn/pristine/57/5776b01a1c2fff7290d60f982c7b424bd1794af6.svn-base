@@ -1,0 +1,412 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDFLIP /* Flip PF-KEY display
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 27 Dec. 1989
+* Description: This subprogram should be associated with the FLIP
+*            | PF-KEY. If the FLIP key is pressed this subprogram
+*            | should be invoked to prompt the user for the
+*            | desired PF-KEY format and intensity.
+*            |
+*            | Additionally, this routine can be used to totally
+*            | remove the display of the standard PF-Key lines.
+*            | This capability allows your applications to toggle
+*            | between showing PF-Key values and command values.
+*            | Valid command values should be placed on the screen
+*            | underneath where the standard PF-Key lines are
+*            | displayed. Then when the user requests to see the
+*            | available commands, this routine will disable the
+*            | key display, thereby revealing the command list.
+*            |
+*            | If you wish to support the display of the available
+*            | command list, set the #AVAILABLE-COMMANDS parameter
+*            | to TRUE. You can also extend this subprogram to
+*            | allow a variety of optional information to be
+*            | requested for display in the Key-Display area.
+*            | For example, Available Commands vs. Date/time info.
+*            | The index of the option selected is returned in the
+*            | parameter #OPTION-SELECTED. If a valid PF-Key
+*            | format is chosen, #OPTION-SELECTED is set to zero.
+*            |
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDFLIPA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDKEYLDA
+  LOCAL USING CDENVIRA
+  LOCAL USING CDDIALDA
+  LOCAL
+  01 #AVAILABLE-COMMANDS-CV(C)
+  01 #LAST-HALF-OR-ALL(A2)   /* Keep track of the last specified %YH/%YA
+  01 #LAST-1-12-OR-13-24(A2) /* Keep track of the last specified %YF/%YL
+  01 #LAST-LOCATION(A5) /* Keep track of the last %YB or %Y50
+  01 #I(P1)
+  01 #COLOUR(A2/1:7) INIT<'BL','GR','NE','PI','RE','TU','YE'>
+  01 #COLOUR-CV(C/1:8) INIT ALL <(AD=I)>
+  01 #COLOUR1(A2)
+  01 #COLOUR2(A2)
+  01 #INPUT
+    02 #CHANGE-COLOUR(L)
+    02 #CHANGE-INTENSITY(L)
+    02 #CHANGE-REVERSE(L)
+    02 #CHANGE-SENSITIVITY(L)
+    02 #CHANGE-1-12(L)
+    02 #CHANGE-13-24(L)
+  01 #KEY-FORMATS
+    02 #ISA-1-12(L)
+    02 #ISA-HALF(L)
+    02 #AVAILABLE-COMMANDS(L)
+    02 #PC(L)
+    02 #SAA(L)
+  01 REDEFINE #KEY-FORMATS
+    02 #LIST(L/1:5)
+  01 #LINE1-COLOUR(L/1:8)
+  01 #LINE2-COLOUR(L/1:8)
+  01 #SOMETHING-SET(L)
+  01 #PGM-NAME(A8)
+  01 #WINDOW-HEIGHT(P3)
+  01 #SET-WINDOW-LS(N3)
+  01 #SET-WINDOW-PS(N3)
+  01 #SET-WINDOW-BASE-COL(N6)
+  01 #SET-WINDOW-BASE-LINE(N3)
+  01 #SET(A10)
+  01 #TEMP-LINESIZE(N7)
+  01 #SCR-CV(C)
+  01 #TRANSLATIONS
+    02 #ENTER-KEY(A10) INIT<'*8433.1'> /* message number in CSTAPPL
+  01 REDEFINE #TRANSLATIONS
+    02 #DATA(A1/1:10)
+  01 #CALLER(A8)
+END-DEFINE
+MOVE *PROGRAM TO #CALLER
+FORMAT KD=ON
+PERFORM CAPTURE-RESTORE-ENVIRONMENT
+RESET CDFLIPA.OUTPUTS
+ASSIGN #COLOUR-CV(8) = (AD=NP) /* Only 7 colours are available
+PERFORM SET-KEYS
+INCLUDE CCKDON /* Turn standard keys on.
+ASSIGN #PGM-NAME = *PROGRAM
+ASSIGN #SYSTEM = 'CS' /* CST Gnerated applications
+*
+PROG.
+REPEAT
+  RESET #KEY-FORMATS #INPUT
+  PERFORM SET-COMMANDS-AND-WINDOW
+  ASSIGN #PROGRAM = 'CDFLIP11'
+  INPUT WITH TEXT *MSG-INFO.##MSG-NR,
+        MSG-INFO.##MSG-DATA(1), MSG-INFO.##MSG-DATA(2),
+        MSG-INFO.##MSG-DATA(3) USING MAP 'CDFLIP1&'
+  RESET MSG-INFO
+*
+* Check PF-KEYs
+  DECIDE ON FIRST VALUE *PF-KEY
+    VALUE CDKEYLDA.#RETURN-KEY
+      /*
+      /* 'Function terminated using:1:'
+      ASSIGN MSG-INFO.##MSG-NR = 8040
+      ASSIGN MSG-INFO.##MSG-DATA(1) = *PF-KEY
+      CALLNAT 'CDUMSGU' MSG-INFO
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    VALUE 'ENTR' IGNORE
+    NONE
+      REINPUT *8003 ALARM
+  END-DECIDE
+*
+* Make sure that if they specified a key format, that only one format
+* is specified.
+  IF #KEY-FORMATS.#LIST(*) THEN
+    IF SELECTION NOT UNIQUE #KEY-FORMATS.#LIST(*)
+      REINPUT *8077 ALARM
+    END-IF
+  END-IF
+*
+* Set desired key format.
+  DECIDE FOR FIRST CONDITION
+    WHEN #KEY-FORMATS.#ISA-1-12
+      ASSIGN #SET = 'YN'
+      PERFORM SET-CONTROL
+      ASSIGN #LAST-HALF-OR-ALL = #SET = 'YA'
+      PERFORM SET-CONTROL
+    WHEN #KEY-FORMATS.#ISA-HALF
+      ASSIGN #SET = 'YN'
+      PERFORM SET-CONTROL
+      ASSIGN #LAST-HALF-OR-ALL = #SET = 'YH'
+      PERFORM SET-CONTROL
+    WHEN #KEY-FORMATS.#SAA
+      ASSIGN #LAST-HALF-OR-ALL = #SET = 'YA'
+      PERFORM SET-CONTROL
+      ASSIGN #SET = 'YS'
+      PERFORM SET-CONTROL
+    WHEN #KEY-FORMATS.#PC
+      ASSIGN #LAST-HALF-OR-ALL = #SET = 'YA'
+      PERFORM SET-CONTROL
+      ASSIGN #SET = 'YP'
+      PERFORM SET-CONTROL
+    WHEN ANY
+      ASSIGN #LAST-LOCATION = #SET = 'YB'
+      PERFORM SET-CONTROL
+    WHEN NONE
+      /*
+      /* If one of the non-PF-Key options was selected, pass the option
+      /* selected back to the calling program and move the PF-KEYs off
+      /* the screen.
+      DECIDE FOR FIRST CONDITION
+        WHEN #KEY-FORMATS.#AVAILABLE-COMMANDS
+          ASSIGN CDFLIPA.#OPTION-SELECTED = 1
+        WHEN ANY
+          ASSIGN #SET = 'Y60'
+          PERFORM SET-CONTROL
+          ASSIGN #LAST-LOCATION = 'Y60'
+        WHEN NONE IGNORE
+      END-DECIDE
+  END-DECIDE
+*
+* Set other properties
+  DECIDE FOR EVERY CONDITION
+    WHEN #CHANGE-INTENSITY
+      ASSIGN #SET = 'YI'
+      PERFORM SET-CONTROL
+    WHEN #CHANGE-REVERSE
+      ASSIGN #SET = 'YV'
+      PERFORM SET-CONTROL
+    WHEN #CHANGE-SENSITIVITY
+      ASSIGN #SET = 'YC'
+      PERFORM SET-CONTROL
+    WHEN #CHANGE-13-24
+      ASSIGN #SET = 'YL'
+      PERFORM SET-CONTROL
+      /*
+      /* Keep track of the last specified %YF/%YL so that this can be
+      /* reissued after the callnat to CDENVIR issued before returning.
+      /* This must be issued again because CDENVIR restores this to what
+      /* the setting was originally.
+      ASSIGN #LAST-1-12-OR-13-24 = 'YL'
+    WHEN #CHANGE-1-12
+      ASSIGN #LAST-1-12-OR-13-24 = #SET = 'YF'
+      PERFORM SET-CONTROL
+    WHEN NONE IGNORE
+  END-DECIDE
+  IF #CHANGE-COLOUR THEN
+    RESET #CHANGE-COLOUR
+    PERFORM CHANGE-COLOUR
+    ESCAPE TOP
+  END-IF
+  /*
+  /* if user did not change anything, return.
+  IF #SCR-CV NOT MODIFIED
+    IF NOT #SOMETHING-SET THEN
+      /*
+      /* 'No action performed'
+      ASSIGN MSG-INFO.##MSG-NR = 8031
+      CALLNAT 'CDUMSGU' MSG-INFO
+    END-IF
+    ESCAPE BOTTOM(PROG.) IMMEDIATE
+  END-IF
+END-REPEAT
+*
+* Restore previous window settings.
+PERFORM CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE CAPTURE-RESTORE-ENVIRONMENT
+************************************************************************
+*
+PERFORM CAPTURE-RESTORE-WINDOW
+  DECIDE FOR EVERY CONDITION
+    WHEN #LAST-1-12-OR-13-24 NE ' '
+      ASSIGN #SET = #LAST-1-12-OR-13-24
+      PERFORM SET-CONTROL
+    WHEN #LAST-LOCATION NE ' '
+      ASSIGN #SET = #LAST-LOCATION
+      PERFORM SET-CONTROL
+    WHEN #LAST-HALF-OR-ALL NE ' '
+      ASSIGN #SET = #LAST-HALF-OR-ALL
+      PERFORM SET-CONTROL
+    WHEN NONE IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE CAPTURE-RESTORE-WINDOW
+************************************************************************
+*
+* CDENVIR is not used to capture/restore window because we don't want
+* the PF-Key location to also be restored since this is being changed.
+*
+* Decide whether to capture or restore the window settings.
+DECIDE ON FIRST VALUE CDENVIRA.#CAPTURE-RESTORE
+  VALUE FALSE /* Capture
+    /*
+    /* Capture current settings.
+    ASSIGN CDENVIRA.#WINDOW-LS = *WINDOW-LS
+    ASSIGN CDENVIRA.#WINDOW-PS = *WINDOW-PS
+    ASSIGN CDENVIRA.#WINDOW-POS = *WINDOW-POS
+    /*
+    /* If the window size = the physical terminal size assume framing
+    /* is not on.
+    DECIDE FOR FIRST CONDITION
+      WHEN CDENVIRA.#WINDOW-LS = *LINESIZE AND
+           CDENVIRA.#WINDOW-PS = *PAGESIZE
+        ASSIGN CDENVIRA.#WINDOW-FRAME = FALSE
+      WHEN NONE
+        ASSIGN CDENVIRA.#WINDOW-FRAME = TRUE
+    END-DECIDE
+    /*
+    /* Change the parameter so that the next call will cause a set.
+    ASSIGN CDENVIRA.#CAPTURE-RESTORE = TRUE
+  /*
+  /* Restore the previous settings.
+  VALUE TRUE /* Restore
+    SET CONTROL 'WB'
+    DECIDE FOR EVERY CONDITION
+      WHEN CDENVIRA.#WINDOW-FRAME
+        SET CONTROL 'WF'
+        COMPUTE #SET-WINDOW-LS = CDENVIRA.#WINDOW-LS + 4
+        COMPUTE #SET-WINDOW-PS = CDENVIRA.#WINDOW-PS + 2
+      WHEN NOT CDENVIRA.#WINDOW-FRAME
+        SET CONTROL 'WM'
+        COMPUTE #SET-WINDOW-LS = CDENVIRA.#WINDOW-LS + 1
+        ASSIGN #SET-WINDOW-PS = CDENVIRA.#WINDOW-PS
+      WHEN *LINESIZE = CDENVIRA.#WINDOW-LS
+        COMPRESS 'WL' #SET-WINDOW-LS TO #SET LEAVING NO
+        SET CONTROL #SET
+      WHEN *LINESIZE NE CDENVIRA.#WINDOW-LS
+        COMPRESS 'WL' #SET-WINDOW-LS TO #SET LEAVING NO
+        SET CONTROL #SET
+      WHEN *PAGESIZE = CDENVIRA.#WINDOW-PS
+        ASSIGN  #SET = 'WC'
+        SET CONTROL #SET
+      WHEN *PAGESIZE NE CDENVIRA.#WINDOW-PS
+        COMPRESS 'WC' #SET-WINDOW-PS TO #SET LEAVING NO
+        SET CONTROL #SET
+      WHEN NONE IGNORE
+    END-DECIDE
+    /*
+    /* Restore the window base.
+    ASSIGN #SET-WINDOW-BASE-COL = CDENVIRA.#WINDOW-POS
+    ASSIGN #TEMP-LINESIZE = *LINESIZE
+    DIVIDE #TEMP-LINESIZE INTO #SET-WINDOW-BASE-COL
+                     REMAINDER #SET-WINDOW-BASE-LINE
+    COMPRESS 'WB' #SET-WINDOW-BASE-COL '/' #SET-WINDOW-BASE-LINE TO #SET
+             LEAVING NO
+    SET CONTROL #SET
+  NONE IGNORE
+END-DECIDE
+END-SUBROUTINE /* CAPTURE-RESTORE-WINDOW
+*
+************************************************************************
+DEFINE SUBROUTINE CHANGE-COLOUR
+************************************************************************
+*
+SHOW-NEXT-COLOR.
+REPEAT
+  SET CONTROL 'WBFL65C18B3/7'
+  ASSIGN #PROGRAM = 'CDFLIP21'
+  INPUT WITH TEXT *MSG-INFO.##MSG-NR,
+        MSG-INFO.##MSG-DATA(1), MSG-INFO.##MSG-DATA(2),
+        MSG-INFO.##MSG-DATA(3)
+        USING MAP 'CDFLIP2&'
+  RESET MSG-INFO
+  /*
+  /* If the user didn't type anything, return
+  IF #SCR-CV NOT MODIFIED THEN
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+  /*
+  /* Check PF-KEYs
+  DECIDE ON FIRST VALUE *PF-KEY
+    VALUE CDKEYLDA.#RETURN-KEY
+      /*
+      /* 'Function terminated using:1:'
+      ASSIGN MSG-INFO.##MSG-NR = 8040
+      CALLNAT 'CDUMSGU' MSG-INFO
+      ASSIGN MSG-INFO.##MSG-DATA(1) = *PF-KEY
+      ESCAPE ROUTINE IMMEDIATE
+    VALUE 'ENTR'
+      IF SELECTION NOT UNIQUE #LINE1-COLOUR(*) THEN
+        REINPUT *8078,1 MARK *#LINE1-COLOUR(1) ALARM
+      END-IF
+*
+      IF SELECTION NOT UNIQUE #LINE2-COLOUR(*) THEN
+        REINPUT *8078,1 MARK *#LINE2-COLOUR(1) ALARM
+      END-IF
+*
+      FOR #I = 1 TO 7
+        IF #LINE1-COLOUR(#I) THEN
+          ASSIGN #COLOUR1 = #COLOUR(#I)
+        END-IF
+        IF #LINE2-COLOUR(#I) THEN
+          ASSIGN #COLOUR2 = #COLOUR(#I)
+        END-IF
+      END-FOR
+      COMPRESS 'Y=' #COLOUR1 #COLOUR2 TO #SET LEAVING NO
+      PERFORM SET-CONTROL
+      /*
+      /* PF-KEY colors have been set successfully
+      ASSIGN MSG-INFO.##MSG-NR = 8043
+      CALLNAT 'CDUMSGU' MSG-INFO
+      RESET #LINE1-COLOUR(*) #LINE2-COLOUR(*)
+    NONE
+      REINPUT *8003 ALARM
+  END-DECIDE
+END-REPEAT /* SHOW-NEXT-COLOR.
+END-SUBROUTINE /* CHANGE-COLOUR
+*
+************************************************************************
+DEFINE SUBROUTINE SET-COMMANDS-AND-WINDOW
+************************************************************************
+*
+* Determine which additional commands are available.
+  ASSIGN #WINDOW-HEIGHT = 21 /* Assume no additional commands
+  DECIDE FOR FIRST CONDITION
+    WHEN CDFLIPA.#AVAILABLE-COMMANDS
+      ADD 1 TO #WINDOW-HEIGHT
+      ASSIGN #AVAILABLE-COMMANDS-CV = (AD=I)
+    WHEN ANY
+      ADD 3 TO #WINDOW-HEIGHT
+    WHEN NONE IGNORE
+  END-DECIDE
+  SET CONTROL 'WBF'
+  COMPRESS 'WC' #WINDOW-HEIGHT TO #SET LEAVING NO
+  SET CONTROL #SET
+  SET CONTROL 'WL73B1/3'
+END-SUBROUTINE /* SET-COMMANDS-AND-WINDOW
+*
+************************************************************************
+DEFINE SUBROUTINE SET-KEYS
+************************************************************************
+*
+* Set PF-KEYS and their names.
+*
+* Translate message text.
+  CALLNAT 'CDUTRANS' #TRANSLATIONS.#DATA(*) #CALLER MSG-INFO
+  SET KEY ALL
+  SET KEY TREQ NAMED #TRANSLATIONS.#ENTER-KEY
+  RESET CDKEYLDA.#PFKEY(*)
+*
+* Assign standard PF Keys used.
+  RESET INITIAL CDKEYLDA.#HELP-KEY CDKEYLDA.#RETURN-KEY
+  INCLUDE CCSETKEY /* Set specified keys
+  INCLUDE CCSETHLP /* Help key
+END-SUBROUTINE /* SET-KEY
+*
+************************************************************************
+DEFINE SUBROUTINE SET-CONTROL
+************************************************************************
+*
+* Issue set controls from a subroutine to make it easier to trace them
+* during debugging and to set message only when necessary.
+  SET CONTROL #SET
+  /*
+  /* 'PF-KEY format has been set successfully'
+  ASSIGN MSG-INFO.##MSG-NR = 8041
+  CALLNAT 'CDUMSGU' MSG-INFO
+  ASSIGN #SOMETHING-SET = TRUE
+END-SUBROUTINE /* SET-CONTROL
+END

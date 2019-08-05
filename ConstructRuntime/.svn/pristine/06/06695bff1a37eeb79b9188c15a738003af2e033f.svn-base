@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/*
+/* Post XML documents
+ 1 #POSTXML (A) DYNAMIC
+/*
+/* Required for XML escape character substitution
+ 1 #REP-IND (N1)
+/* If index change value in substituion routine of request documents
+/* must change too
+ 1 #REPLACEMENT-TABLE (1:5)
+   2 #SEARCH-STRING (A6)
+   2 #REPLACE-STRING (A6)
+ 1 #REP-MANIPULATION-STRING (A) DYNAMIC
+ 1 #DOUBLE-QUOTE (A1)
+/* /* incremented
+END-DEFINE

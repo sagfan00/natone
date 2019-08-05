@@ -1,0 +1,477 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: Help Text utility
+**SAG SYSTEM: CST411P3
+**SAG DESCS(1): This subprogram prints the PREDICT extended
+**SAG DESCS(2): description for a passed file name/field name.
+**SAG PROGRAM-TYPE: N
+**SAG LOCAL-NAME(1): CDENVIRA
+**SAG LOCAL-NAME(2): CDPDA-M
+**SAG LOCAL-NAME(3): CDHLPTXL
+**SAG LOCAL-NAME(4): CDASAA
+**SAG LOCAL-NAME(5): CDKEYLDA
+**SAG LOCAL-NAME(6): USR1051A
+************************************************************************
+* Program  : CD-HPRED
+* System   : CST411P3
+* Title    : Help Text utility
+* Generated: Apr 23,97 at 09:20 AM by SAG
+* Function : This subprogram prints the PREDICT extended
+*            description for a passed file name/field name.
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on Jul 25,96 by DEVAC for release 341
+* >
+* > Description: This subprogram prints the PREDICT extended
+* >            : description for a passed file name/field name.
+* >            : This routine is used when field level help is
+* >            : requested and no help exist on the NATURAL
+* >            : CONSTRUCT help file for the field but an extended
+* >            : description of the field exists in PREDICT.
+* >
+* >            : This routine is now language independent.
+* >
+* >            : If predict definition not found, assign
+* >            : type F, major #, and minor portion after .
+* >            : with the # stripped off. For CST usage
+* >            : Input CSTLDA.#VAR gives F/#/VAR
+* >
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+**SAG DEFINE EXIT PARAMETER-DATA
+  PARAMETER
+  01 #PARM1(A65)
+**SAG END-EXIT
+  LOCAL USING CDENVIRA
+  LOCAL USING CDPDA-M
+  LOCAL USING CDHLPTXL
+  LOCAL USING CDASAA
+  LOCAL USING CDKEYLDA
+  LOCAL USING USR1051A
+  LOCAL USING CSASTD
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+*
+* Miscellaneous local variables in alphabetic order
+  01 #AFTER-DOT(A32)
+  01 REDEFINE #AFTER-DOT
+    02 #ONE-CHAR  (A1)
+    02 #REMAINING (A31)
+  01 #BEFORE-DOT(A32)
+  01 #DONE(L)
+  01 #END-KEY(A67)
+  01 REDEFINE #END-KEY
+    02 #END-FILLER(A65)
+    02 #END-SEQ(B2)
+  01 #ETEXT(A76)
+  01 REDEFINE #ETEXT
+    02 #FILL(A4)
+    02 #TEXT(A72)
+  01 #EXIT(L)
+  01 #EXTRAS(A32)
+  01 #HEADER1(A78)
+  01 #HEADER-MAJOR-MINOR (A67)
+  01 REDEFINE #HEADER-MAJOR-MINOR
+    02 TYPE-MAJOR-MINOR (A65)
+    02 LANG  (N2)
+  01 #HELP(L)
+  01 #HPARM(A65)
+  01 REDEFINE #HPARM
+    02 #TYPE(A1)
+    02 #MAJOR(A32)
+    02 #MINOR(A32)
+  01 #I(P3)
+  01 #ISN-CHOICE(P10/1:3)
+  01 #J(P3)
+  01 #MSG-TEXT(A79)
+  01 #PF-KEY(A4)
+  01 #START-KEY(A67) INIT<'C'>
+  01 REDEFINE #START-KEY
+    02 #REC-TYPE(A1)
+    02 #FILE-NAME(A32)
+    02 #FIELD-NAME(A32)
+    02 #START-SEQ(B2)
+  01 #WINDOW(A10)
+  01 #K (P3)
+  01 #SL-TEXT (A250)
+  01 REDEFINE #SL-TEXT
+    02 #SL-TEXT-A1 (A1/1:250)
+*
+* Views
+  01 NCST-HELP VIEW OF NCST-HELP
+    02 HELP-LINES-PER-PAGE
+*
+  01 NCST-PROFILE VIEW OF NCST-PROFILE
+    02 PROFILE-NAME
+    02 HELP-LINES-PER-PAGE
+    02 WINDOW-BASE
+    02 WINDOW-LENGTH
+    02 WINDOW-COLUMNS
+    02 WINDOW-FRAME
+    02 REDEFINE WINDOW-FRAME
+      03 WINDOW-FRAME-(L)
+    02 WINDOW-STAY
+    02 REDEFINE WINDOW-STAY
+      03 WINDOW-STAY-(L)
+*
+  01 SYSDIC-EL
+    02 FIELD-NAME (A32)
+    02 FILE-NAME (A32)
+    02 DESC (A1)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+*
+* Setup start and end keys for read
+FORMAT KD=ON
+*
+AT TOP OF PAGE
+  WRITE NOTITLE CDHLPTXL.#HELP-PREDICT-DESC-TXT (AD=I)
+    / CDHLPTXL.#HELP-FILE-TXT
+    #START-KEY.#FILE-NAME(AD=I)
+    / CDHLPTXL.#HELP-FIELD-TXT
+    #START-KEY.#FIELD-NAME(AD=I)
+END-TOPPAGE
+*
+SEPARATE #PARM1 INTO #BEFORE-DOT #AFTER-DOT #EXTRAS #EXTRAS #EXTRAS
+  WITH DELIMITERS '.'
+*
+PERFORM DETERMINE-FIELD-FILE
+*
+IF #START-KEY.#FILE-NAME = ' ' THEN
+  /*
+  /* if no predict field description found, assume it is a data area
+  /* structure, assign type to F, major to #, and minor (for CST)
+  IF #AFTER-DOT.#ONE-CHAR = '#' OR = '+' THEN
+    ASSIGN #HPARM.#TYPE = 'F'
+    ASSIGN #HPARM.#MAJOR = #AFTER-DOT.#ONE-CHAR
+    ASSIGN #HPARM.#MINOR = #AFTER-DOT.#REMAINING
+    PERFORM GET-LINES-PER-PAGE
+    DECIDE ON FIRST VALUE OF NCST-HELP.HELP-LINES-PER-PAGE
+      VALUE 0
+        IGNORE
+      VALUE 1:18
+        CALLNAT 'CD-HELP' #HPARM
+      NONE
+        CALLNAT 'CD-HELPL' #HPARM
+    END-DECIDE
+  END-IF
+  /*
+  IF NCST-HELP.HELP-LINES-PER-PAGE = 0 THEN
+    PERFORM NO-DESC-FOUND
+  END-IF
+  ASSIGN #DONE = TRUE
+ELSE
+  MOVE H'0000'    TO #START-SEQ
+  MOVE #START-KEY TO #END-KEY
+  MOVE H'FFFF'    TO #END-SEQ
+  PERFORM READ-PROFILE
+END-IF
+*
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+MAIN.
+REPEAT
+  IF #DONE THEN
+    ESCAPE BOTTOM(MAIN.) IMMEDIATE
+  END-IF
+*
+* Read file and print description
+  ASSIGN USR1051A.INFO-TYPE    = 'E'
+  ASSIGN USR1051A.OBJECT-TYPE  = 'EL'
+  ASSIGN USR1051A.OBJECT-NAME  = #AFTER-DOT
+  ASSIGN USR1051A.OTHER-KEY    = #START-KEY.#FILE-NAME
+  ASSIGN USR1051A.OPT-AMOUNT   = 20
+  ASSIGN USR1051A.OPT-LINESIZE = 72
+  ASSIGN USR1051A.OPT-ACCESS   = 'R'
+  ASSIGN USR1051-RESTR.RESTR-LENGTH = 3
+  RESET USR1051-MSG USR1051-FLD.FIELD-POSITION RESTR-EL-SORT
+    REPEAT1.
+  REPEAT
+    CALLNAT 'USR1051N' USR1051A USR1051-TEXT
+      USR1051-RESTR (1:RESTR-LENGTH) USR1051-SL USR1051-MSG USR1051-FLD
+    FOR #K = 1 TO SL-RETURN
+      ASSIGN #SL-TEXT-A1 (1:OPT-LINESIZE) = SL-TEXT(#K,1:OPT-LINESIZE)
+      WRITE #SL-TEXT (AL=79)
+      ADD 1 TO #J
+      IF #J GE NCST-PROFILE.HELP-LINES-PER-PAGE
+        RESET #J
+        NEWPAGE
+      END-IF
+    END-FOR
+    IF NEXT-NUM = 0 THEN
+      ADD 1 TO #J
+      FOR #I = #J TO NCST-PROFILE.HELP-LINES-PER-PAGE
+        SKIP 1
+      END-FOR
+      NEWPAGE
+    END-IF
+    AT END OF PAGE
+      RESET #MSG-TEXT
+      INPUT WITH TEXT *8088 #MSG-TEXT(IP=OFF AD=O AL=50)
+      RESET #EXIT #HELP
+      PERFORM CHECK-PFKEYS
+      DECIDE FOR FIRST CONDITION
+        WHEN #EXIT
+          ASSIGN #DONE = TRUE
+        WHEN #HELP
+          IGNORE
+        WHEN ANY
+          ESCAPE BOTTOM(REPEAT1.) IMMEDIATE
+        WHEN NONE IGNORE
+      END-DECIDE
+    END-ENDPAGE
+    UNTIL NEXT-NUM = 0
+  END-REPEAT
+  IF USR1051-MSG.MSG-TYPE NE 0 THEN
+    PERFORM NO-DESC-FOUND
+  END-IF
+*
+  IF #HELP THEN
+    CALLNAT 'CD-HELP' #HPARM
+  ELSE
+    ASSIGN #DONE = TRUE
+  END-IF
+END-REPEAT /* MAIN.
+*
+* Reset window settings of previous program.
+CALLNAT 'CDENVIR' CDENVIRA
+*
+************************************************************************
+DEFINE SUBROUTINE GET-LINES-PER-PAGE
+************************************************************************
+*
+  ASSIGN #HEADER-MAJOR-MINOR.TYPE-MAJOR-MINOR = #HPARM
+  ASSIGN #HEADER-MAJOR-MINOR.LANG = *LANGUAGE
+  FIND-HEADER.
+  FIND (1) NCST-HELP WITH HEADER-MAJOR-MINOR
+                       = #HEADER-MAJOR-MINOR
+  END-FIND
+  /*
+  /* If no help text for current language, check for corresponding help
+  /* text member for language 1
+  IF *NUMBER(FIND-HEADER.) = 0 THEN
+    ASSIGN #HEADER-MAJOR-MINOR.LANG = 1
+    FIND-HEADER2.
+    FIND (1) NCST-HELP WITH HEADER-MAJOR-MINOR
+                         = #HEADER-MAJOR-MINOR
+    END-FIND
+  END-IF
+*
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE NO-DESC-FOUND
+************************************************************************
+*
+  FORMAT KD=OFF
+  SET CONTROL 'WBFL80C4B17/0'
+  INPUT (IP=OFF AD=OI) WITH TEXT #MSG-TEXT
+    10T  CDHLPTXL.#HELP-PREDICT-NO-DESC-FOUND (AD=OD AL=60)
+END-SUBROUTINE /* NO-DESC-FOUND
+*
+************************************************************************
+DEFINE SUBROUTINE DETERMINE-FIELD-FILE
+************************************************************************
+*
+* The following attempts will be made to match the input parameter,
+* which is in the format structure-name.field-name to a suitable
+* file.field in PREDICT.
+*
+* 1. First look for an exact match of the file name and the field name
+*    ie. Where the structure name passed, matches a file in PREDICT.
+* 2. Next try to find any field in PREDICT whose name matches the
+*    passed field and whose file has a keyword or a comment containing
+*    the passed structure name.
+* 3. Next try to find the field description on a standard file.
+* 4. Next try to find the field description on a file of type ADABAS,
+*    DB/2, VSAM or DL/1.
+* 5. Finally find any matching field that has a description
+*
+  CALLNAT 'CP-HPRED' #BEFORE-DOT #AFTER-DOT
+         #START-KEY.#FILE-NAME #START-KEY.#FIELD-NAME
+*
+END-SUBROUTINE /* DETERMINE-FIELD-FILE
+*
+************************************************************************
+DEFINE SUBROUTINE READ-PROFILE /* Read profile for PREDICT
+************************************************************************
+*
+  FIND-PREDICT.
+  FIND NCST-PROFILE WITH PROFILE-NAME = 'PREDICT'
+  END-FIND
+  IF *NUMBER(FIND-PREDICT.) = 0 THEN
+    ASSIGN #MSG-TEXT = CDHLPTXL.#HELP-PREDICT-NO-PROFILE
+    FIND-SYSTEM.
+    FIND NCST-PROFILE WITH PROFILE-NAME = 'SYSTEM'
+      IF NO RECORDS FOUND
+        ASSIGN NCST-PROFILE.HELP-LINES-PER-PAGE = 15
+        ASSIGN NCST-PROFILE.WINDOW-BASE = '0/0'
+        ASSIGN NCST-PROFILE.WINDOW-LENGTH = 80
+        ASSIGN NCST-PROFILE.WINDOW-FRAME- = TRUE
+        ASSIGN NCST-PROFILE.WINDOW-STAY- = TRUE
+      END-NOREC
+    END-FIND
+  END-IF
+  SET CONTROL 'WB'
+  IF NCST-PROFILE.WINDOW-FRAME-
+    SET CONTROL 'WF'
+  ELSE
+    SET CONTROL 'WM'
+  END-IF
+  IF NCST-PROFILE.WINDOW-STAY-
+    SET CONTROL 'WS'
+  ELSE
+    SET CONTROL 'WN'
+  END-IF
+  COMPRESS 'WL' NCST-PROFILE.WINDOW-LENGTH INTO #WINDOW LEAVING NO
+  SET CONTROL #WINDOW
+  IF NCST-PROFILE.WINDOW-COLUMNS EQ 0
+    COMPUTE NCST-PROFILE.WINDOW-COLUMNS =
+      NCST-PROFILE.HELP-LINES-PER-PAGE + 9
+  END-IF
+  COMPRESS 'WC' NCST-PROFILE.WINDOW-COLUMNS INTO #WINDOW LEAVING NO
+  SET CONTROL #WINDOW
+  EXAMINE NCST-PROFILE.WINDOW-BASE FOR '/' GIVING NUMBER #I
+  IF #I NE 0
+    COMPRESS 'WB' NCST-PROFILE.WINDOW-BASE INTO #WINDOW LEAVING NO
+  ELSE
+    COMPRESS 'W' NCST-PROFILE.WINDOW-BASE INTO #WINDOW LEAVING NO
+  END-IF
+  SET CONTROL #WINDOW
+END-SUBROUTINE /* READ-PROFILE
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-PFKEYS
+************************************************************************
+*
+*  Set keys, Perform edits
+  ASSIGN #PF-KEY = *PF-KEY
+  DECIDE ON FIRST VALUE OF *PF-KEY
+    VALUE #HELP-KEY
+      ASSIGN #HELP = TRUE
+      RESET #J
+    VALUE #RETURN-KEY
+      ASSIGN #EXIT = TRUE
+    VALUE #FORWARD-KEY, #CONFIRM-KEY
+      IGNORE
+    NONE
+      REINPUT *8003 ALARM
+  END-DECIDE
+END-SUBROUTINE
+*
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+**SAG DEFINE EXIT ADDITIONAL-INITIALIZATIONS
+*
+* Set additional initializations
+*
+* Build current language text/messages
+  CALLNAT 'CDUTRANS' CDHLPTXL.CDUTRANS(*) CDHLPTXL-NAME MSG-INFO
+*
+* Build ISA-SAA prompts to support language independence.
+  ASSIGN CDASAA.#MSG-TXT = CDHLPTXL.#HELP-FILE-TXT
+  ASSIGN CDASAA.#MAX-MSG-LENGTH = 15
+  CALLNAT 'CDUSAA' CDASAA
+  ASSIGN CDHLPTXL.#HELP-FILE-TXT = CDASAA.#MSG-TXT
+*
+  ASSIGN CDASAA.#MSG-TXT = CDHLPTXL.#HELP-FIELD-TXT
+  ASSIGN CDASAA.#MAX-MSG-LENGTH = 15
+  CALLNAT 'CDUSAA' CDASAA
+  ASSIGN CDHLPTXL.#HELP-FIELD-TXT = CDASAA.#MSG-TXT
+  SET KEY ALL
+  CALLNAT 'CDUTRANS' CDKEYLDA.CDUTRANS(*)
+                     CDKEYLDA.#KEY-NAME-END
+                     MSG-INFO
+  FOR CDKEYLDA.#PF-INDX = 1 TO CDKEYLDA.#PF-ARRAY-SIZE
+    IF CDKEYLDA.#PFKEY(#PF-INDX) = CDKEYLDA.#CONFIRM-KEY
+      OR = CDKEYLDA.#HELP-KEY
+      OR = CDKEYLDA.#RETURN-KEY
+      OR = CDKEYLDA.#FORWARD-KEY
+      DECIDE ON FIRST VALUE OF CDKEYLDA.#PFKEY(#PF-INDX)
+        VALUE '    ' IGNORE
+        VALUE 'PF1'  SET KEY PF1  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF2'  SET KEY PF2  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF3'  SET KEY PF3  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF4'  SET KEY PF4  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF5'  SET KEY PF5  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF6'  SET KEY PF6  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF7'  SET KEY PF7  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF8'  SET KEY PF8  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF9'  SET KEY PF9  NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF10' SET KEY PF10 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF11' SET KEY PF11 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF12' SET KEY PF12 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF13' SET KEY PF13 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF14' SET KEY PF14 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF15' SET KEY PF15 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF16' SET KEY PF16 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF17' SET KEY PF17 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF18' SET KEY PF18 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF19' SET KEY PF19 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF20' SET KEY PF20 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF21' SET KEY PF21 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF22' SET KEY PF22 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF23' SET KEY PF23 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'PF24' SET KEY PF24 NAMED #KEY-NAME(#PF-INDX)
+        VALUE 'ENTR' SET KEY TREQ NAMED #KEY-NAME(#PF-INDX)
+        NONE WRITE *PROGRAM 'USES UNSUPPORTED PF-KEY:' #PFKEY(#PF-INDX)
+      END-DECIDE
+    END-IF
+  END-FOR
+*
+* Define own help key
+  ASSIGN #TYPE = 'P'
+  ASSIGN #MAJOR = 'CS'
+  ASSIGN #MINOR = *PROGRAM
+*
+* Reset window settings of previous program.
+  ASSIGN CDENVIRA.#CAPTURE-PS = TRUE
+  CALLNAT 'CDENVIR' CDENVIRA
+*
+  COMPRESS CDHLPTXL.#HELP-PARAMETER-TXT ':' TO
+    CDHLPTXL.#HELP-PARAMETER-TXT LEAVING NO
+  COMPRESS CDHLPTXL.#HELP-PARAMETER-TXT #PARM1 TO #MSG-TEXT
+**SAG END-EXIT
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

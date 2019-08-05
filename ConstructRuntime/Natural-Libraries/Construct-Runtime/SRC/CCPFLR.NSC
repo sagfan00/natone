@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Assign left/right scrolling PF-keys used.
+RESET INITIAL CDKEYLDA.#LEFT-KEY CDKEYLDA.#RIGHT-KEY

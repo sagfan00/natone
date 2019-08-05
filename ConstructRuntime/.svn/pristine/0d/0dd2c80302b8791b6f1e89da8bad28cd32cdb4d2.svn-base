@@ -1,0 +1,118 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: API for CD--ACT
+**SAG SYSTEM: APPLICATION
+**SAG DESCS(1): This module is used for a single action method call to
+**SAG DESCS(2): CD--ACT
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDSAACTA
+**SAG PARAMETER-NAME(2): CDPDA-M
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CDSAACT
+* System   : APPLICATION
+* Title    : API for CD--ACT
+* Generated: May 28,97 at 01:03 PM by SAG
+* Function : This module is used for a single action method call to
+*            CD--ACT
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDSAACTA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDAMSG                  /* Message retrieval passing area
+  LOCAL USING CDLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+  01 CD--ACTA
+    02 INPUTS (A1/1:9)
+    02 REDEFINE INPUTS
+      03 METHOD (A2)
+      03 VERSION (N1)
+      03 SOURCE-ID (A2)
+      03 ACTION-ID (N4)
+    02 INPUT-OUTPUTS (A1/1:89)
+    02 REDEFINE INPUT-OUTPUTS
+      03 ACTION-NAME-VARIABLE(A32)
+      03 ACTION-CODE (A12)
+      03 ACTION-NAME (A12)
+      03 ACTION-NAME-LONG (A32)
+      03 ACTION-STATUS (A1)
+    02 OUTPUTS (A1/1:68)
+    02 REDEFINE OUTPUTS
+      03 METHOD-LIBRARY(A8)
+      03 METHOD-DESCRIPTION(A60)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+* Validate method
+  RESET CDSAACTA.INPUT-OUTPUTS(*) CDSAACTA.OUTPUTS(*)
+  MOVE BY NAME CDSAACTA TO CD--ACTA
+  CALLNAT 'CD--ACT' #PROGRAM
+                    CD--ACTA.INPUTS(*)
+                    CD--ACTA.INPUT-OUTPUTS(*)
+                    CD--ACTA.OUTPUTS(*)
+                    MSG-INFO
+  PERFORM CHECK-ERROR
+  MOVE BY NAME CD--ACTA TO CDSAACTA
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CDAMSG TO MSG-INFO
+  RESET CDAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CDAMSG MSG-INFO
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

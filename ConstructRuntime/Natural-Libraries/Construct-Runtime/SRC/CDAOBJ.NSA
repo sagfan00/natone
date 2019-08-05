@@ -1,0 +1,23 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is superceded by
+/*  CDAOBJ2.
+ 1 CDAOBJ
+/*
+/*  This data area contains all
+/*  parameters that are common to
+/*  OBJECT-SUBPrograms.
+/*
+   2 INPUTS
+     3 #FUNCTION (A15) /* GET, NEXT, UPDATE, DELETE,
+/*                                       /* STORE, EXISTS, INITIALIZE
+/*                                       /* Other User Defined Functions.
+     3 #CLEAR-AFTER-UPDATE (L) /* Initialize object variables
+/*                                       /* after a successful UPDATE,
+/*                                       /* DELETE or STORE.
+   2 OUTPUTS
+     3 #EXISTS (L) /* Requested object exists.
+END-DEFINE

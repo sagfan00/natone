@@ -1,0 +1,39 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDAOBJ2
+/*
+/*  This data area contains all
+/*  parameters that are common to
+/*  OBJECT-SUBPrograms.
+/*
+   2 INPUTS
+     3 #FUNCTION (A15) /* GET, NEXT, UPDATE, DELETE,
+/*                                       /* STORE, EXISTS, INITIALIZE
+/*                                       /* Other User Defined Functions.
+     3 FLAGS-IN (L/1:10)
+     3 REDEFINE FLAGS-IN /* REDEF. BEGIN : FLAGS-IN
+       4 #CLEAR-AFTER-UPDATE (L) /* Initialize object variables
+/*                                       /* after a successful UPDATE,
+/*                                       /* DELETE or STORE.
+       4 #RETURN-OBJECT (L)
+       4 #ET-IF-SUCCESSFUL (L) /* Commit the record updates
+       4 #USE-ISN (L) /* If the OBJECT wag      es
+/*                                       /* generated with the     TE,
+/*                                       /* condition code
+/*                                       /* GET-BY-ISN and this
+/*                                       /* this flag is true the
+/*                                       /* GET-OBJECT and
+/*                                       /* HOLD-OBJECT subroutines
+/*                                       /* will retrieve the
+/*                                       /* record by ISN
+/* when true a BT has been issued
+       4 #BACKOUT-ISSUED (L)
+   2 OUTPUTS
+     3 FLAGS-OUT (L/1:10)
+     3 REDEFINE FLAGS-OUT /* REDEF. BEGIN : FLAGS-OUT
+       4 #OBJECT-CONTAINS-DERIVED-DATA (L)
+       4 #EXISTS (L) /* Requested object exists.
+END-DEFINE

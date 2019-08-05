@@ -1,0 +1,25 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+/** New Program DEMOTST.
+/**
+/** :author sagfan
+/* TODO: Enter your code here
+DEFINE DATA LOCAL
+1 ZONEA (A1)
+1 ENTREE (A4)
+END-DEFINE
+*
+MOVE "AA" TO ZONEA
+*
+CALLNAT "SPGM01" ENTREE
+DISPLAY ZONEA ENTREE
+CALLNAT "SPGMST" ENTREE
+CALLNAT "SPAWH01" ENTREE
+*
+CALL 'TestCOB'
+*
+CALL 'COB10'
+END

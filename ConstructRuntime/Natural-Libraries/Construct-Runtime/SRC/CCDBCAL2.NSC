@@ -1,0 +1,33 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+  DECIDE FOR FIRST CONDITION
+    /*
+    /* Delete existing records whenever the function is delete or
+    /* if updating a record to all null values.
+    WHEN #OLD-REC AND
+        (CDAOBJ2.#FUNCTION = 'DELETE' OR
+        (CDAOBJ2.#FUNCTION = 'UPDATE' AND NOT #SAVE-REC))
+      ASSIGN #DB-CALL = 'D' /* Delete
+    /*
+    /* Update existing records provided some values are non-null.
+    WHEN CDAOBJ2.#FUNCTION = 'UPDATE' AND #SAVE-REC AND #OLD-REC
+      ASSIGN #DB-CALL = 'U' /* Update
+    /*
+    /* If new records are entered on an update function, these must
+    /* be stored.
+    WHEN CDAOBJ2.#FUNCTION = 'UPDATE' AND #SAVE-REC AND NOT #OLD-REC
+      ASSIGN #DB-CALL = 'S'
+    /*
+    /* Store all non-null records when function is store.
+    WHEN CDAOBJ2.#FUNCTION = 'STORE' AND #SAVE-REC
+      ASSIGN #DB-CALL = 'S'
+    /*
+    /* Ignore delete if record does not currently exist, ignore store
+    /* if record is all null and ignore update if record is null and
+    /* does not currently exist.
+    WHEN NONE
+      RESET #DB-CALL
+  END-DECIDE

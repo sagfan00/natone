@@ -1,0 +1,110 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDHCOPY /* Hardcopy defaults screen
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 14 Aug. 1992
+* Description: This subprogram is used to gather hardcopy defaults
+*            | from the user when the hardcopy PF-Key was pressed.
+*            |
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDHCOPYA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDKEYLDA
+  LOCAL USING CDENVIRA
+  LOCAL USING CDDIALDA
+  LOCAL
+  01 #PREVIOUS-MAX(P7)
+  01 #PGM-NAME(A8)
+  01 #WINDOW-HEIGHT(P3)
+  01 #TRANSLATIONS
+    02 #ENTER-KEY(A5) INIT<'*8432'> /* message number in CSTAPPL
+  01 REDEFINE #TRANSLATIONS
+    02 #DATA(A1/1:5)
+  01 #CALLER(A8)
+END-DEFINE
+MOVE *PROGRAM TO #CALLER
+FORMAT KD=ON
+IF *DEVICE = 'BATCH' THEN
+  ASSIGN CDHCOPYA.HARDCOPY = TRUE
+  ASSIGN CDHCOPYA.PAGESIZE = 0 /* Defaults to physical device
+  ESCAPE ROUTINE
+END-IF
+*
+* Translate message text.
+CALLNAT 'CDUTRANS' #TRANSLATIONS.#DATA(*) #CALLER MSG-INFO
+*
+ASSIGN #PREVIOUS-MAX = CDHCOPYA.MAX-RECORDS
+ASSIGN CDHCOPYA.MAX-RECORDS = 100
+RESET CDHCOPYA.RECORDS-WRITTEN
+IF CDHCOPYA.HARDCOPY-DEVICE EQ ' ' THEN
+  ASSIGN CDHCOPYA.HARDCOPY-DEVICE = *HARDCOPY
+END-IF
+ASSIGN CDHCOPYA.HARDCOPY = TRUE
+PERFORM CAPTURE-RESTORE-ENVIRONMENT
+PERFORM SET-KEYS
+INCLUDE CCKDON /* Turn standard keys on.
+ASSIGN #PGM-NAME = *PROGRAM
+ASSIGN #SYSTEM = 'MULTIPLE'
+*
+REPEAT
+  SET CONTROL 'WBFL66C13B7/5'
+  ASSIGN #PROGRAM = 'CDHCOPY&'
+  INPUT WITH TEXT MSG-INFO.##MSG,
+        MSG-INFO.##MSG-DATA(1), MSG-INFO.##MSG-DATA(2),
+        MSG-INFO.##MSG-DATA(3) USING MAP 'CDHCOPY&'
+  RESET MSG-INFO.##MSG
+*
+* Check PF-KEYs
+  DECIDE ON FIRST VALUE *PF-KEY
+    VALUE CDKEYLDA.#RETURN-KEY
+      RESET CDHCOPYA.HARDCOPY
+      ASSIGN CDHCOPYA.MAX-RECORDS = #PREVIOUS-MAX
+      ASSIGN MSG-INFO.##MSG = 'Function terminated using:1:'
+      ASSIGN MSG-INFO.##MSG-NR = 8040
+      ASSIGN MSG-INFO.##MSG-DATA(1) = *PF-KEY
+      PERFORM CAPTURE-RESTORE-ENVIRONMENT
+      ESCAPE ROUTINE
+    VALUE 'ENTR'
+      ASSIGN MSG-INFO.##MSG-NR = 8075
+      ASSIGN MSG-INFO.##MSG = ':1:records printed on device:2:'
+      COMPRESS CDHCOPYA.MAX-RECORDS TO MSG-INFO.##MSG-DATA(1)
+      ASSIGN MSG-INFO.##MSG-DATA(2) = CDHCOPYA.HARDCOPY-DEVICE
+    NONE
+      REINPUT *8003 ALARM
+  END-DECIDE
+*
+* Restore previous window settings.
+  PERFORM CAPTURE-RESTORE-ENVIRONMENT
+  ESCAPE ROUTINE
+END-REPEAT
+*
+************************************************************************
+DEFINE SUBROUTINE CAPTURE-RESTORE-ENVIRONMENT
+************************************************************************
+*
+  INCLUDE CCENVIR
+  SET CONTROL 'K0' /* ASSIGN *PF-KEY = 'ENTR'
+END-SUBROUTINE /* CAPTURE-RESTORE-ENVIRONMENT
+*
+************************************************************************
+DEFINE SUBROUTINE SET-KEYS
+************************************************************************
+*
+* Set PF-KEYS and their names.
+  SET KEY ALL
+  SET KEY TREQ NAMED #TRANSLATIONS.#ENTER-KEY
+  RESET CDKEYLDA.#PFKEY(*)
+*
+* Assign standard PF Keys used.
+  RESET INITIAL CDKEYLDA.#HELP-KEY CDKEYLDA.#RETURN-KEY
+  INCLUDE CCSETKEY /* Set specified keys
+  INCLUDE CCSETHLP /* Help key
+END-SUBROUTINE /* SET-KEY
+END

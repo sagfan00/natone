@@ -1,0 +1,42 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**********************************************************************
+* Program    : CDNCPIN /* Natural command processor initialization
+* System     : NATURAL-CONSTRUCT
+* Application: All generated applications which use Direct Commands
+* Title      : Natural Construct command processor init
+* Description: This routine is invoked to establish a new default
+*              Natural command processor. This routine should be used
+*              whenever you want to change the default command
+*              processor that is used by the application.
+*
+*              Note that initializing new command processors is
+*              resource intensive and therefore should not be done
+*              unnecessarily.
+*
+* History
+**********************************************************************
+DEFINE DATA
+  PARAMETER USING CDNCPINA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDNCPV
+  LOCAL
+   01 #I(P2)
+   01 #DATA(A50)
+END-DEFINE
+SET-DEFAULT-PROCESSOR.
+PROCESS CDNCPV ACTION CHECK
+        USING
+        PROCESSOR-NAME = CDNCPINA.#PROCESSOR
+        COMMAND-LINE (1) = ' '
+*
+* When setting the natural command processor, the only acceptable
+* error is a 6913 which means that the command line was empty.
+* All other errors are real errors so signal error.
+IF CDNCPV.NATURAL-ERROR NE 6913 THEN
+  ASSIGN *ERROR-NR = CDNCPV.NATURAL-ERROR
+END-IF
+END

@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CD-MKEY /* All key components
+   2 MSG-IDENTIFIER (A14)
+   2 REDEFINE MSG-IDENTIFIER /* REDEF. BEGIN : MSG-IDENTIFIER
+     3 MSG-NUMBER (N4)
+     3 MSG-LIBRARY (A8)
+     3 MSG-LANGUAGE (N2)
+   2 STAR-MSG-NUMBER (A20)
+   2 MSG-TEXT (A65)
+/* *                                     /* '*' returns *nnnn.n notation
+/* *                                     /* ' ' returns message text
+   2 UNIQUE-ID (P10) /* Unique row id
+   2 EXISTENCE-CHECK (L) /* Check for existence
+   2 ADD-METHOD (L) /* Add method
+   2 MODIFY-METHOD (L) /* Modify method
+END-DEFINE

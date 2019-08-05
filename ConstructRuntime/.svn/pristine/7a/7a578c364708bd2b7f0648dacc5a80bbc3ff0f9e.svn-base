@@ -1,0 +1,15 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* This copy code is used to suppress execution of the DEFINE PRINTER...
+* statement under platforms for which this causes new print files to be
+* opened each time it is executed.
+* If there are excessive formfeed (*/) characters being generated,
+* and you are sure a DEFINE PRINTER statement has been executed within
+* the call sequence, assign #BYPASS-DEFINE-PRINTER = TRUE.
+IF *OPSYS NE MASK('VMS') AND NOT #BYPASS-DEFINE-PRINTER THEN
+  DEFINE PRINTER(SRC=1) OUTPUT 'SOURCE'
+END-IF
+FORMAT(SRC) PS=0 LS=250 SG=OFF ZP=OFF AD=Z

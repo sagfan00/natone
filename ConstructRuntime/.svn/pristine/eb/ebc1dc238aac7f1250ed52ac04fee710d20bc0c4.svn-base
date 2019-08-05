@@ -1,0 +1,16 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+ VALUE '#BIZ-INPUTS'
+   #IDENTIFIER := 'BI-'
+ VALUE '#BIZ-OUTPUTS'
+   #IDENTIFIER := 'BO-'
+ VALUE '#BIZ-INPUT-OUTPUTS'
+   #IDENTIFIER := 'BIO-'
+ VALUE '#BIZ-STATE'
+   #IDENTIFIER := 'BS-'
+ NONE
+   RESET #IDENTIFIER
+ END-DECIDE

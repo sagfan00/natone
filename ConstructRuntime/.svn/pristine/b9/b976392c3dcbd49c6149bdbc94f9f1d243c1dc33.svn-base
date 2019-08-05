@@ -1,0 +1,23 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDPROXY
+/*                        System    :    CST451
+/*                        Author    :    Software AG
+/*                        Created   :    2003-10-20
+/*                        Short Desc:    Standard proxy parameters
+/*                        Long Desc :    This data area defines
+/*                                  :    parameters that are passed to
+/*                                  :    all object interface modules
+/*                                  :    (known as proxies) called
+/*                                  :    by the Natural Development
+/*                                  :    Server.
+/*
+ 1 CDPROXY
+   2 INPUT-OUTPUTS
+     3 DATA-LENGTH (N10) /* Length of data recieved or
+/*                                       /* data to be sent.
+END-DEFINE

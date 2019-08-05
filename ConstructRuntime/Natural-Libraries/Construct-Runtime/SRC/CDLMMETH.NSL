@@ -1,0 +1,36 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDLMMETH
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-02-04
+/*                        Short Desc:    Maintenance Methods
+/*                        Long Desc :    This data area is used to define
+/*                                  :    the list of standard methods
+/*                                  :    used by a maintenance object.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDLMMETH
+   2 UPDATE-METHODS
+     3 STORE (A6) INIT<'STORE'>
+     3 UPDATE (A6) INIT<'UPDATE'>
+     3 DELETE (A6) INIT<'DELETE'>
+   2 REDEFINE UPDATE-METHODS /* REDEF. BEGIN : UPDATE-METHODS
+     3 UPDATE-METHOD (A6/1:3)
+   2 DISPLAY-METHODS
+     3 GET (A6) INIT<'GET'>
+     3 NEXT (A6) INIT<'NEXT'>
+     3 FORMER (A6) INIT<'FORMER'>
+   2 REDEFINE DISPLAY-METHODS /* REDEF. BEGIN : DISPLAY-METHOD
+     3 DISPLAY-METHOD (A6/1:3)
+   2 OTHER-METHODS
+     3 INITIALIZE (A10) INIT<'INITIALIZE'>
+     3 EXISTS (A6) INIT<'EXISTS'>
+END-DEFINE

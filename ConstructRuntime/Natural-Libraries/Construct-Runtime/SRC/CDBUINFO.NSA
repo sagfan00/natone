@@ -1,0 +1,13 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDBUINFO
+   2 ##TRANSACTION-STYLE (A1) /*See CDTRACT for valid values
+   2 #BACKOUT-ISSUED (L)
+ 1 BUSINESS-INFO
+   2 ##MSG (A79)
+   2 ##MSG-NR (N4)
+   2 ##RETURN-CODE (A1)
+END-DEFINE

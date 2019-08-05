@@ -1,0 +1,24 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Copycode: CU--GTXT                                                   *
+* Written : Sept, 27, 95                                               *
+* Author  : SAG                                                        *
+* Title   : Get message text                                           *
+* Function: This copycode should be included whenever a message is     *
+*           required. The message text, return code and message        *
+*           number are assigned.                                       *
+*           Substitution will be done if parameters are specified      *
+*           For example:                                               *
+*           ASSIGN CNAMSG.MSG-DATA(1) = #LAST-PF-KEY                   *
+*           ASSIGN CNAMSG.MSG-DATA(2) = #PDA-PF-RETURN                 *
+*           ASSIGN CNAMSG.MSG-DATA(3) = '*0101.1' /* Natural Construct *
+*           INCLUDE CU--GTXT '8042'                       /* Msg number*
+*            '''Press:1:to quit, press:2:to resume:3:.''' /* Msg text  *
+************************************************************************
+ASSIGN CNAMSG.MSG-NR = &1&
+ASSIGN CNAMSG.MSG = &2&
+PERFORM GET-MESSAGE-TEXT

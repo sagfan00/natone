@@ -1,0 +1,16 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  text strings required by the
+/*  BATCH model.
+/*
+ 1 CDBATXL
+/*
+   2 #PAGE-TXT (A10) INIT<'*8353,>'> /* Page
+ 1 REDEFINE CDBATXL /* REDEF. BEGIN : CDBATXL
+   2 CDUTRANS (A1/1:10)
+ 1 CDBATXL-NAME (A8) INIT<'CDBATXL'>
+END-DEFINE

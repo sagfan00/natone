@@ -1,0 +1,15 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDHCOPYL
+   2 HARDCOPY (L) /* True = print hard copy
+   2 SET-CONTROL-H (A9) INIT<'H'>
+   2 REDEFINE SET-CONTROL-H /* REDEF. BEGIN : SET-CONTROL-H
+     3 FILLER (A1)
+     3 HARDCOPY-DEVICE (A8) /* Default hardcopy device
+   2 MAX-RECORDS (P7) INIT<99999>
+   2 PAGESIZE (P3) INIT<60>
+   2 RECORDS-WRITTEN (P7) /* Records written to hardcopy
+END-DEFINE

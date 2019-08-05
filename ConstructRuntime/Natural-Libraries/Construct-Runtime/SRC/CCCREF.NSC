@@ -1,0 +1,27 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* This copy code is used to determine if a relationship
+* must be used for R.I checks.
+* It checks that:
+*  - cardinality 1:CN, 1:C, or C:CN
+*  - update constraint type is 'R'
+*  - delete constraint type is 'R' or ' '
+ASSIGN CSCREFL.#ACCEPT = TRUE
+COMPRESS CPARLRD.CARD(1) ':'CPARLRD.CARD(2) INTO
+         CSCREFL.#T-CARDINALITY LEAVING NO
+DECIDE FOR FIRST CONDITION
+  WHEN NOT (CPARLRD.RELATIONSHIP-TYPE = 'N' OR = 'R')
+    RESET CSCREFL.#ACCEPT
+  WHEN
+   (CPARLRD.CONSTRAINT-TYPE-DEL NE 'R'  AND
+    CPARLRD.CONSTRAINT-TYPE-DEL NE ' ' ) OR
+    CPARLRD.CONSTRAINT-TYPE-UPD NE 'R'
+    RESET CSCREFL.#ACCEPT
+  WHEN NOT (CSCREFL.#VALID-CARDINALITY(*) = #T-CARDINALITY)
+   RESET CSCREFL.#ACCEPT
+  WHEN NONE IGNORE
+END-DECIDE

@@ -1,0 +1,20 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDFLIPA /* Used by CDFLIP
+   2 INPUTS
+/*
+/*  Options which are available
+/*  to be placed in the Key display
+/*  area excluding standard PF keys.
+/*
+/*  This list can be extended.
+     3 #NON-KEY-OPTIONS (L/1:5)
+     3 REDEFINE #NON-KEY-OPTIONS /* REDEF. BEGIN : #NO-KEY-OPTION
+       4 #AVAILABLE-COMMANDS (L)
+   2 OUTPUTS
+     3 #OPTION-SELECTED (P1) /* 0 = PF-KEY (KD=ON)
+/*                                       /* 1 = Available Commands
+END-DEFINE

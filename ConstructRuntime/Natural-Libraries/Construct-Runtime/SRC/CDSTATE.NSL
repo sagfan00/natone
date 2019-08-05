@@ -1,0 +1,44 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDSTATE
+   2 #ADD-ROW (A2) INIT
+     <'A'>
+   2 #GET-ROW (A2) INIT
+     <'G'>
+   2 #UPDATE-ROW (A2) INIT
+     <'U'>
+   2 #DELETE-ROW (A2) INIT
+     <'D'>
+   2 #ROW-ERROR (A2) INIT
+     <'E'>
+   2 #INTERVENING-UPDATE (A2) INIT
+     <'IU'>
+   2 #BLANK-STATE (A1)
+   2 #INVALID-STATE (A2) INIT
+     <'IS'>
+   2 #RETRIEVED-SUCCESSFULLY (A2) INIT
+     <'GS'>
+   2 #ADD-BACKED-OUT (A2) INIT
+     <'AB'>
+   2 #UPDATE-BACKED-OUT (A2) INIT
+     <'UB'>
+   2 #DELETE-BACKED-OUT (A2) INIT
+     <'DB'>
+   2 #RESTRICTED-METHOD (A2) INIT
+     <'RM'>
+   2 #ROW-ADDED-SUCCESSFULLY (A2) INIT
+     <'AS'>
+   2 #ROW-UPDATED-SUCCESSFULLY (A2) INIT
+     <'US'>
+   2 #ROW-DELETED-SUCCESSFULLY (A2) INIT
+     <'DS'>
+   2 #ROW-ADDED-PENDING (A2) INIT
+     <'AP'>
+   2 #ROW-UPDATED-PENDING (A2) INIT
+     <'UP'>
+   2 #ROW-DELETED-PENDING (A2) INIT
+     <'DP'>
+END-DEFINE

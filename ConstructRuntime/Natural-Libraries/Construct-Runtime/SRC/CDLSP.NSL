@@ -1,0 +1,42 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  Data Area Name: CDLSP                      Function
+/*  Created on....: Mar 12, 98                ==========
+/*  Created by....: SAGA                 This data area is used by
+/*                                       model Stream subprograms which
+/*                                       are used to convert model pdas
+/*                                       between internal and streamed
+/*                                       (expanded printable) format.
+/*
+ 1 CDLSP
+   2 #SPC-MSG-LIB (A8) INIT<'SYSBIZ'> /* Default msg.
+/* *                                                      /* library
+   2 #SPV-BLANK-A (A1) /* Spacing for COMPRESS LEAVE NO
+   2 REDEFINE #SPV-BLANK-A
+     3 #SPV-BLANK (B1)
+   2 REDEFINE #SPV-BLANK-A
+     3 #SPV-BLANK-I (I1) /* To compare with #EBCDIC-BLANK
+   2 #SPV-DATE (D) /* Empty date field
+   2 #SPV-ERROR-LINE (A4) /* For MOVE EDITED of *ERROR-LIN
+   2 #SPV-CURRENT-OFFSET (I4) /* Offset of field causing error
+   2 #SPV-EXPECTED (I1) /* Holding value of current
+/* *                                     /*block ID
+   2 #SPV-EXPECTED-FORMAT (A32) /* Format expected in errant fld
+   2 #SPV-EXPECTED-LENGTH (I4) /* Length expected in errant fld
+   2 #SPV-I (I1) /* Loop counter
+   2 #SPV-I1 (I4) /* Loop counter
+   2 #SPV-I2 (I4) /* Loop counter
+   2 #SPV-IDX1 (I2) /* Indexes for MOVE EDITED of
+   2 #SPV-IDX2 (I2) /* L,B,D,T,F
+   2 #SPV-IDX3 (I2)
+   2 #SPV-INSIDE-ON-ERROR (L) /* Error occurred in ON ERROR?
+   2 #SPV-CV-C (C)
+   2 REDEFINE #SPV-CV-C /* REDEF. BEGIN : #SPV-CV-C
+     3 #SPV-CV-B (B2)
+   2 REDEFINE #SPV-CV-C /* REDEF. BEGIN : #SPV-CV-C
+     3 #SPV-CV-A2 (A2)
+END-DEFINE

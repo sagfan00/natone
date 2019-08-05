@@ -1,0 +1,46 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area was generated via the OBJECT-MAINT-N1 TSTCST1.
+/*
+1 TSTCSDM1 /* Object name
+  2 PERSONNEL-ID (A8)
+  2 FULL-NAME
+    3 FIRST-NAME (A20)
+    3 MIDDLE-I (A1)
+    3 NAME (A20)
+  2 MAR-STAT (A1)
+  2 SEX (A1)
+  2 BIRTH (D)
+  2 FULL-ADDRESS
+    3 ADDRESS-LINE (A20/1:15)
+    3 CITY (A20)
+    3 ZIP (A10)
+    3 COUNTRY (A3)
+  2 TELEPHONE
+    3 AREA-CODE (A6)
+    3 PHONE (A15)
+  2 DEPT (A6)
+  2 JOB-TITLE (A25)
+  2 INCOME (1:10)
+    3 CURR-CODE (A3)
+    3 SALARY (P9)
+    3 BONUS (P9/1:15)
+  2 LEAVE-DATA
+    3 LEAVE-DUE (N2)
+    3 LEAVE-TAKEN (N2)
+  2 LEAVE-BOOKED (1:10)
+    3 LEAVE-START (N8)
+    3 LEAVE-END (N8)
+  2 LANG (A3/1:15)
+  2 PHONETIC-NAME (A20)
+/*
+/*  No 'N' relationships exist for:      EMPLOYEES
+/*
+1 TSTCSDM1-ID (A8) /* Object identifier
+1 REDEFINE TSTCSDM1-ID /* REDEF. BEGIN : TSTCSDM1-ID
+  2 STRUCTURE /* To allow MOVE BY NAME
+    3 PERSONNEL-ID (A8)
+END-DEFINE

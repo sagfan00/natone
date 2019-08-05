@@ -1,0 +1,37 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*
+/*  Data Area Name: CSLDEBUG                       Function
+/*  Created on....: Jun 05, 97                     ========
+/*  Created by....: SAG                  This data area is used to define
+/*                                       valid constants for CSUDEBUG.
+ 1 CSLDEBUG
+   2 METHOD /* Method of CDUDEB
+     3 SET (I1) CONST<0> /* includes Q-HANDLE
+     3 GET (I1) CONST<1> /* includes Q-HANDLE
+/*
+   2 OUTPUT-LOCATION
+     3 NO-DEBUGGING (I1) CONST<0>
+     3 SOURCE-AREA (I1) CONST<1>
+     3 STREAMED-OUTPUT
+       4 MESSAGE-QUEUE (I1) CONST<10>
+       4 WORK-FILE-1 (I1) CONST<11>
+       4 WORK-FILE-2 (I1) CONST<12>
+       4 WORK-FILE-3 (I1) CONST<13>
+       4 WORK-FILE-4 (I1) CONST<14>
+       4 WORK-FILE-5 (I1) CONST<15>
+     3 REDEFINE STREAMED-OUTPUT /* REDEF. BEGIN : STREAMED-OUTPU
+       4 #STREAMED-FORMAT (I1/1:6)
+     3 SCREEN (I1) CONST<20>
+     3 PRINT-FILE-1 (I1) CONST<21>
+     3 PRINT-FILE-2 (I1) CONST<22>
+     3 PRINT-FILE-3 (I1) CONST<23>
+     3 PRINT-FILE-4 (I1) CONST<24>
+     3 PRINT-FILE-5 (I1) CONST<25>
+   2 REDEFINE OUTPUT-LOCATION /* REDEF. BEGIN : OUTPUT-LOCATIO
+     3 VALID-LOCATION (I1/1:14)
+END-DEFINE

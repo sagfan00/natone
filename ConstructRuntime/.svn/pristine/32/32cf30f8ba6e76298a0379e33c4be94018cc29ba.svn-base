@@ -1,0 +1,3009 @@
+NAT
+0002
+8846
+0002E User:1:does not exist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0003E No matching conversation found for:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0004E API: No function possible after EOC
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0005E Partner finished the conversation
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0006E API: Last message not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0007E Service:1:/:2:/:3:not registered
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0008E No related text for error number:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0009E Conversation found for:1:- no message
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0013E ATTR: Value for keyword too long
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0015E ATTR: Maximum possible number of clients reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0016E MQ/OMB entry is already free
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0018E ATTR: Maximum possible number of servers reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0020E Access failed due to User error in the API
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0021E Access failed due to Error in Attribute File
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0022E Access failed due to Error in User Exits
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0023E ATTR: Unknown keyword received in the attribute file
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0026E ATTR: Zero value for keyword is not valid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0027E ATTR: Value for keyword is out of valid range
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0028E ATTR: Invalid value found for a keyword
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0031E API: Value:1:for WAIT parameter is invalid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0038E ATTR: Error during the opening of the Attribute file
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0040E ATTR: Error during close of the Attribute file
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0043E ATTR: Service:1:/:2:/:3:definition not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0045E ATTR: Keyword value must be alpha-numeric
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0046E TRANS: User error returned by translation routine
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0055E TRE entry is not active
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0057E ATTR: No more available short message buffers
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0060E Global Count Table is inaccessible
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0061E ATTR: No more available long message buffers
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0067E Partner timeout has occurred
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0072E STUB: Missing API terminator character (.)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0073E Timeout has occurred for conversation:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0074E Wait timeout of:1:has been exceeded
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0075E TRANS: Failed to load translation routine
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0078E Access failed due to Error from Broker Kernel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0079E Access failed due to Error in Broker Stub
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0081E TRANS: Return length of:1:greater than receive length of:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0082E Invocation of:1:using a CALLNAT failed at line:2:in:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0085E TRANS: Return length of:1:is invalid; cannot be less than 0
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0088E Failed to get lock
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0093E MQ storage pointer is NULL
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0094E API: Message truncated to fit into receive buffer of length:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0096E ATTR: Maximum possible number of services reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0099E No free TOQ entry
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0101E Natural Construct                                            /+30
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0145E No free UIQ entry - Broker
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0148E Unknown
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0181E API: Invalid User ID of:1:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0182E API: Invalid function of:1:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0183E API: Invalid Class/Name/Service of:1:/:2:/:3:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0184E API: Invalid send length of:1:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0185E API: Invalid Function/Conversation ID combination of:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0187E API: Invalid Function/Option combination of:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0188E API: Invalid Option of:1:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0189E API: Invalid receive length of:1:specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0191E API: Invalid Option/Conversation ID combination of:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0193E API: Invalid Function/Wait combination of:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0194E API: Invalid Option/Wait combination of:1:/:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0195E API: Deregister function not allowed by clients
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0196E User:1:disconnected due to a new location
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0197E Reconnect request rejected - user:1:is busy
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0198E No related SCBEXT entry for Program Control Block
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0200E API: Receive/CONV-ID=NEW is invalid for clients
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0201E API: Unknown
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0202E STUB: Error is the SPFX length specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0203E API: No receive buffer address specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0204E STUB: Version:1:/:2:is not supported
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0205E STUB: Offset is less than SPFX length
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0206E STUB: Offset does not point to data
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0207E STUB: No Ababas Value Buffer or Record Buffer found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0208E API: Type:1:and version:2:combination is invalid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0209E STUB: Nothing was returned from the Broker
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0210E API: No send buffer address specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0211E API: No Control Block address specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0212E API: (*) in service:1:/:2:/:3:is invalid for function
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0213E API: Send length of:1:or Receive length of:2:exceeds max of 32K
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0214E STUB: Work space allocation failed - requires 33K
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0215E Access failed due to Connection Error
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0216E API: Invalid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0217E Worker task failed - Broker stopped
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0221E SPFX translation code error found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0230E ATTR: Maximum possible number of conversations reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0231E Failed to get lock for SCB
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0232E Failed to get lock for last CCB
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0241E No free SCBEXT entry available
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0243E Failed to get lock for last SCBEXT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0244E No free TRE entry available
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0245E No related SCB entry found for the client
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0259E No related TOQ entry found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0261E No free PCB entry available
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0262E No free PCBEXT entry available
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0263E Failed to get lock for PCB
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0264E Failed to get lock for last PCBEXT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0265E No free SCB entry
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0350E OK to continue with request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0351E Server has switched protocols in upgrade header
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0352E Request completed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0353E Object created, reason=new URL
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0354E Async ompletion(TBS)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0355E Partial completion
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0356E No info to return
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0357E Request completed, but clear form
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0358E Partial GET fulfilled
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0359E Server could not decide what to return
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0360E Object permanently moved
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0361E Object temporarily moved
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0362E Redirection w/o new access method
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0363E If-modified-since was not modified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0364E Redirection to proxy,location header specifies proxy to use
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0365E HTTP/1.1:keep same verb
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0366E Invalid syntax
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0367E Access denied
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0368E Payment required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0369E Request forbidden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0370E Object not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0371E Method is not allowed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0372E No response acceptable to client found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0373E Proxy authentication required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0374E Server timed out waiting for request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0375E User should resubmit with more info
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0376E The resource is no longer available
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0377E The server refused to accept request w/o a length
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0378E Precondition given in request failed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0379E Request entity was too large
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0380E Request URL too long
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0381E Unsupported media type
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0382E Internal server error
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0383E "Required" not supported
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0384E Error response received from gateway
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0385E Temporarily overloaded
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0386E Timed out waiting for gateway
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0387E HTTP version not supported
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0500E Function:1:not defined in data area:2:or module:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0501E WAIT option may not be " " or "NO" for a:1:with WAIT request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0503E Conv ID must be ANY, NEW or OLD in non-specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0504E Conv ID may not be " ", ANY, NEW or OLD in specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0505E Unexpected Broker Error Class:1:found in:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0506E Numeric portion of WAIT option:2:for:1:function is invalid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0507E WAIT option:2:found for:1:--> max allowed is 999999S
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0508E WAIT option:2:found for:1:--> max allowed is 99999M
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0509E WAIT option:2:found for:1:--> max allowed is 99999H
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0510E Invalid WAIT type of:2:specified, use "S","M","H"," "
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+0936E Parameter format/length conflict in CALLNAT of:1:at line:2:in:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+1112E Province must be entered
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5000E DISPATCH - Dispatch Server
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5001E No Control Record found -- server not started
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5002E Server not started; Service:1:not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5003E Server timeout - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5004E Conversation timeout - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5005E Wait timeout - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5006E Maximum object size of:1:characters exceeded
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5007E Start of new dispatcher failed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5008E Check Broker Log for details.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5009E Server Pool quiescing; Stopping server startup using service:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5010E CDAPROXY Object value of:1:invalid for system function request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5011E User:1:does not exist - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5012E No matching conversation found for:1:- return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5013E Partner finished the conversation - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5014E Conversation found for:1:> no message - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5015E Partner timeout has occurred - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5016E Timeout has occurred for conversation:1:- return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5017E Wait timeout of:1:has been exceeded - return to receive state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5018E No security servers are running; contact system administrator
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5019E No message servers are running; contact system administrator
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5020E Server pool is quiescing - requested server not started
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5021E User:1:access disabled at the Domain level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5022E User:1:access disabled at the Object level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5023E User:1:access disabled at the Method level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5024E No user:1:security privileges were found for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5025E User:1:access revoked at the Domain level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5026E User:1:access revoked at the Object level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5027E User:1:access revoked at the Method level for:2:/:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5028E Access type of:1:not supported by:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5029E Password for user:1:not valid
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5030E User:1:not defined to any groups; access denied
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5031E Invalid User ID specified to the security server
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5032E Invalid password specified to the security server
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5033E Invalid User ID returned to the security client
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5034E Invalid password returned to the security client
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5035E Old password value for:1:not valid; password change denied
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5036E Line number occurrences inconsistent; received:1:, expected:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5037E The:2:lines requested exceeds lines available in module:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5038E Line length of:2:exceeds length available in module:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5039E Error:2:occurred at line:3:in module:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5040E Member name must be specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5041E Library name must be specified if not searching steplibs
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5042E No source exists for member:1:in library:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5043E Number of lines requested must be greater than 0
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5044E Invalid function:1:and method:2:supplied to module:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5045E User ID:1:not defined to Natural Security
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5046E User ID:1:is defined as a Group in Natural Security; disallowed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5047E User ID:1:not allowed to access library:2:(Natural Security)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5048E Broker Communications Application secured data is unavailable
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5049E Broker Communications Application unsecured data is unavailable
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5050E Invalid function:1:passed to:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5051E Server not started; Broker Default:1:not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5052E Server not started; Dispatcher Default:1:not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5053E Server:1:not started; remote service:2:not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5054E Server:1:not started; remote service ACI defaults:2:not found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+5110E :1:may not have embedded blanks
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8001E Top of scroll session
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8002E Screen has only one horizontal panel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8003E Invalid program function key
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8004E End of data reached, enter new start value
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8005E End of data reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8006E End of file reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8007E Key is less than minimum allowed value:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8008E Key is greater than maximum allowed value:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8009E Intervening purge, please try again
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8010E Intervening modification, please try again
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8011E :1:is required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8012E :1::2:already exists
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8013E Invalid action code:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8014E :1::2:does not exist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8015E Maximum:1:reached
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8016E Enter a valid selection code between 1 and:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8017E Invalid code:1:selected
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8018E No record has been selected
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8019E Can only select up to:1:records
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8020E Invalid selection
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8021E Enter selection
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8022E Last displayed:1:has been recalled
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8023E :1::2:purged successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8024E :1::2:modified successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8025E :1::2:added successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8026E :1::2:displayed successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8027E Next:1:displayed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8028E Enter changes
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8029E Press:1:to confirm purge
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8030E Problem with program logic in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8031E No action performed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8032E Screen values cleared successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8033E :1:contains more than:2:lines and cannot be read
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8034E Duplicate entry found on line:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8035E Position cursor or enter screen value to select
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8036E Last displayed:1:has been recalled
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8037E Last displayed:1:has been recalled, use:2:to add
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8038E Line actions can only be specified in conjunction with enter key
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8039E Mark records with any non-blank character to process
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8040E Function cancelled using:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8041E PF-key option has been set successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8042E Press:1:to quit, press:2:to resume:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8043E PF-key colors have been set successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8044E Invalid direct command data::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8045E Requested record is currently held by another user
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8046E :1:called for a Natural error other than 3700
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8047E Entry to program terminated at users request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8048E Invalid password, please try again
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8049E Too many password violations, access not allowed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8050E Invalid:1:parameter passed to:2:value::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8051E Window height adjusted to minimum allowed value:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8052E Window has been adjusted to cursor specified height
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8053E PF-key lines have been removed as requested
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8054E Window base has been adjusted to cursor specified location
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8055E Screen headings removed at users request
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8056E Enter information to be added
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8057E Enter new record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8058E Invalid action, enter one of the following::1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8059E Natural error number:1:occurred at line:2:of:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8060E Related information displayed.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8061E Scrolling performed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8062E Next:1:displayed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8063E Attempted to update/delete:1:that was not in hold status.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8064E Invalid:1:function specified::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8065E :1:identifier is required.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8066E :1::2:not found on file:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8067E Data integrity error,:2:occurrences of:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8068E Invalid action:1:passed to:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8069E A minimum of 1 occurrence of:2:is required:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8070E A minimum of:1:occurrences of:2:are required:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8071E :1::2:still exists on file:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8072E Extended information displayed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8073E No records with prefix:1:found for the current input
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8074E No records found for the current input
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8075E :1:records printed on device:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8076E No Help text has been entered for the requested object.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8077E Specify one (and only one) of the possible formats
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8078E Specify one (and only one) of the possible line:1:colors
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8079E Enter required parameter.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8080E Input value for a numeric field is not numeric.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8081E Quit processing cancelled
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8082E Enter a valid action code:1:to be described.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8083E     **** Action Value Help *****
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8084E For program help, press "HELP" when cursor not on input field
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8085E on input field.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8086E Enter action to be described
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8087E Invalid parameter passed to helproutine
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8088E Press ENTER to continue
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8089E *** No suitable Predict Extended Description found ***
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8090E Missing Help Text profile: PREDICT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8091E No fields to display on this panel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8092E Invalid time stamp entered - Use format YYYY-MM-DD-HH.MM.SS.NNNNN
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8093E Invalid time entered. Use format HH.MM.SS
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8094E Invalid date entered. Use format YYYY-MM-DD
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8095E No records to be printed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8096E Press:1:to confirm Add
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8097E Press:1:to confirm modify
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8098E Action bar modified, no actions performed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8099E Unable to find message text for error:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8100E Hardcopy in progress...
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8101E Records exported successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8102E Logic error in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8103E Invalid sort-key:1:passed to:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8104E Histogram not supported for:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8105E Failed to locate start-value after:1:attempts
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8106E Call made to:1:after end-of-data condition, set new start value
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8107E Number of rows requested must be passed into:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8108E :1::2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8109E Invalid:1::2:passed to:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8110E :1::2:must be unique:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8112E Report printed successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8113E Enter start value
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8114E Previous:1:displayed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8115E Invalid Row StateRD
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8300E Add a record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8301E Browse a list of values
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8302E Clear the screen contents
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8303E Display a record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8304E Modify a record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8305E Display the next record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8306E Purge a record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8307E Recall a purged record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8308E Unknown action
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8309E          Action Value Help
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8310E For program help, press "HELP" when cursor not
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8311E on input field.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8312E Enter Action to be Described
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8313E Record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8314E Display the former record
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8320E Page
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8321E Copy a record.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8322E Replace a record.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8323E Select a record.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8324E Detail a record.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8325E Translate a record.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8330E Action
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8331E is required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8332E cannot be
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8333E Blank
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8334E False
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8335E Zero
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8340E Direct command
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8350E Help ID
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8351E Help for
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8352E Parameter
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8353E Page
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8354E File
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8355E File Type
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8356E Field
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8357E Predict Extended Description
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8358E No suitable Predict extended description found
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8359E Missing help text profile: Predict
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8360E Invalid parameter passed to helproutine
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8370E Help
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8371E Terminate
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8372E R = Required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8373E O = Optional
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8374E Code:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8380E Confirmation of Termination
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8381E was pressed...
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8382E Press
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8383E again to quit entirely out of
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8384E to resume where you left off
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8390E End of Data
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8391E Display
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8400E Enter selection
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8410E Add/Browse/Clear/Display/Modify/Next/Purge
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8411E Xcopy/Recall/Replace/Select/Detail/Former
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8412E Unposted/Lines/Validate/Authorize/Post/Jcopy/Acopy
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8422E flip
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8430E help/retrn/quit/add/flip/place/bkwrd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8431E frwrd/left/right/main/print/exprt/pref/confm
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8432E print/stan
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8433E apply
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8442E */----/of/more/----/>>                                       /+04
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8443E Action name/Action code/Pfkey name/Pfkey code/Position       /+12
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8444E API/Method/Parameter                                         /+12
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8445E Valid Actions/Valid Pfkeys                                   /+30
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8446E Description                                                  /+32
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8447E Action id/Pfkey id                                           /+12
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8450E Incorrectly formatted data:1:passed for:2::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8451E Expected:1:for field:2:received:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8452E Expected:1:bytes for method:2:, received:3:bytes
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8453E Error occurred in program:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8454E Input Logic error occurred in:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8500E Mnemonics switched off
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8501E Mnemonics switched on
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8502E New action bar invoked
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8503E Current language not changed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8504E Current language changed to:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8518E Invalid action bar choice:1:selected
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8601E :1:activated successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8602E :1:de-activated successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8604E :1:approved successfully; approval is complete
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8605E :1:rejected successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8606E next approval list for:1::2:displayed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8610E Mulitple incomplete approval lists exist for:1::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8611E there are no approval lists for:1::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8612E there are no active items in this approval list
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8613E active:1:may not be deleted
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8614E unable to allocate new:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8615E this approval list has no items for:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8620E :1:must match:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8621E entry number must be greater than active item"s entry number
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8622E modificaiton of item on completed approval list not allowed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8623E :1:is complete; modification not allowed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8624E :1:action may only be applied to an active:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8625E individual items may not be deleted from completed approval list
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8626E completed items may not be deleted individually
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8627E approval list is active; can"t delete
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8628E you aren"t authorized to act on behalf of:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8629E :1:action may only be applied to an inactive, open:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8630E either:1:or:2:is required
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8631E :1:and:2:may not both be specified
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8640E at least one entry is required to activate the approval list
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8650E valid values of:1:are:2:and:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8651E related entity is incorrect
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8652E open approval list:1:already exists for:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8660E parameter:1:required by:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8701E english text for prompt1
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8702E english text for prompt2
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8703E english text for prompt3
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8704E english text for prompt4
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8705E english text for prompt5
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8706E english text for prompt6
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8707E english text for prompt7
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8708E english text for prompt8
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8709E english text for prompt9
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8710E english text for prompt10
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8711E english text for prompt11
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8712E english text for prompt12
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8713E english text for prompt13
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8714E english text for prompt14
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8715E english text for prompt15
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8716E english text for prompt16
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8717E english text for prompt17
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8718E english text for prompt18
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8719E english text for prompt19
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8720E english text for prompt20
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8721E english text for prompt21
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8722E english text for prompt22
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8723E english text for prompt23
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8724E english text for prompt24
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8725E english text for prompt25
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8726E english text for prompt26
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8727E english text for prompt27
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8728E english text for prompt28
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8729E english text for prompt29
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8730E english text for prompt20
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8731E english text for prompt31
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8732E english text for prompt32
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8733E english text for prompt33
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8734E english text for prompt34
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8735E english text for prompt35
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8736E english text for prompt36
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8737E english text for prompt37
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8738E english text for prompt38
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8739E english text for prompt39
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8740E english text for prompt40
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8800E :1:is not a valid method
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8801E :1:rows retrieved in:2:seconds
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8802E :1:is an invalid input state
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8803E You are not permitted to execute this method
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8804E Error occurred; not all rows were processed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8805E :1:is an invalid transaction style
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8806E Business transaction aborted
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8807E Business transaction successful
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8808E Add row aborted
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8809E Update row aborted
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8810E Delete row aborted
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8811E Invalid state:1:on aborted transaction
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8812E Add row pending
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8813E Update row pending
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8814E Delete row pending
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8815E Error in timestamp delta routine;:1:is an invalid function
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8816E Start time is greater than end time
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8817E Error in timestamp delta routine; return code:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8818E :1:is an invalid transaction style
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8819E :1:rows retrieved successfully
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8820E Business data processed
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8821E File:1:does not exist
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8822E Only select one category for each level one
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8823E At least one level one must be selected
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8824E Input lines found in:1:   This is not allowed in client/server
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8830E Deletes a specific:1:based on:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8831E Determines whether specific:1:exists
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8832E Retrieves a specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8833E Initializes a specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8834E Retrieves the next:1:in:2:order
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8835E Adds a specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8836E Retrieves the previous:1:in:2:order
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8837E Updates a specific:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8838E Retrieves row(s) based on
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8839E Deletes row(s) as part of the MultiMaint method.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8840E Adds row(s) as part of the MultiMaint method.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8841E Performs methods on multiple rows based on state of the rows.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8842E Updates row(s) as part of the MultiMaint method.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8843E Retrieves:1:using:2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8844E Counts:1:rows(s) based on:2:.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8845E Executes subprogram(s)
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8846E Business Service successful but row error exists
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#

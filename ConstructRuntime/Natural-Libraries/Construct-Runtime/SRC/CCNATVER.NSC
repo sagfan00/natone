@@ -1,0 +1,24 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* This copy code is used to check what version of Natural is currently
+* running.
+*
+ASSIGN CDANATV.#SAVE-KEY = *PF-KEY
+SET CONTROL 'K48'
+IF *PF-KEY = 'PF48' THEN
+  ASSIGN CDANATV.#NAT22 = TRUE    /* NAT2.2 or better is the current
+ELSE                              /* environment.
+  ASSIGN CDANATV.#NAT22 = FALSE
+END-IF
+*
+* Reassign *PF-KEY
+IF CDANATV.#PF = 'PF' THEN
+  COMPRESS 'K' CDANATV.#PF-NUM TO CDANATV.#SAVE-KEY LEAVING NO
+  SET CONTROL CDANATV.#SAVE-KEY
+ELSE
+  SET CONTROL 'K0'  /* ENTER
+END-IF
+*

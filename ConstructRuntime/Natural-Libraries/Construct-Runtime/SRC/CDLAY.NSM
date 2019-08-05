@@ -1,0 +1,54 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #HEADER1 #HEADER2 #HPARM CDDIALDA.#PROGRAM
+*     CDGETDCA.#DIRECT-COMMAND
+DEFINE DATA PARAMETER
+1 #HEADER1 (A060)
+1 #HEADER2 (A058)
+1 #HPARM (A065)
+1 CDDIALDA.#PROGRAM (A008)
+1 CDGETDCA.#DIRECT-COMMAND (A060)
+END-DEFINE
+FORMAT PS=021 LS=080 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 023080        N1NNUCN____         X        01 NCST    YL           1 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T CDDIALDA.#PROGRAM  (AD=ODL ) /*.01U008 A008 .
+ 010T #HEADER1  (AD=OIT'_' ) /*.01D060 A060 .
+ 071T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 011T #HEADER2  (AD=OI ) /*.01D058 A058 .
+ 070T *TIMX  (AD=OD EM=' 'HH':'II' 'AP ) /*.01S009 T    .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+ 001T 'Direct Command:'(I)
+ 017T CDGETDCA.#DIRECT-COMMAND  (AD=MILT'_' ) /*.99D060 A060 .
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

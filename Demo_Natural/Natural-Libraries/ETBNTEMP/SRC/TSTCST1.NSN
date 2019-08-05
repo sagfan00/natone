@@ -1,0 +1,520 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: OBJECT-MAINT-N1                          VERSION: 8.2.5
+**SAG OBJECT-DESC: Object Maintenance
+**SAG OBJECT-NAME: TSTCSDM1
+**SAG OBJECT-PDA: TSTCSDM1
+**SAG RESTRICTED-PDA: TSTCSPM1
+**SAG HASH-LOCKING:
+**SAG HOLD-FIELD: ZIP
+**SAG CONFINED_KEY_PREFIX: 0
+**SAG DDM: EMPLOYEES
+**SAG PRIME-KEY: PERSONNEL-ID
+**SAG USE-MSG-NR: X
+**SAG DESCS(1): This module is used for ...
+************************************************************************
+* Program  : TSTCST1
+* System   : ETBNTEMP
+* Title    : Object Maintenance Subprogram
+* Generated: Fri Jun 15 15:31:02 CEST 2012
+* Function : This module is used for ...
+*
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+PARAMETER USING TSTCSDM1
+PARAMETER USING TSTCSPM1
+PARAMETER USING CDAOBJ2
+PARAMETER USING CDPDA-M
+**SAG DEFINE EXIT PARAMETER-DATA
+**SAG END-EXIT
+LOCAL
+01 #D1(I2)
+01 #D2(I2)
+*
+* Miscellaneous local variables.
+01 #CURRENT-FIELD(A32)     /* Current field name being processed
+01 #DB-CALL(A1)            /* D=Delete, U=Update, S=Store
+01 #OBJECT(A32) INIT<'Object Maintenance'>
+01 #OLD-REC(L)             /* Record existed before.
+01 #SAVE-REC(L)            /* True if record is non-null.
+01 #NO-BACKOUT(L)          /* True means no backout transaction.
+01 #UPDATE-PERFORMED(L)    /* Add/Modify/Purge occurred.
+01 #HOLD(L)                /* For processing to know if HOLD-OBJECT
+/* or GET-OBJECT requested no records found
+01 #CURRENT-RELATIONSHIP (A32)  /* Used to set max/min values
+01 #USER-MSG-LIBRARY(A8)   /* User message library
+01 #ERROR-ROUTINE (A8) INIT <'CDUMSGU'>
+*
+* Views used to build object.
+*
+* View for histogram on NEXT action.
+01 NEXT-VIEW VIEW OF EMPLOYEES
+  02 PERSONNEL-ID
+*
+
+* Primary object entity.
+01 EMPLOYEES VIEW OF EMPLOYEES
+  02 PERSONNEL-ID
+  02 FULL-NAME
+    03 FIRST-NAME
+    03 MIDDLE-I
+    03 NAME
+  02 MAR-STAT
+  02 SEX
+  02 BIRTH
+  02 FULL-ADDRESS
+    03 ADDRESS-LINE (1:15)
+    03 CITY
+    03 ZIP
+    03 COUNTRY
+  02 TELEPHONE
+    03 AREA-CODE
+    03 PHONE
+  02 DEPT
+  02 JOB-TITLE
+  02 INCOME (1:10)
+    03 CURR-CODE
+    03 SALARY
+    03 BONUS (1:15)
+  02 LEAVE-DATA
+    03 LEAVE-DUE
+    03 LEAVE-TAKEN
+  02 LEAVE-BOOKED (1:10)
+    03 LEAVE-START
+    03 LEAVE-END
+  02 LANG (1:15)
+**SAG DEFINE EXIT EXTENDED-RI-VIEWS
+**SAG END-EXIT
+**SAG DEFINE EXIT LOCAL-DATA
+**SAG END-EXIT
+INDEPENDENT
+01 +METHOD (A32)
+END-DEFINE
+**SAG DEFINE EXIT START-OF-PROGRAM
+**SAG END-EXIT
+*
+IF +METHOD = ' ' OR = 'MultiMaint' THEN
+  IGNORE
+ELSE
+  CDAOBJ2.#FUNCTION := +METHOD
+  RESET +METHOD
+END-IF
+* Initialize output fields.
+RESET CDAOBJ2.OUTPUTS CDAOBJ2.#BACKOUT-ISSUED
+  #NO-BACKOUT #UPDATE-PERFORMED
+IF NOT CDAOBJ2.#FUNCTION = 'INITIALIZE' THEN
+  RESET MSG-INFO /* Don't clear existing message on initialize
+END-IF
+*
+* Build up prime key of the object.
+MOVE BY NAME TSTCSDM1 TO TSTCSDM1-ID.STRUCTURE
+*
+* Decide what to do based on function supplied.
+DECIDE ON FIRST VALUE CDAOBJ2.#FUNCTION
+  VALUE 'GET' /* Read the object
+    PERFORM GET-OBJECT
+    PERFORM SET-OBJECT-ID
+    MSG-INFO.##MSG-NR := 8026 /* :1:displayed successfully
+  VALUE 'NEXT' /* Read the next higher object
+/*
+/* Histogram for next higher value from one in object.
+    HISTOGRAM(2) NEXT-VIEW FOR PERSONNEL-ID
+        STARTING FROM TSTCSDM1-ID
+      IF NEXT-VIEW.PERSONNEL-ID NE TSTCSDM1-ID THEN
+        TSTCSDM1-ID := NEXT-VIEW.PERSONNEL-ID
+        MOVE BY NAME TSTCSDM1-ID.STRUCTURE TO TSTCSDM1
+        PERFORM GET-OBJECT
+        MSG-INFO.##MSG-DATA(1) := #OBJECT
+        MSG-INFO.##MSG-NR := 8062 /* Next:1:displayed
+        PERFORM EXIT-MODULE
+      END-IF
+    END-HISTOGRAM
+/*
+/* No records beyond current record.
+    MSG-INFO.##MSG-NR := 8005 /* End of data reached.
+    MSG-INFO.##ERROR-FIELD := 'PERSONNEL-ID'
+    MSG-INFO.##RETURN-CODE := 'W' /* Warning.
+    PERFORM EXIT-MODULE
+  VALUE 'FORMER' /* Read the next lower object
+/*
+/* Histogram for next lower value from one in object.
+    HISTOGRAM(2) NEXT-VIEW DESC FOR PERSONNEL-ID
+        STARTING FROM TSTCSDM1-ID
+      IF NEXT-VIEW.PERSONNEL-ID NE TSTCSDM1-ID THEN
+        TSTCSDM1-ID := NEXT-VIEW.PERSONNEL-ID
+        MOVE BY NAME TSTCSDM1-ID.STRUCTURE TO TSTCSDM1
+        PERFORM GET-OBJECT
+        RESET CDAOBJ2.#USE-ISN /* Not allowed for NEXT or FORMER
+        MSG-INFO.##MSG-DATA(1) := #OBJECT
+        MSG-INFO.##MSG-NR := 8115 /* Former:1:displayed
+        PERFORM EXIT-MODULE
+      END-IF
+    END-HISTOGRAM
+/*
+/* No records beyond current record.
+    MSG-INFO.##MSG-NR := 8112 /* Start of data reached.
+    MSG-INFO.##ERROR-FIELD := 'PERSONNEL-ID'
+    MSG-INFO.##RETURN-CODE := 'W' /* Warning.
+    PERFORM EXIT-MODULE
+/*
+  VALUE 'UPDATE','DELETE' /* Modify or purge current object
+/*
+/* Make sure the record was held prior to updating.
+    IF TSTCSDM1-ID NE TSTCSPM1.HELD-ID THEN
+      MSG-INFO.##MSG-NR := 8063 /* Record not in hold status.
+      MSG-INFO.##ERROR-FIELD := '#FUNCTION'
+      PERFORM PROCESS-ERROR
+    END-IF
+    PERFORM HOLD-OBJECT
+    PERFORM SET-OBJECT-ID
+    IF CDAOBJ2.#FUNCTION = 'UPDATE'
+      PERFORM CLEAR
+      IF NOT CDAOBJ2.#CLEAR-AFTER-UPDATE THEN
+        PERFORM GET-OBJECT /* Get new copy of object if clear not req.
+      END-IF
+      MSG-INFO.##MSG-NR := 8024 /* :1:modified successfully
+    ELSE
+      IF CDAOBJ2.#CLEAR-AFTER-UPDATE THEN
+        PERFORM CLEAR /* Clear screen after purge if requested.
+      END-IF
+      MSG-INFO.##MSG-NR := 8023 /* :1:purged successfully
+    END-IF
+    #UPDATE-PERFORMED := TRUE
+  VALUE 'EXISTS' /* Existence check
+    PERFORM CHECK-EXISTENCE
+    ESCAPE ROUTINE IMMEDIATE
+  VALUE 'STORE' /* Add new object
+    PERFORM CREATE-OBJECT
+    PERFORM SET-OBJECT-ID
+    PERFORM CLEAR
+    IF NOT CDAOBJ2.#CLEAR-AFTER-UPDATE THEN
+      PERFORM GET-OBJECT /* Get new copy of object if clear not req.
+    END-IF
+    ASSIGN MSG-INFO.##MSG-NR = 8025 /* :1:added successfully'
+    #UPDATE-PERFORMED := TRUE
+  VALUE 'INITIALIZE'
+    PERFORM CLEAR
+**SAG DEFINE EXIT USER-DEFINED-FUNCTIONS
+**SAG END-EXIT
+  ANY
+**SAG DEFINE EXIT BEFORE-ET
+**SAG END-EXIT
+    IF #UPDATE-PERFORMED AND CDAOBJ2.#ET-IF-SUCCESSFUL THEN
+**SAG DEFINE EXIT BEFORE-ET-PROCESSING
+**SAG END-EXIT
+      END OF TRANSACTION
+**SAG DEFINE EXIT AFTER-ET-PROCESSING
+**SAG END-EXIT
+    END-IF
+    PERFORM EXIT-MODULE     /* All done.
+  NONE /* Unknown action code
+    MSG-INFO.##MSG-DATA(1) := #OBJECT
+    MSG-INFO.##MSG-DATA(2) := CDAOBJ2.#FUNCTION
+    MSG-INFO.##MSG-NR := 8064 /* Invalid:1:function specified:2:
+    MSG-INFO.##ERROR-FIELD := '#FUNCTION'
+    PERFORM PROCESS-ERROR
+END-DECIDE
+*
+************************************************************************
+DEFINE SUBROUTINE PROCESS-ERROR
+************************************************************************
+*
+IF MSG-INFO.##MSG-DATA(1) = ' ' THEN /* Set default for :1:.
+  PERFORM SET-OBJECT-ID
+END-IF
+IF MSG-INFO.##ERROR-FIELD = ' ' THEN /* Set default error field.
+  IF #CURRENT-FIELD NE ' '
+    ASSIGN MSG-INFO.##ERROR-FIELD = #CURRENT-FIELD
+  ELSE
+    ASSIGN MSG-INFO.##ERROR-FIELD = 'PERSONNEL-ID'
+  END-IF
+END-IF
+ASSIGN MSG-INFO.##RETURN-CODE = 'E' /* Error.
+**SAG DEFINE EXIT PROCESS-ERROR-MESSAGE
+**SAG END-EXIT
+CALLNAT #ERROR-ROUTINE MSG-INFO /* Default CDUMSGU
+**SAG DEFINE EXIT ERROR-MESSAGE-PDAS
+**SAG END-EXIT
+IF NOT #NO-BACKOUT THEN
+  CDAOBJ2.#BACKOUT-ISSUED := TRUE
+  BACKOUT TRANSACTION
+END-IF
+PERFORM EXIT-MODULE
+END-SUBROUTINE /* PROCESS-ERROR
+*
+************************************************************************
+DEFINE SUBROUTINE PROCESS-USER-ERROR
+************************************************************************
+*
+MSG-INFO.##MSG := #USER-MSG-LIBRARY
+PERFORM PROCESS-ERROR
+END-SUBROUTINE /* PROCESS-USER-ERROR
+************************************************************************
+DEFINE SUBROUTINE EXIT-MODULE
+************************************************************************
+*
+*
+* Retrieve text if necessary
+IF MSG-INFO.##MSG-NR NE 0 AND MSG-INFO.##MSG = ' ' THEN
+  CALLNAT #ERROR-ROUTINE MSG-INFO
+END-IF
+*
+**SAG DEFINE EXIT END-OF-PROGRAM
+**SAG END-EXIT
+ESCAPE MODULE IMMEDIATE
+END-SUBROUTINE /* EXIT-MODULE
+
+
+
+*
+************************************************************************
+DEFINE SUBROUTINE CREATE-OBJECT
+************************************************************************
+*
+* Don't allow the key to be null.
+IF TSTCSDM1-ID = NEXT-VIEW.PERSONNEL-ID /* Compare with null
+  MSG-INFO.##MSG-DATA(1) := #OBJECT
+  MSG-INFO.##MSG-NR := 8065 /* :1: identifier is required
+  PERFORM PROCESS-ERROR
+END-IF
+/*
+/* If object already exist, return with error.
+PERFORM CHECK-EXISTENCE
+IF CDAOBJ2.#EXISTS THEN
+  MSG-INFO.##MSG-NR := 8012 /* :1:already exists.
+  PERFORM PROCESS-ERROR
+END-IF
+PERFORM EDIT-OBJECT /* Pre-edit object header
+PERFORM CHECK-AND-UPDATE-OBJECT /* Check and update children
+EMPLOYEES.ZIP := *TIME
+**SAG DEFINE EXIT BEFORE-STORE
+**SAG END-EXIT
+  S1.
+STORE EMPLOYEES
+**SAG DEFINE EXIT AFTER-STORE
+**SAG END-EXIT
+/*
+/* Since object id does not have Unique Key on Database, make sure
+/* that two users did not store object at the same time.
+PERFORM CHECK-EXISTENCE
+END-SUBROUTINE /* CREATE-OBJECT
+*
+************************************************************************
+DEFINE SUBROUTINE GET-OBJECT
+************************************************************************
+*
+* Get the primary object record.
+#HOLD := FALSE
+  GET-OBJECT.
+FIND (1) EMPLOYEES WITH PERSONNEL-ID = TSTCSDM1-ID
+  PERFORM GET-PRIMARY-RECORDS-FOUND
+END-FIND
+IF *NUMBER(GET-OBJECT.) = 0
+  PERFORM PRIMARY-RECORDS-NOT-FOUND
+END-IF
+**SAG DEFINE EXIT AFTER-GET
+**SAG END-EXIT
+END-SUBROUTINE /* GET-OBJECT
+*
+************************************************************************
+DEFINE SUBROUTINE HOLD-OBJECT
+************************************************************************
+*
+* Get primary entity and process it.
+#HOLD := TRUE
+  HOLD-PRIME.
+FIND (1) EMPLOYEES WITH
+    PERSONNEL-ID =  TSTCSDM1-ID
+  PERFORM HOLD-PRIMARY-RECORDS-FOUND
+  DECIDE ON EVERY VALUE CDAOBJ2.#FUNCTION
+    VALUE 'UPDATE'
+      EMPLOYEES.ZIP := *TIME
+      UPDATE(HOLD-PRIME.)
+      PERFORM AFTER-UPDATE-ROUTINE
+    VALUE 'DELETE'
+      PERFORM BEFORE-DELETE-ROUTINE
+      DELETE(HOLD-PRIME.)
+      RESET  TSTCSPM1.HELD-ID
+    NONE IGNORE
+  END-DECIDE
+END-FIND
+IF *NUMBER(HOLD-PRIME.) = 0
+  PERFORM PRIMARY-RECORDS-NOT-FOUND
+END-IF
+END-SUBROUTINE /* HOLD-OBJECT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-AND-UPDATE-OBJECT /* Process all sub-entities
+************************************************************************
+*
+ESCAPE ROUTINE /* No sub-entities
+
+END-SUBROUTINE /* CHECK-AND-UPDATE-OBJECT
+
+*
+*************************************************************************
+DEFINE SUBROUTINE EDIT-OBJECT /* Pre-editing object header
+*************************************************************************
+*
+IF CDAOBJ2.#FUNCTION = 'UPDATE' OR = 'STORE'
+/*
+/* Build up the header record for editing or updating
+  MOVE BY NAME TSTCSDM1 TO EMPLOYEES
+END-IF
+END-SUBROUTINE /* EDIT-OBJECT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-EXISTENCE
+************************************************************************
+*
+* Check whether object currently exists.
+  EXISTENCE-CHECK.
+FIND NUMBER  EMPLOYEES WITH
+  PERSONNEL-ID = TSTCSDM1-ID
+DECIDE ON FIRST VALUE OF *NUMBER(EXISTENCE-CHECK.)
+  VALUE 0      /* Object does not exist
+    RESET CDAOBJ2.#EXISTS
+  VALUE 1      /* Object already exists
+    CDAOBJ2.#EXISTS := TRUE
+  NONE VALUE    /* Object ID not unique.
+    CDAOBJ2.#EXISTS := TRUE
+    MSG-INFO.##MSG-NR := 8067 /* Multiple occurrences of object
+    MSG-INFO.##MSG-DATA(2) := *NUMBER(EXISTENCE-CHECK.)
+    RESET  TSTCSPM1
+    PERFORM PROCESS-ERROR
+END-DECIDE
+*
+END-SUBROUTINE /* CHECK-EXISTENCE
+*
+*********************************************************************
+DEFINE SUBROUTINE CLEAR
+*********************************************************************
+*
+MOVE BY NAME TSTCSDM1 TO  TSTCSDM1-ID.STRUCTURE /* Capture key.
+RESET TSTCSDM1 TSTCSPM1
+MOVE BY NAME TSTCSDM1-ID.STRUCTURE
+  TO TSTCSDM1 /* Restore key.
+**SAG DEFINE EXIT AFTER-INIT
+**SAG END-EXIT
+END-SUBROUTINE /* CLEAR
+**SAG DEFINE EXIT UPDATE-EDITS
+**SAG END-EXIT
+**SAG DEFINE EXIT DELETE-EDITS
+**SAG END-EXIT
+**SAG DEFINE EXIT AFTER-GET-EDITS
+**SAG END-EXIT
+**SAG DEFINE EXIT EXTENDED-RI-CHECKS
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE GET-DB-CALL
+************************************************************************
+*
+INCLUDE CCDBCAL2
+END-SUBROUTINE /* GET-DB-CALL
+*
+************************************************************************
+DEFINE SUBROUTINE SET-OBJECT-ID
+************************************************************************
+*
+MSG-INFO.##MSG-DATA(1) := #OBJECT
+COMPRESS TSTCSDM1-ID TO MSG-INFO.##MSG-DATA(2)
+**SAG DEFINE EXIT ADJUST-OBJECT-ID-IN-MSG
+**SAG END-EXIT
+END-SUBROUTINE /* SET-OBJECT-ID
+*
+************************************************************************
+* Code processed when primary record is retrieved in an unlocked state
+DEFINE SUBROUTINE GET-PRIMARY-RECORDS-FOUND
+************************************************************************
+PERFORM CLEAR
+CDAOBJ2.#EXISTS := TRUE
+/*
+/* "Hold" the record by capturing the value of the update flag.
+TSTCSPM1.INTERVENING-UPD-FLD :=
+  EMPLOYEES.ZIP
+/*
+/* Shift primary entity information to object
+MOVE BY NAME EMPLOYEES TO TSTCSDM1
+TSTCSPM1.HELD-ID := TSTCSDM1-ID
+END-SUBROUTINE /* GET-PRIMARY-RECORDS-FOUND
+***********************************************************************
+* Code processed when primary record is retrieved in a locked state
+DEFINE SUBROUTINE HOLD-PRIMARY-RECORDS-FOUND
+***********************************************************************
+*
+IF TSTCSPM1.INTERVENING-UPD-FLD NE
+    EMPLOYEES.ZIP THEN
+  MSG-INFO.##MSG-NR := 8010 /* Intervening update
+  RESET TSTCSPM1
+  PERFORM PROCESS-ERROR
+END-IF
+PERFORM EDIT-OBJECT /* Pre-edit object header
+PERFORM CHECK-AND-UPDATE-OBJECT /* Check and update children
+CDAOBJ2.#EXISTS := TRUE
+END-SUBROUTINE /* HOLD-PRIMARY-RECORDS-FOUND
+*
+************************************************************************
+DEFINE SUBROUTINE PRIMARY-RECORDS-NOT-FOUND
+************************************************************************
+*
+IF #HOLD THEN
+/*
+/* Trying to process an object that doesn't exist.
+  RESET TSTCSPM1
+  MSG-INFO.##MSG-NR := 8009 /* interveningly purge
+  PERFORM PROCESS-ERROR
+ELSE
+/*
+/* Return the fact that the object does not exist.
+  MSG-INFO.##MSG-NR := 8014 /* :1:does not exist.
+  IF CDAOBJ2.#FUNCTION = 'GET' OR = 'NEXT' OR = 'FORMER'
+      OR = 'DELETE' THEN
+    #NO-BACKOUT := TRUE    /* No need to do a backout
+  END-IF
+  PERFORM PROCESS-ERROR
+END-IF
+*
+END-SUBROUTINE /* PRIMARY-RECORDS-NOT-FOUND
+************************************************************************
+DEFINE SUBROUTINE AFTER-UPDATE-ROUTINE
+************************************************************************
+**SAG DEFINE EXIT AFTER-UPDATE
+**SAG END-EXIT
+ESCAPE ROUTINE
+END-SUBROUTINE /* AFTER-UPDATE-ROUTINE
+************************************************************************
+DEFINE SUBROUTINE BEFORE-DELETE-ROUTINE
+************************************************************************
+**SAG DEFINE EXIT BEFORE-DELETE
+**SAG END-EXIT
+ESCAPE ROUTINE
+END-SUBROUTINE /* BEFORE-DELETE-ROUTINE
+************************************************************************
+************************************************************************
+DEFINE SUBROUTINE OVERRIDE-MINIMUM
+************************************************************************
+**SAG DEFINE EXIT OVERRIDE-MINIMUM
+**SAG END-EXIT
+ESCAPE ROUTINE
+END-SUBROUTINE /* OVERRIDE-MINIMUM
+************************************************************************
+************************************************************************
+DEFINE SUBROUTINE OVERRIDE-MAXIMUM
+************************************************************************
+**SAG DEFINE EXIT OVERRIDE-MAXIMUM
+**SAG END-EXIT
+ESCAPE ROUTINE
+END-SUBROUTINE /* OVERRIDE-MAXIMUM
+************************************************************************
+**SAG DEFINE EXIT MISCELLANEOUS-SUBROUTINES
+**SAG END-EXIT
+END

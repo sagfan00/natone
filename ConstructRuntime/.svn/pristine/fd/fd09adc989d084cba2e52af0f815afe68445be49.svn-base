@@ -1,0 +1,19 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program  : CDERRTA
+* System   : NATURAL-CONSTRUCT
+* Title    : Default Error Transaction Program.
+* Function : This default error transaction simply disables application
+*            error handling (to avoid undetected errors in the error
+*            transaction or ESCAPE from ERROR Loop errors). It then
+*            invokes a program to handle the error. After error
+*            processing completes, the error transaction is re-enabled.
+* History
+************************************************************************
+SET CONTROL 'E=OFF' /* Disable error transaction during error processing
+FETCH 'CDERROR'
+END

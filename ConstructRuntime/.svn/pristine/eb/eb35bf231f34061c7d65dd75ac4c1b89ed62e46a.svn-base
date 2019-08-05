@@ -1,0 +1,38 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDSETGB
+* System     : NATURAL-CONSTRUCT
+* Application: All browse programs.
+* Written on : 15 JUNE 1989
+* Description: This subprogram sets GLOBAL parameters to
+*              the received value.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDSETGBA
+  LOCAL
+  01 #PS(P3)
+  01 #MIN-PAGE(P3) CONST<0>
+  01 #MAX-PAGE(P3) CONST<250>
+END-DEFINE
+*
+* Adjust global PS if it is currenlty outside valid range.
+DECIDE FOR FIRST CONDITION
+  WHEN CDSETGBA.#GLOBAL-PAGESIZE LT #MIN-PAGE
+    SET GLOBALS PS=#MIN-PAGE
+  WHEN CDSETGBA.#GLOBAL-PAGESIZE GE #MIN-PAGE AND
+       CDSETGBA.#GLOBAL-PAGESIZE LE #MAX-PAGE
+    ASSIGN #PS = CDSETGBA.#GLOBAL-PAGESIZE
+    /*
+    /* Set global pagesize.
+    SET GLOBALS PS=#PS
+  WHEN CDSETGBA.#GLOBAL-PAGESIZE GT #MAX-PAGE
+    SET GLOBALS PS=#MAX-PAGE
+  WHEN NONE IGNORE
+END-DECIDE
+END

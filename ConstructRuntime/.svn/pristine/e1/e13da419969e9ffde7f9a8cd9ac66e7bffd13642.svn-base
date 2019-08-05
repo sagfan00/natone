@@ -1,0 +1,17 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDSETPSA /* Used by CDSETPS
+   2 INPUTS
+     3 #INPUT-LINES (P3) /* Number of input lines to be
+/*                                       /* reserved at bottom of screen
+/*                                       /* excluding KD lines, msg line.
+     3 #RESERVE-KD-AREA (L) /* If true, 2 additional lines
+/*                                       /* will be reserved for the KD
+/*                                       /* area, regardless of whether
+/*                                       /* the keys are currently shown.
+   2 OUTPUTS
+     3 #GLOBAL-PAGESIZE (P3) /* Page size that was set.
+END-DEFINE

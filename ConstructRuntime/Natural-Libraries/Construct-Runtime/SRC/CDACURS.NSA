@@ -1,0 +1,17 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  Used by CSUCURS to determine
+/*  whether the cursor was on text
+/*  to be translated and translate
+/*  the text.
+ 1 CDACURS
+   2 INPUTS
+     3 CURS-FIELD (I4) /* Value of *CURS-POS
+   2 OUTPUTS
+     3 CURSOR-MATCH (L) /* Cursor was inside
+/*                                       /* passed data area
+END-DEFINE

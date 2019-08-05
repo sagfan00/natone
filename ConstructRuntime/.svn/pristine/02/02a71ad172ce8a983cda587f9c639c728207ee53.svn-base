@@ -1,0 +1,141 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDENVIR (Cloned from CDWINDOW)
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 28 Dec. 1989
+* Description: Capture and restore settings that should be
+*              preserved from the previous object. This should
+*              be performed for all objects that are invoked from
+*              level 2 or higher.
+*
+*              The first time you call it, it captures the window
+*              settings, the global PS and changes the first
+*              parameter to true.
+*
+*              The second call restores the settings to the values
+*              captured in the first call.
+*
+*              These settings should be captured and restored
+*              by he called objects because the calling object
+*              may not even be aware that another object has
+*              changed its environment. This could be the case
+*              when a helproutine is invoked by a PF-KEY or ?.
+*
+*              This program is in reporting mode because it
+*              contains a SET GLOBALS statement which is only
+*              allowed in reporting mode.
+*
+* History
+** Mod Date   Mod By    Description of Changes
+**
+* History    : Changed to Structured mode 19-Dec-2011
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDENVIRA
+  LOCAL
+  01 #SET-WINDOW-LS(N3)
+  01 #SET-WINDOW-PS(N3)
+  01 #SET-WINDOW-BASE-COL(N6)
+  01 #SET-WINDOW-BASE-LINE(N3)
+  01 #SET(A10)
+  01 #TEMP-LINESIZE(N7)
+END-DEFINE
+* Include a format statement for KD=ON so that the logical
+* pagesize allows for PF-Key lines.
+FORMAT KD=ON
+*
+* Decide whether to capture or restore the window settings.
+DECIDE ON FIRST VALUE CDENVIRA.#CAPTURE-RESTORE
+  VALUE FALSE /* Capture
+    /* Save other environment values, USR1002N is supplied with NATURAL
+    /* in library SYSEXT. Copy to steplib if missing.
+    IF *LEVEL GT 2
+      CALLNAT 'USR1002N' 'S' /* Save
+    END-IF
+    /*
+    /* Capture current settings.
+    ASSIGN CDENVIRA.#WINDOW-LS = *WINDOW-LS
+    ASSIGN CDENVIRA.#WINDOW-PS = *WINDOW-PS
+    ASSIGN CDENVIRA.#WINDOW-POS = *WINDOW-POS
+    /*
+    /* If the window size = the physical terminal size assume framing
+    /* is not on.
+    DECIDE FOR FIRST CONDITION
+      /*
+      /* When platform is mainframe or VAX and ...
+      WHEN (*MACHINE-CLASS = 'MAINFRAME' OR = 'VMS')
+                   AND CDENVIRA.#WINDOW-LS = *LINESIZE AND
+                       CDENVIRA.#WINDOW-PS = *PAGESIZE
+        ASSIGN CDENVIRA.#WINDOW-FRAME = FALSE
+      /*
+      /* When platform is C or UNIX and ...
+      WHEN ( *MACHINE-CLASS = 'UNIX' OR = 'PC') AND
+           CDENVIRA.#WINDOW-LS = *LINESIZE AND
+           CDENVIRA.#WINDOW-PS GE *PAGESIZE - 1
+        ASSIGN CDENVIRA.#WINDOW-FRAME = FALSE
+      WHEN NONE
+        /*
+        /* Determine whether or not framing was on by turning it on and
+        /* then checking to see if the system variable *WINDOW-LS
+        /* changed.
+        SET CONTROL 'WF'
+        IF CDENVIRA.#WINDOW-LS = *WINDOW-LS THEN
+            ASSIGN CDENVIRA.#WINDOW-FRAME = TRUE
+        ELSE
+          SET CONTROL 'WM'
+          ASSIGN CDENVIRA.#WINDOW-FRAME = FALSE
+        END-IF
+    END-DECIDE
+    ASSIGN CDENVIRA.#GLOBAL-PAGESIZE = *LOG-PS
+    /*
+    /* Change the parameter so that the next call will cause a set.
+    ASSIGN CDENVIRA.#CAPTURE-RESTORE = TRUE
+  /* Restore the previous settings.
+  VALUE TRUE /* Restore
+    /* Restore other environment values
+    IF *LEVEL GT 2
+      CALLNAT 'USR1002N' 'R' /* Restore
+    END-IF
+    SET CONTROL 'WB'
+    DECIDE FOR EVERY CONDITION
+      WHEN CDENVIRA.#WINDOW-FRAME
+        SET CONTROL 'WF'
+        COMPUTE #SET-WINDOW-LS = CDENVIRA.#WINDOW-LS + 4
+        COMPUTE #SET-WINDOW-PS = CDENVIRA.#WINDOW-PS + 2
+      WHEN NOT CDENVIRA.#WINDOW-FRAME
+        SET CONTROL 'WM'
+        /* If platform = VAX then ...
+        IF *MACHINE-CLASS     = 'VMS'  THEN
+          COMPUTE #SET-WINDOW-LS = CDENVIRA.#WINDOW-LS
+        ELSE
+          COMPUTE #SET-WINDOW-LS = CDENVIRA.#WINDOW-LS + 1
+        END-IF
+        ASSIGN #SET-WINDOW-PS = CDENVIRA.#WINDOW-PS
+      WHEN ANY
+        /*
+        /* Restore the window line size
+        COMPRESS 'WL' #SET-WINDOW-LS TO #SET LEAVING NO
+        SET CONTROL #SET
+        /* Restore the window page size
+        COMPRESS 'WC' #SET-WINDOW-PS TO #SET LEAVING NO
+        SET CONTROL #SET
+      WHEN NONE IGNORE
+    END-DECIDE
+    /* Restore the window base.
+    ASSIGN #SET-WINDOW-BASE-COL = CDENVIRA.#WINDOW-POS
+    ASSIGN #TEMP-LINESIZE = *LINESIZE
+    DIVIDE #TEMP-LINESIZE INTO #SET-WINDOW-BASE-COL
+                     REMAINDER #SET-WINDOW-BASE-LINE
+    COMPRESS 'WB' #SET-WINDOW-BASE-COL '/' #SET-WINDOW-BASE-LINE TO #SET
+             LEAVING NO
+    SET CONTROL #SET
+    /* Restore the global pagesize
+    SET GLOBALS PS=CDENVIRA.#GLOBAL-PAGESIZE
+  NONE VALUE IGNORE
+END-DECIDE
+END

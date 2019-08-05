@@ -1,0 +1,26 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+***********************************************************************
+* Copycode : CCBYPASS
+* System   : NATURAL-CONSTRUCT
+* Title    : Bypass validation edits when in default mode
+* Written  : Sep 19,96 at 04:28 PM
+* Function : This copycode is used to bypass the validation edits
+*          : when in defaulting phase.  This applies to the old
+*          : CONSTRUCT-MODEL-MAINTENANCE (now renamed to CST-MODIFY-332)
+*          : This will support both the new defaulting method and
+*          : the old defaulting method.
+*          :
+* Mod Date   Mod By    Description of Changes
+* MMM DD YY  ________ ______________________________________________
+* ______________________________________________
+***********************************************************************
+*
+* If in defaulting phase, bypass any edit checks
+  IF CU--PDA.#PDA-PHASE = CU-FLDA.#DEFINE-TRANSLATION THEN
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+*

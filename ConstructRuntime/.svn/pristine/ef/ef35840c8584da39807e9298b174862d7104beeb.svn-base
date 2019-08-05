@@ -1,0 +1,33 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Copycode: CVGETFIC
+* Author  : DEVSS
+* Descriptino
+* This code can be used to get a logical file without calling a NAT
+* routine. This must be done in CVUSRCOP since this executes out of
+* SYSTEM where NAT routines may not be available.
+*
+* This copycode uses the following data
+* LOCAL USING CVGETFIL
+*
+* It assigns the following variables
+* CVGETFIL.FUSER-DBID CVGETFIL.FUSER-FNR
+* CVGETFIL.FNAT-DBID CVGETFIL.FNAT-FNR
+FOR CVGETFIL.CVGETFIL-INDEX = 1 TO 2 /* Fuser to Fnat
+  ASSIGN CVGETFIL.L_FILE = CVGETFIL.SYSF-LFILE(CVGETFIL-INDEX)
+  CALL 'CMSLFT' CVGETFIL.STRING
+  ASSIGN CVGETFIL.RSP-CODE =  RET ('CMSLFT')
+  IF CVGETFIL.RSP-CODE = 0 AND AUTO_XLATE NE 'Y' THEN
+    ASSIGN CVGETFIL.SYSF-DBID(CVGETFIL-INDEX) = CVGETFIL.DBID
+    ASSIGN CVGETFIL.SYSF-FNR(CVGETFIL-INDEX) = CVGETFIL.FNR
+  ELSE
+    IF CVGETFIL.RSP-CODE NE 0 THEN
+      ASSIGN *ERROR-NR = CVGETFIL.RSP-CODE
+    ELSE
+      ASSIGN *ERROR-NR = 1
+    END-IF
+  END-IF
+END-FOR

@@ -1,0 +1,34 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/*
+/*                        Module    :    CDBUPDA
+/*                        System    :      CST51
+/*                        Author    :    Software AG
+/*                        Created   :    2005-06-23
+/*                        Short Desc:    Business Service "BROWSE-SELECT"
+/*                                  :    standard parms
+/*                        Long Desc :    This data area has been replaces with
+/*                                  :    CDBUPDA2
+/*
+ 1 CDBUPDA
+   2 INPUTS
+     3 RANGE-OPTION (N2) /*See CDRANGEL
+   2 INPUT-OUTPUTS
+     3 RESTART (L) /*Set to force the browse
+/*                                       /* object to begin a new browse
+/*                                       /* even though the starting
+/*                                        /* keymay not have changed.
+/*                                       /* This is reset by the called
+/*                                       /* browse object.
+     3 ACTUAL-ROWS-RETURNED (N4) /*Number of rows returned. This
+/*                                       /* will be less than or equal to
+/*                                       /* MAX-ROWS-REQUESTED
+   2 OUTPUTS
+     3 END-OF-DATA (L) /*If all of the rows on the
+/*                                       /* database were exhausted, this
+/*                                       /* flag is set.
+     3 RESTARTED (I1) /*See CDBRLDA
+END-DEFINE

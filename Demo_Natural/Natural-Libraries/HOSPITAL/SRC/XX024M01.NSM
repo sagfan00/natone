@@ -1,0 +1,68 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* MAP2: PROTOTYPE              --- CREATED BY WNT 2.2.0 ---
+* INPUT USING MAP 'XXXXXXXX'
+*     #G-MESSAGE #M-OPTION #M-YEAR
+DEFINE DATA PARAMETER
+1 #G-MESSAGE (A070)
+1 #M-OPTION (A001)
+1 #M-YEAR (N02.0)
+END-DEFINE
+FORMAT PS=024 LS=081 ZP=OFF SG=OFF KD=OFF IP=OFF
+* MAP2: MAP PROFILES *****************************        200***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(                       *
+* 024080        N0NNUCN             X        01 SYSDBA  NR             *
+************************************************************************
+INPUT          (     IP=OFF                                           /*
+                                                                       )
+ 002T *PROGRAM  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 028T 'Listing of Patients Menu'
+ 072T *DATN  (AD=DLOFHT' ' ) /*.01S008 N08.0.
+/
+ 002T *USER  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 028T '*' (024)
+/
+/
+/
+ 016T 'Option'
+ 028T 'Option Description'
+/
+ 016T '======'
+ 028T '=' (035)
+/
+ 018T 'P'
+ 028T 'List in Patient Id Order'
+/
+ 018T 'N'
+ 028T 'List in Surname/Patient Id Order'
+/
+ 016T '------'
+ 028T '-' (036)
+/
+ 018T #M-OPTION  (AD=DLMFHT' ' ) /*.99U001 A001 .
+ 028T 'Please Enter Required Option'
+/
+/
+/
+ 018T #M-YEAR  (AD=DLMFHT' ' ) /*.99U002 N02.0.
+ 028T 'Year'
+/
+/
+/
+/
+/
+/
+ 004T 'PF3/15 to Return'
+ 059T 'PF12/24 to Exit'
+/
+ 004T #G-MESSAGE  (AD=DLOFHT ) /*.01D070 A070 .
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

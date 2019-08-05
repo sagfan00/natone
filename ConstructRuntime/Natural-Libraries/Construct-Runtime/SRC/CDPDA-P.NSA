@@ -1,0 +1,18 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This 01 level should contain
+/*  additional information that
+/*  you wish to make "globally"
+/*  available to all subprograms.
+/*
+/*  This data area must match the
+/*  structure of the PASS structure
+/*  in the application global data
+/*  area.
+ 1 PASS
+   2 ##USER (A8) /* Current user id.
+END-DEFINE

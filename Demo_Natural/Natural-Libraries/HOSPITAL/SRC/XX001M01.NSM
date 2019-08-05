@@ -1,0 +1,64 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* MAP2: PROTOTYPE              --- CREATED BY WNT 2.2.0 ---
+* INPUT USING MAP 'XXXXXXXX'
+*     #L-MESSAGE #M-OPTION
+DEFINE DATA PARAMETER
+1 #L-MESSAGE (A070)
+1 #M-OPTION (A001)
+END-DEFINE
+FORMAT PS=024 LS=080 ZP=OFF SG=OFF KD=OFF IP=OFF
+* MAP2: MAP PROFILES *****************************        200***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(                       *
+* 024079        N0NNUCN             X        01 SYSDBA  NR             *
+************************************************************************
+INPUT          (     IP=OFF                                           /*
+                                                                       )
+ 001T *PROGRAM  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 025T 'Welcome to the Hospital System'
+ 071T *DATE  (AD=DLOFHT' ' ) /*.01S008 A008 .
+/
+ 001T *USER  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 025T '*' (030)
+/
+/
+/
+ 024T 'Option'
+ 033T 'Option Description'
+/
+ 024T '======'
+ 033T '=' (027)
+/
+ 026T 'P'
+ 033T 'Patient Administration'
+/
+ 026T 'S'
+ 033T 'Surgery Administration'
+/
+ 024T '------'
+ 033T '-' (027)
+/
+ 026T #M-OPTION  (AD=DLMFHT' ' ) /*.99D001 A001 .
+ 033T 'Please Enter Required Option'
+/
+/
+/
+/
+/
+/
+/
+/
+/
+ 059T 'PF12/24 to Exit'
+/
+ 004T #L-MESSAGE  (AD=DLOFHT ) /*.01D070 A070 .
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

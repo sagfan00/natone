@@ -1,0 +1,18 @@
+# This file will identify the files that are included when updating the ConstructRuntime project in NaturalONE from the ConstructRuntime.zip file.
+# This file needs to be kept in-sync with .construct file that indicates the current shipped version.
+#
+# Each line represents a different runtime version (never remove old version lines in case the customer is updating multiple versions).
+#
+# The line format is: runtime.version=n[;folder/sub-folder/file.ext,...] where n is the version number and [] is optional.
+#   Folder entries indicate all children will be included.
+#   No entries represents all files will be included.
+#
+# e.g. runtime.version=4
+# e.g. runtime.version=5;Natural-Libraries/Construct-Runtime/SRC,Natural-Libraries/Construct-Runtime-Extension/SRC/CD-HELP.NSN
+#
+runtime.version=1
+runtime.version=2
+runtime.version=3;Natural-Libraries/Construct-Runtime/SRC/CDACTHLM.NSM,Natural-Libraries/Construct-Runtime/SRC/CVUSRL.NSL,Natural-Libraries/Construct-Runtime/SRC/CVUSRCOP.NSP
+runtime.version=4;Natural-Libraries/Construct-Runtime/SRC/CD-HELP.NSN
+runtime.version=5
+runtime.version=6;Natural-Libraries/Construct-Runtime/SRC,Natural-Libraries/Construct-Runtime-Extension/SRC/CDACT.NSN

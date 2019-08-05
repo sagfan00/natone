@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Assign Export PF Key.
+RESET INITIAL CDKEYLDA.#EXPORT-KEY

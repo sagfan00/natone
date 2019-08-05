@@ -1,0 +1,289 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: CST module ...
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): This subrogram is used to return the value of a
+**SAG DESCS(2): Natural parameter. See data area CDUPARMA for list.
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDUPARMA
+**SAG PARAMETER-NAME(2): CSASTD
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CDUPARM
+* System   : NATURAL-CONSTRUCT
+* Title    : CST module ...
+* Generated: May 22,97 at 01:19 PM by DEVNG
+* Function : This subrogram is used to return the value of a
+*            Natural parameter. See data area CDUPARMA for list.
+*
+*
+* History  :
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDUPARMA
+  PARAMETER USING CSASTD
+  LOCAL USING CNAMSG                  /* Message retrieval passing area
+  LOCAL USING CSLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* TERMINAL variables
+  01 #STEP(I1)
+  01 TERMINAL-INDEXES
+    02 #CF(P3) INIT<3>  /* Terminal Control Character.
+    02 #UL(P3) INIT<14> /* Upper/Lower Case.
+    02 #TB(P3) INIT<15> /* Message Top/Bottom.
+    02 #IA(P3) INIT<32> /* Input Assign.
+  01 TERMINAL-PARMS(A99)
+  01 REDEFINE TERMINAL-PARMS
+    02 #PARM-STRUCTURE(1:33)
+      03 #CHAR1-2(A2)
+      03 REDEFINE #CHAR1-2
+        04 #CHAR1(A1)
+        04 #CHAR2(A1)
+      03 #ID(A1)
+* The following position notation is used:
+* -0 ===> Bottom of current window
+* 00 ===> Not shown
+* NN ===> Absolute line number, may be outsize of current logical
+*         window or off physical screen.
+01 DATA (A253/4)             /* 'Bytecontainer' to get all data
+01 REDEFINE DATA
+   02 FILLER 59X
+   02 MESSAGE-LINE(A3)       /* Position of the message line
+   02 REDEFINE MESSAGE-LINE
+     03 M-CHAR(A1)
+     03 M-POS(A2)
+     03 REDEFINE M-POS
+       04 M-POS-N(N2)
+   02 PFKEY-LINE  (A3)       /* Position of the first PF-key line
+   02 REDEFINE PFKEY-LINE
+     03 Y-CHAR(A1)
+     03 Y-POS(A2)
+     03 REDEFINE Y-POS
+       04 Y-POS-N(N2)
+   02 STAT-LINE   (A3)       /* Position of the statistics line
+   02 REDEFINE STAT-LINE
+     03 X-CHAR(A1)
+     03 X-POS(A2)
+*
+  01 #I(P3)
+  01 #WINDOW-PS(N3)
+  01 REDEFINE #WINDOW-PS
+    02 #W-PS-FILLER(A1)
+    02 #WINDOW-PS-A(A2)
+  01 #P(P0.1)
+  01 #TEMP(A3)
+  01 REDEFINE #TEMP
+    02 CHAR(A1/1:3)
+  01 #FOUND(P3)
+  01 #WINDOW-PS-NEGATIVE (A3)
+  01 #WINDOW-PS-POSITIVE (A3)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+**SAG DEFINE EXIT START-OF-PROGRAM
+*
+RESET CDUPARMA.OUTPUTS CSASTD.OUTPUTS
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+* First decide which call is required to get the information.
+  DECIDE ON FIRST VALUE CDUPARMA.#PARAMETER
+    VALUES 'KD','ML'  /* Key display or Message line.
+      CALLNAT 'USR1005N' DATA (*)
+      /*
+      /* Determine the current position of the kd lines
+         ASSIGN #WINDOW-PS = *WINDOW-PS
+      /*
+      COMPRESS '-' #WINDOW-PS-A INTO #WINDOW-PS-NEGATIVE LEAVING NO
+      MOVE RIGHT JUSTIFIED #WINDOW-PS-A TO #WINDOW-PS-POSITIVE
+      /*
+      DECIDE ON FIRST VALUE CDUPARMA.#PARAMETER
+        VALUE 'KD'
+          DECIDE ON FIRST VALUE PFKEY-LINE
+            VALUE ' ', '-00':#WINDOW-PS-NEGATIVE
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'B'
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = *WINDOW-PS
+              IF DATA.M-POS = '-0' THEN
+                SUBTRACT 2 FROM CDUPARMA.#NUMERIC-VALUE
+              ELSE
+                IF DATA.M-POS = ' ' THEN
+                  ASSIGN CDUPARMA.#ALPHA-VALUE = 'I' /* inside
+                ELSE
+                  SUBTRACT 1 FROM CDUPARMA.#NUMERIC-VALUE
+                END-IF
+              END-IF
+            VALUE ' 00'
+              ASSIGN CDUPARMA.#ALPHA-VALUE = ' '
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = 0
+            VALUE ' 01'
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'T'
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = 1
+            VALUE ' 02'
+              IF DATA.M-POS = '01' THEN
+                ASSIGN CDUPARMA.#ALPHA-VALUE = 'T'
+              ELSE
+                ASSIGN CDUPARMA.#ALPHA-VALUE = 'I' /* inside
+              END-IF
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = 2
+            VALUE ' 03':#WINDOW-PS-POSITIVE
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'I' /* Inside
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = DATA.Y-POS-N
+            NONE VALUE
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'O' /* Outside
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = DATA.Y-POS-N
+          END-DECIDE
+        VALUE 'ML'
+          DECIDE ON FIRST VALUE DATA.M-POS
+            VALUE '-0'
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'B'
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = *WINDOW-PS
+            VALUE '00'
+              ASSIGN CDUPARMA.#ALPHA-VALUE = ' '
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = 0
+            VALUE '01'
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'T'
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = 1
+            VALUE '02':#WINDOW-PS-A
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'I' /* Inside
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = DATA.M-POS-N
+            NONE VALUE
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'O' /* Outside
+              ASSIGN CDUPARMA.#NUMERIC-VALUE = DATA.M-POS-N
+          END-DECIDE
+        NONE VALUE
+          ASSIGN CNAMSG.MSG-DATA(1) = *PROGRAM
+          ASSIGN CNAMSG.MSG-DATA(2) = '*2722.2'  /* Parameter
+          ASSIGN CNAMSG.MSG-DATA(3) = CDUPARMA.#PARAMETER
+          INCLUDE CU--SERR '0109'
+            '''Error in module:1::2::3:'''
+      END-DECIDE
+    VALUES 'DC'
+      ASSIGN #P = .1
+      MOVE EDITED #P(EM=.9) TO #TEMP
+      ASSIGN CDUPARMA.#ALPHA-VALUE = #TEMP.CHAR(1)
+    VALUES 'ID'
+      COMPRESS 'A' 'A' TO #TEMP WITH DELIMITER
+      ASSIGN CDUPARMA.#ALPHA-VALUE = #TEMP.CHAR(2)
+    VALUES 'CF','UL','TB','IA'
+      SET CONTROL '?' TERMINAL-PARMS
+      /*
+      /* Return requested parameter.
+      DECIDE ON FIRST VALUE CDUPARMA.#PARAMETER
+        VALUE 'CF'
+          ASSIGN CDUPARMA.#ALPHA-VALUE = TERMINAL-PARMS.#CHAR2(#CF)
+        VALUE 'UL'
+          ASSIGN CDUPARMA.#ALPHA-VALUE = TERMINAL-PARMS.#CHAR2(#UL)
+          IF NOT (CDUPARMA.#ALPHA-VALUE = 'U' OR = 'L') THEN
+            EXAMINE TERMINAL-PARMS FOR 'LL' GIVING NUMBER #FOUND
+            IF #FOUND = 0 THEN
+              EXAMINE TERMINAL-PARMS FOR 'LU' GIVING NUMBER #FOUND
+              IF #FOUND = 0 THEN
+                ASSIGN CDUPARMA.#ALPHA-VALUE = 'L'/* Default to lower
+              ELSE
+                ASSIGN CDUPARMA.#ALPHA-VALUE = 'U'
+              END-IF
+            ELSE
+              ASSIGN CDUPARMA.#ALPHA-VALUE = 'L'
+            END-IF
+          END-IF
+        VALUE 'TB'
+          ASSIGN CDUPARMA.#ALPHA-VALUE = TERMINAL-PARMS.#CHAR2(#TB)
+        VALUE 'IA'
+         /*
+         /* Default the IA char value in case it's not found
+         /* (that should never happen).
+         ASSIGN CDUPARMA.#ALPHA-VALUE = '='
+         FIND-IA-CHAR.
+         FOR #STEP = 33 TO 1 STEP -1
+           /*
+           /* Special characters are returned by SET CONTROL '?' in
+           /* groups of 3 chars -- the first char in the group
+           /* identifies the special char, for example the IA char has
+           /* '=' as and ID.  The 2nd char is the value. The IA char
+           /* is the first group that has an '=' as an ID, reading from
+           /* the end of the returned special characters string.
+           IF TERMINAL-PARMS.#CHAR1(#STEP) EQ '=' THEN
+             /*
+             /* This maybe the occurrence that defines the IA char.
+             /* Assume that it is if it isn't an invalid IA char.
+             IF NOT (TERMINAL-PARMS.#CHAR2(#STEP) EQ 'A' THRU 'Z' OR
+                     TERMINAL-PARMS.#CHAR2(#STEP) EQ 'a' THRU 'z' OR
+                     TERMINAL-PARMS.#CHAR2(#STEP) EQ '0' THRU '9') THEN
+                 ASSIGN CDUPARMA.#ALPHA-VALUE =
+                        TERMINAL-PARMS.#CHAR2(#STEP)
+                 ESCAPE BOTTOM (FIND-IA-CHAR.)
+              END-IF
+            END-IF
+          END-FOR
+        NONE VALUE
+          ASSIGN CNAMSG.MSG-DATA(1) = *PROGRAM
+          ASSIGN CNAMSG.MSG-DATA(2) = '*2722.2'  /* Parameter
+          ASSIGN CNAMSG.MSG-DATA(3) = CDUPARMA.#PARAMETER
+          INCLUDE CU--SERR '0109'
+            '''Error in module:1::2::3:'''
+      END-DECIDE
+    NONE VALUE
+      ASSIGN CSASTD.ERROR-FIELD = '#PARAMETER'
+      ASSIGN CNAMSG.MSG-DATA(1) = '*2722.2'  /* Parameter
+      ASSIGN CNAMSG.MSG-DATA(2) = CDUPARMA.#PARAMETER
+      ASSIGN CNAMSG.MSG-DATA(3) = *PROGRAM
+      INCLUDE CU--SERR '0024'
+        '''Invalid:1::2:passed to:3:'''
+  END-DECIDE
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN CSASTD.RETURN-CODE = CSLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CNAMSG TO CSASTD
+  RESET CNAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CNAMSG CSASTD
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

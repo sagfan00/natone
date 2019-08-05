@@ -1,0 +1,38 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This data area is passed to
+/*  CDAPPFK to retrieve pfkey
+/*  information from CD--PFK.
+/*
+ 1 CDAPPFKA
+   2 INPUTS (A1/1:15)
+   2 REDEFINE INPUTS /* REDEF. BEGIN : INPUTS
+     3 METHOD (A2) /* Method requested
+     3 VERSION (N1) /* Method version
+     3 START-SOURCE-ID (A2) /* Start source id
+     3 START-PFKEY-ID (N4) /* Start pfkey id
+     3 MAX-PFKEY-REQUESTED (N4) /* Max pfkey id requested
+     3 RESTRICT-SOURCE-ID (A2) /* Restrict source id
+   2 INPUT-OUTPUTS (A1/1:1428)
+   2 REDEFINE INPUT-OUTPUTS /* REDEF. BEGIN : INPUT-OUTPUTS
+     3 PFKEY-ARRAY (1:12) /* Pfkey array
+       4 PFKEY-IDENTIFIER (A6) /* Pfkey identifier
+       4 REDEFINE PFKEY-IDENTIFIER /* REDEF. BEGIN : PFKEY-IDENTIFI
+         5 PFKEY-SOURCE-ID (A2) /* Pfkey source id
+         5 PFKEY-PFKEY-ID (N4) /* Pfkey internal id
+       4 PFKEY-POSITION (A4) /* Pfkey position
+       4 PFKEY-POSITION-VARIABLE (A32) /* Position variable for source
+       4 PFKEY-NAME-VARIABLE (A32) /* Name variable for source code
+       4 PFKEY-NAME (A12) /* Pfkey name as text or *nnnn.n
+       4 PFKEY-NAME-LONG (A32) /* Pfkey name long as text or *n
+       4 PFKEY-STATUS (A1) /* C - Cond. O - Opt. R - Req.
+   2 OUTPUTS (A1/1:72)
+   2 REDEFINE OUTPUTS /* REDEF. BEGIN : OUTPUTS
+     3 METHOD-LIBRARY (A8)
+     3 METHOD-DESCRIPTION (A60)
+     3 MAX-PFKEY-RETURNED (N4)
+END-DEFINE

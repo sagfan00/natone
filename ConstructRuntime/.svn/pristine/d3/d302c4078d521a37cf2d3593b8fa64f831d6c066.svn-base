@@ -1,0 +1,95 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDPASSW
+* System     : NATURAL-CONSTRUCT
+* Application: All systems
+* Title      : Prompt for valid password
+* Written on : Jan 10, 1990
+* Description: This program inputs the key to the program password
+*              file and prompts the user to enter a valid password.
+*              If no password exists for the program, no user input
+*              is required.
+*              If you wish to use this subprogram you must create
+*              a valid file on which to store the password information
+*
+* History
+************************************************************************
+DEFINE DATA PARAMETER
+  01 CDPASSWA
+    02 #SYSTEM(A32)    /* The prefix of the password key
+    02 #PGM(A8)        /* The suffix of the password key
+  PARAMETER USING CDPDA-M    /* Message info
+  LOCAL USING CDENVIRA
+  LOCAL USING CDKEYLDA
+  LOCAL
+*
+* Fields required for password checking
+  01 #ATTEMPTS(P1)
+  01 NATURAL-CONSTRUCT-PASSWORD /* View of NATURAL-CONSTRUCT-PASSWORD
+     02 PASSWORD-KEY(A40)
+     02 PASSWORD(A8)
+  01 #IN-PASSWORD(A8)
+  01 #PASS-KEY(A40)
+  01 REDEFINE #PASS-KEY
+     02 #PASS-SYSTEM(A32)
+     02 #PASS-PROGRAM(A8)
+  01 #PROGRAM(A8)
+END-DEFINE
+*
+FORMAT KD=ON
+INCLUDE CCBEGIN
+INCLUDE CCPFRTN  /* Standard PF-Keys
+INCLUDE CCSETKEY /* Set specified keys.
+*
+* Build #PASS-KEY from inputs
+ASSIGN #PASS-SYSTEM = CDPASSWA.#SYSTEM
+ASSIGN #PASS-PROGRAM = CDPASSWA.#PGM
+*
+* Prompt user for a valid password
+**GET-PASSWORD.
+**FIND(1) NATURAL-CONSTRUCT-PASSWORD WITH PASSWORD-KEY = #PASS-KEY
+  SET CONTROL 'WF'
+  SET CONTROL 'WL73C12B3/3'
+  FOR #ATTEMPTS = 1 TO 5
+    INPUT WITH TEXT MSG-INFO.##MSG
+        USING MAP 'CDPASSW1'
+    RESET MSG-INFO
+*
+    DECIDE FOR FIRST CONDITION
+      WHEN *PF-KEY = CDKEYLDA.#RETURN-KEY OR #IN-PASSWORD = '.'
+        ASSIGN MSG-INFO.##MSG =
+               'Entry to program terminated at users request'
+        ASSIGN MSG-INFO.##MSG-NR = 8047
+        PERFORM FINAL-PROCESSING
+        STOP
+      WHEN *PF-KEY = 'ENTR'
+        IGNORE
+      WHEN NONE
+        REINPUT *8003 ALARM /* Invalid function key.
+    END-DECIDE
+*
+    IF PASSWORD EQ #IN-PASSWORD THEN
+      PERFORM FINAL-PROCESSING
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+    ASSIGN MSG-INFO.##MSG = 'Invalid password, Please try again'
+    ASSIGN MSG-INFO.##MSG-NR = 8048
+  END-FOR
+  ASSIGN MSG-INFO.##MSG =
+         'Too many password violations, access not allowed'
+  ASSIGN MSG-INFO.##MSG-NR = 8049
+  PERFORM FINAL-PROCESSING
+**END-FIND
+*
+************************************************************************
+DEFINE SUBROUTINE FINAL-PROCESSING
+************************************************************************
+*
+  INCLUDE CCEND
+**STOP
+END-SUBROUTINE /* SET-KEYS
+END

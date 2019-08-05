@@ -1,0 +1,177 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: DRIVER                           VERSION: 5.2.1
+**SAG TITLE: Driver Program
+**SAG SYSTEM: S52
+**SAG DESCS(1): Driver program for ...
+**SAG PROGRAM-NAME: CNU0052N
+**SAG INPUT-ROWS-CREATED: 03
+************************************************************************
+* Program  : CNU0052D
+* System   : S52
+* Title    : Driver Program
+* Generated: Mar 20,2007 at 15:34:48 by CNDSHE
+* Function : Driver program for ...
+*
+*
+*
+* History
+**SAG EXIT POINT CHANGE-HISTORY
+************************************************************************
+DEFINE DATA
+  LOCAL
+  01 #NSC-DATA
+    02 #INSTALLED (L)
+    02 #VERSION (A10)
+    02 #DATE (A8)
+  01 #NBS-DATA
+    02 #INSTALLED (L)
+    02 #VERSION (A10)
+    02 #DATE (A8)
+  01 #CST-DATA
+    02 #INSTALLED (L)
+    02 #VERSION (A10)
+    02 #DATE (A8)
+    02 #INSTALL-TYPE (A1)
+  01 #REPOSITORY-DATA
+    02 #INSTALLED (L)
+    02 #VERSION (A10)
+    02 #DATE (A8)
+  LOCAL
+  01 LOCAL-TRANSLATION
+    02 TEXT
+      03 #HELP-NAME     (A10)
+          INIT<'help'>
+      03 #QUIT-NAME     (A10)
+          INIT<'quit'>
+      03 #FORWARD-NAME  (A10)
+          INIT<'frwrd'>
+      03 #BACKWARD-NAME (A10)
+          INIT<'bkwrd'>
+      03 #RIGHT-NAME    (A10)
+          INIT<'left'>
+      03 #LEFT-NAME     (A10)
+          INIT<'right'>
+      03 #SUBPROGRAM    (A20)
+          INIT<'Subprogram .........'>
+      03 #PARAMETERS    (A20)
+          INIT<'Input Parameters ...'>
+      03 #HEADER1       (A56)
+          INIT<'             ***** Natural Construct *****'>
+      03 #HEADER2       (A56)
+          INIT<'                     Driver Program'>
+  01 #LEFT-PROMPT (D) INIT <*DATX> (EM=LLL' 'DD)
+  01 #RIGHT-PROMPT (A9) INIT<'1 of 1'>
+  01 #PF-HELP     (A4) INIT<'PF1'>
+  01 #PF-QUIT     (A4) INIT<'PF3'>
+  01 #PF-FORWARD  (A4) INIT<'PF8'>
+  01 #PF-BACKWARD (A4) INIT<'PF7'>
+  01 #PF-RIGHT    (A4) INIT<'PF11'>
+  01 #PF-LEFT     (A4) INIT<'PF10'>
+  01 #BASE-COLUMN(I2) INIT<3>
+  01 #BASE-LINE(I2) INIT<2>
+  01 #DUMMY(A10)
+  01 #MSG (A70)
+  01 #PROGRAM (A8)
+**SAG EXIT POINT LOCAL-DATA
+END-DEFINE
+*
+PROG.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG EXIT POINT START-OF-PROGRAM
+*
+DEFINE WINDOW MAIN
+  BASE #BASE-LINE / #BASE-COLUMN
+FORMAT KD=ON
+*
+MAIN.
+REPEAT
+  INPUT WINDOW = 'MAIN' (AD=MI'_' PS=100 HE='CD-HELPR',=) WITH TEXT #MSG
+              *PROGRAM (AD=OD IP=OFF)
+              #HEADER1(AD=OI IP=OFF)
+            / #LEFT-PROMPT (AD=OLD IP=OFF)
+           3X #HEADER2(AD=OI IP=OFF)
+              #RIGHT-PROMPT(AD=ORD IP=OFF)
+           // #SUBPROGRAM  (AD=OI IP=OFF) #PROGRAM (AD=OD IP=OFF)
+           // #PARAMETERS(AD=OI IP=OFF)
+    #NSC-DATA.#INSTALLED 1X
+    #NSC-DATA.#VERSION 1X
+    #NSC-DATA.#DATE 1X /
+    'NBS'
+    #NBS-DATA.#INSTALLED 1X
+    #NBS-DATA.#VERSION 1X
+    #NBS-DATA.#DATE 1X  /
+    'CST'
+    #CST-DATA.#INSTALLED 1X
+    #CST-DATA.#VERSION 1X
+    #CST-DATA.#DATE 1X
+    #CST-DATA.#INSTALL-TYPE 1X  /
+    'Repository'
+    #REPOSITORY-DATA.#INSTALLED 1X
+    #REPOSITORY-DATA.#VERSION 1X
+    #REPOSITORY-DATA.#DATE 1X
+  RESET #MSG
+  PERFORM CHECK-PF-KEYS
+  CALLNAT 'CNU0052N'
+           #NSC-DATA
+           #NBS-DATA
+           #CST-DATA
+           #REPOSITORY-DATA
+END-REPEAT  /* MAIN
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-PF-KEYS
+************************************************************************
+*
+* Check pf-keys
+  DECIDE FOR EVERY CONDITION
+    WHEN *PF-KEY = 'ENTR'
+      IGNORE
+    WHEN *PF-KEY = #PF-BACKWARD
+      IGNORE
+    WHEN *PF-KEY = #PF-FORWARD
+      IGNORE
+    WHEN *PF-KEY = #PF-LEFT
+      IGNORE
+    WHEN *PF-KEY = #PF-RIGHT
+      IGNORE
+    WHEN *PF-KEY = #PF-QUIT
+      ESCAPE BOTTOM IMMEDIATE
+    WHEN NONE
+      ASSIGN #MSG =
+'Invalid program function key '
+  END-DECIDE
+*
+END-SUBROUTINE /* CHECK-PF-KEYS
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = 'CNU0052N'
+*
+* Set pfkeys
+  SET KEY ALL
+  SET KEY DYNAMIC #PF-HELP     = HELP  NAMED #HELP-NAME
+  SET KEY DYNAMIC #PF-QUIT             NAMED #QUIT-NAME
+  SET KEY DYNAMIC #PF-BACKWARD = '%W-' NAMED #BACKWARD-NAME
+  SET KEY DYNAMIC #PF-FORWARD  = '%W+' NAMED #FORWARD-NAME
+  SET KEY DYNAMIC #PF-LEFT     = '%W<' NAMED #LEFT-NAME
+  SET KEY DYNAMIC #PF-RIGHT    = '%W>' NAMED #RIGHT-NAME
+  SET KEY PF13 = '%K1'  PF14 = '%K2'   PF15 = '%K3'   PF16 = '%K4'
+          PF17 = '%K5'  PF18 = '%K6'   PF19 = '%K7'   PF20 = '%K8'
+          PF21 = '%K9'  PF22 = '%K10'  PF23 = '%K11'  PF24 = '%K12'
+*
+**SAG EXIT POINT ADDITIONAL-INITIALIZATIONS
+*
+END-SUBROUTINE /* INITIALIZATIONS
+**SAG EXIT POINT END-OF-PROGRAM
+ESCAPE BOTTOM (PROG.) IMMEDIATE
+END-REPEAT /* (PROG.)
+END

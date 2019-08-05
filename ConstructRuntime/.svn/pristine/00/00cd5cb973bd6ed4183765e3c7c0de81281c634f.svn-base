@@ -1,0 +1,25 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDENVIRR
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 28 Oct. 1997
+* Description: Restore settings from previous levels, for example
+*              Fetching main program with *level gt 1.
+* History
+************************************************************************
+DEFINE DATA
+  LOCAL
+  01 #LEVEL (N2)
+END-DEFINE
+*
+  IF *LEVEL GT 1 THEN
+    FOR #LEVEL = 2 TO *LEVEL
+      CALLNAT 'USR1002N' 'R' /* Restore
+    END-FOR
+  END-IF
+END

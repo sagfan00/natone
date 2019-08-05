@@ -1,0 +1,98 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDMNTPR /* Set maintenance dialog preferences.
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 18 Oct. 1991
+* Description: This subprogram is used to set the prefered
+*            | behaviour for a maintenance dialog. In particular,
+*            | the following characteristics can be set:
+*            |
+*            | 1. Clear after update
+*            |    The user can decide whether the screen should
+*            |    be cleared after a successful Add, Modify action
+*            |
+*            | 2. Reposition before display
+*            |    The user can decide whether the #PANEL, and
+*            |    #ARRAY1 thru #ARRAY4 indexes are to be
+*            |
+*            | 3. Reposition after modify
+*            |    If the user adds/modifies a record and the
+*            |    screen is not to be cleared, reposition the
+*            |    screen to panel 1, line 1, etc. after the update
+*            |
+*            | Currently these preferences are not saved. However,
+*            | the calling progam name is passed in so that
+*            | it is easy to add the capability of saving these
+*            | preferences on a file keyed by user and program.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDMNTDFA
+  PARAMETER USING CDPDA-M
+  PARAMETER USING CDPDA-D
+  LOCAL USING CDENVIRA
+  LOCAL USING CDKEYLDA
+  LOCAL USING CDFLIPA
+  LOCAL USING CDDIALDA
+  LOCAL
+  01 #FIRST-CHAR-ON-SCREEN(A1)
+  01 #MAP-PROGRAM-NAME(A8)
+  01 #TEMP
+    02 #CLEAR-AFTER-UPDATE (L)
+    02 #REPOSITION-DISPLAY (L)
+    02 #REPOSITION-UPDATE (L)
+END-DEFINE
+FORMAT KD=ON
+PERFORM INITIALIZATIONS
+PROG.
+REPEAT
+* INPUT USING MAP 'CDMNTPR&' /* Use if multi-lingual support required.
+  INPUT USING MAP 'CDMNTPR1'
+  INCLUDE CCSTDKEY
+  /*
+  /* If enter key was pressed, return new values and exit
+  IF *PF-KEY EQ 'ENTR' THEN
+    ASSIGN CDMNTDFA.#CLEAR-AFTER-UPDATE = #TEMP.#CLEAR-AFTER-UPDATE
+    ASSIGN CDMNTDFA.#REPOSITION-DISPLAY = #TEMP.#REPOSITION-DISPLAY
+    ASSIGN CDMNTDFA.#REPOSITION-UPDATE = #TEMP.#REPOSITION-UPDATE
+    ESCAPE BOTTOM(PROG.) IMMEDIATE
+  ELSE
+    REINPUT *8003 /* Invalid PF-Key
+  END-IF
+END-REPEAT /* PROG.
+PERFORM FINAL-PROCESSING
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #TEMP.#CLEAR-AFTER-UPDATE = CDMNTDFA.#CLEAR-AFTER-UPDATE
+  ASSIGN #TEMP.#REPOSITION-DISPLAY = CDMNTDFA.#REPOSITION-DISPLAY
+  ASSIGN #TEMP.#REPOSITION-UPDATE = CDMNTDFA.#REPOSITION-UPDATE
+*
+* Add the language indicator to the program name in the
+* help parameter in order to provide multi-lingual help.
+  COMPRESS *PROGRAM *LANGUAGE TO CDDIALDA.#PROGRAM LEAVING NO
+  ASSIGN #MAP-PROGRAM-NAME = *PROGRAM
+  ASSIGN CDDIALDA.#SYSTEM = 'MULTIPLE'
+  RESET CDKEYLDA.#KEY-INITS
+  INCLUDE CCPFSTD
+  INCLUDE CCSETKEY
+  INCLUDE CCSETHLP
+  CALLNAT 'CDENVIR' CDENVIRA /* Capture previous window etc.
+  SET CONTROL 'WBL76C13B10/2F'
+END-SUBROUTINE /* INITIALIZATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE FINAL-PROCESSING
+************************************************************************
+*
+  CALLNAT 'CDENVIR' CDENVIRA /* Restore previous window setting.
+END-SUBROUTINE /* FINAL-PROCESSING
+END

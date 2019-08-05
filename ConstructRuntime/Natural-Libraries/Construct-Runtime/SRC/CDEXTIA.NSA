@@ -1,0 +1,10 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDEXTIA
+   2 #INPUTS
+     3 #PROTECT (L) /* True if field must be
+/*                                       /* protected.
+END-DEFINE

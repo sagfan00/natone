@@ -1,0 +1,147 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: QUIT                             VERSION: 3.4.1
+**SAG TITLE: Default Termination prog.
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): This is the default termination program that may be
+**SAG DESCS(2): used by Natural Construct generated systems.
+**SAG APPLICATION-NAME: the current application
+**SAG MAP-NAME: CD-QUIT1
+**SAG USE-MSG-NR: X
+************************************************************************
+* Program  : CD-QUIT
+* System   : NATURAL-CONSTRUCT
+* Title    : Default Termination prog.
+* Generated: Oct 17,96 at 09:17 PM by SAG
+* Function : This is the default termination program that may be
+*            used by Natural Construct generated systems.
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  LOCAL USING CDENVIRA /* Used to capture/restore previous environment.
+  LOCAL USING CDFLIPA  /* Used to change the KD lines.
+  LOCAL USING CDKEYLDA /* Used to set function keys + their alias.
+  LOCAL USING CDQTTXL  /* Text used by the Quit model.
+  LOCAL USING CDDIALDA /* Common local data.
+  LOCAL USING CDPDA-M  /* Used by CDUTRANS call
+  LOCAL
+  01 #APPLICATION-NAME(A25) INIT <'the current application'>
+  01 #COMMENT-TXT1(A78)
+  01 #COMMENT-TXT2(A78)
+  01 #LAST-OBJECT(A8)   /* Object which initiated quit.
+  01 #LAST-PF-KEY(A4)
+  01 #RESUME-PF-KEY(A4)
+  01 #QUIT-INDEX(P3)    /* Index of quit key in CDKEYLDA table.
+  01 #USE-STANDARD-QUIT-KEY(L)
+END-DEFINE
+*
+FORMAT KD=ON
+ASSIGN #PROGRAM = *PROGRAM
+*
+* Use current language to generate corresponding text/msg in this pgm.
+CALLNAT 'CDUTRANS' CDQTTXL.CDUTRANS(*) CDQTTXL-NAME MSG-INFO
+*
+* Input last object, process if required.
+IF *DATA GT 0 THEN
+  INPUT #LAST-OBJECT
+END-IF
+*
+* If quit program was invoked via a FETCH RETURN, allow the user to
+* confirm the QUIT operation.
+IF *LEVEL GT 1 THEN
+  ASSIGN #LAST-PF-KEY = *PF-KEY
+  /*
+  /* Make sure that the two possible PF-KEYS are not the same.
+  IF #LAST-PF-KEY = CDKEYLDA.#RETURN-KEY
+    ASSIGN #RESUME-PF-KEY = 'ENTR'
+  ELSE
+    ASSIGN #RESUME-PF-KEY = CDKEYLDA.#RETURN-KEY
+  END-IF
+  CALLNAT 'CDENVIR' CDENVIRA /* Capture current environment.
+  SET CONTROL 'WFL75C11B8/3'
+  IF #LAST-PF-KEY = CDKEYLDA.#QUIT-KEY THEN
+    ASSIGN #USE-STANDARD-QUIT-KEY = TRUE
+  END-IF
+  PERFORM DEFINE-KEYS
+  /*
+  /* If we entered this program by pressing the standard quit key then
+  /* just set this key.
+  IF #USE-STANDARD-QUIT-KEY THEN
+    RESET INITIAL CDKEYLDA.#QUIT-KEY
+  ELSE
+    /*
+    /* Find quit key name by finding #QUIT-KEY in the table and
+    /* getting the index value.
+    FIND-QUIT-KEY.
+    FOR CDKEYLDA.#PF-INDX = 1 TO CDKEYLDA.#PF-ARRAY-SIZE
+      IF CDKEYLDA.#PFKEY(#PF-INDX) = CDKEYLDA.#QUIT-KEY THEN
+        ASSIGN #QUIT-INDEX = CDKEYLDA.#PF-INDX
+        ESCAPE BOTTOM(FIND-QUIT-KEY.) IMMEDIATE
+      END-IF
+    END-FOR
+    /*
+    /* Set quit key equal to match last key, use first empty slot
+    /* in PF-KEY table.
+    FIND-PF-KEY-SLOT.
+    FOR CDKEYLDA.#PF-INDX = 1 TO CDKEYLDA.#PF-ARRAY-SIZE
+      IF CDKEYLDA.#PFKEY(#PF-INDX) = ' ' THEN
+        ASSIGN CDKEYLDA.#PFKEY(#PF-INDX) = #LAST-PF-KEY
+        IF #QUIT-INDEX = 0 THEN
+          ASSIGN CDKEYLDA.#KEY-NAME(#PF-INDX) = 'quit'
+        ELSE
+          ASSIGN CDKEYLDA.#KEY-NAME(#PF-INDX) =
+                 CDKEYLDA.#KEY-NAME(#QUIT-INDEX)
+        END-IF
+        ESCAPE BOTTOM(FIND-PF-KEY-SLOT.) IMMEDIATE
+      END-IF
+    END-FOR
+  END-IF
+  PERFORM SET-KEYS
+  INPUT USING MAP 'CD-QUIT1'
+*
+  DECIDE ON FIRST VALUE *PF-KEY
+    VALUE #LAST-PF-KEY
+      IGNORE /* Continue quit processing.
+    VALUE #RESUME-PF-KEY
+      /*
+      /* Restore window and return to the invoking object.
+      CALLNAT 'CDENVIR' CDENVIRA
+      ESCAPE ROUTINE
+    NONE
+      REINPUT *8042
+             , #LAST-PF-KEY, #RESUME-PF-KEY, #APPLICATION-NAME ALARM
+  END-DECIDE
+END-IF
+*
+* Reset screen base.
+ASSIGN *ERROR-TA = ' ' /* Restore default Natural error trapping.
+SET CONTROL 'WB'
+RELEASE STACK
+RELEASE SETS
+BACKOUT TRANSACTION
+NEWPAGE
+STOP
+*
+************************************************************************
+DEFINE SUBROUTINE DEFINE-KEYS
+************************************************************************
+*
+* Assign PF Keys used.
+  RESET CDKEYLDA.#KEY-INITS
+  RESET INITIAL CDKEYLDA.#RETURN-KEY
+  INCLUDE CCKDON
+END-SUBROUTINE /* DEFINE-KEYS
+*
+************************************************************************
+DEFINE SUBROUTINE SET-KEYS
+************************************************************************
+*
+* Set defined keys
+  INCLUDE CCSETKEY
+END-SUBROUTINE /* SET-KEYS
+END

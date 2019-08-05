@@ -1,0 +1,37 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Set all PF-Keys except PA2 to allow Print Screen.
+SET KEY ALL
+SET KEY PA2=OFF
+*
+* Equate keys PF13:PF24 = PF1:PF12 as the default.
+SET KEY PF13='%K1' PF14='%K2' PF15='%K3' PF16='%K4' PF17='%K5'
+ PF18='%K6' PF19='%K7' PF20='%K8' PF21='%K9' PF22='%K10'
+ PF23='%K11' PF24='%K12'
+*
+* Set names for all supported keys using current language.
+* Names are defined externally to force standardization and allow
+* easy global modification. The external names are numbers
+* corresponding to literal names via user error message number.
+* With this method, different language names are supported at run-time.
+IF CDKEYLDA.#KEY-NAME(*) = MASK('*'NNNN) THEN /* Contains translations
+ CALLNAT 'CDUTRANS' CDKEYLDA.CDUTRANS(*) CDKEYLDA.#KEY-NAME-END MSG-INFO
+END-IF
+SET-KEYS-THAT-ARE-NOT-RESET.
+FOR CDKEYLDA.#PF-INDX = 1 TO CDKEYLDA.#PF-ARRAY-SIZE
+  IF CDKEYLDA.#PFKEY(#PF-INDX) NE ' ' THEN
+    DECIDE ON FIRST VALUE OF CDKEYLDA.#PFKEY(#PF-INDX)
+      VALUE 'ENTR'
+        SET KEY ENTR NAMED #KEY-NAME(#PF-INDX)
+      VALUE CDKEYLDA.#HELP-KEY
+        SET KEY DYNAMIC CDKEYLDA.#PFKEY(#PF-INDX) = HELP
+                NAMED #KEY-NAME(#PF-INDX)
+      NONE
+        SET KEY DYNAMIC CDKEYLDA.#PFKEY(#PF-INDX)
+                NAMED #KEY-NAME(#PF-INDX)
+    END-DECIDE
+  END-IF
+END-FOR /* SET-KEYS-THAT-ARE-NOT-RESET.

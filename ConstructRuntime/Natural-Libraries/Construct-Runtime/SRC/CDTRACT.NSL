@@ -1,0 +1,27 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDTRACT /*Transaction styles
+/* Uses the set default transaction st       yle
+   2 #DEFAULT (A1) /*
+/* Issues ET after each row is process  ed;noteerror and continue processing
+/*  *This is the default for the OBJECT-BROWSE-SELECT model
+   2 #AGGRESSIVE-ROW-OBJECT (A1) INIT
+     <'1'>
+/* Issues ET after each row is process  ed;noteerror and exit business service
+   2 #PASSIVE-ROW-OBJECT (A1) INIT
+     <'2'>
+/* Issues ET at end of business servic eprocessing; note error, backout
+/* and leave business service
+   2 #BUSINESS-SERVICE-OBJECT (A1) INIT
+     <'3'>
+/* No ET is issued by the Business Ser  vice;theclient code must do this
+   2 #CLIENT-CONTROLLED-OBJECT (A1) INIT
+     <'4'>
+/* Unique transaction logic
+/* custom code handles this transactio         n
+   2 #UNIQUE-OBJECT (A1) INIT
+     <'5'>
+END-DEFINE

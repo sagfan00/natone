@@ -1,0 +1,21 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/*  This LDA is used to contain the
+/*  line/column coordinates of the
+/*  '< 1 more'           '1 more >'
+/*  prompts on a browse screen
+/*  to enable cursor sensitive
+/*  left-right scrolling (by
+/*  clicking on the left-right
+/*  prompts)
+ 1 CDMORLDA
+   2 WINDOW-WIDTH (P3) /* Screen window width
+   2 MORE-LINE (P1) INIT<2> /* Line of 'n more >'
+   2 LEFT-COL (P3/1:2) INIT /* Left more
+     (1) <1>
+     (2) <9>
+   2 RIGHT-COL (P3/1:2) /* Right more cols
+END-DEFINE

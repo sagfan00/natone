@@ -1,0 +1,43 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/* ** Translation LDA for display
+/* ** text used by CSUTRANS.
+ 1 CSUTRANL
+   2 TEXT /*Corresponds to syserr message
+     3 #MESSAGE-HEADING (A20)
+       INIT<'*2189.3'>
+     3 #LINE-HEADING (A20)
+       INIT<'*0566.3,.'>
+     3 #LINE-LITERAL (A20)
+       INIT<'*0566.3'>
+     3 #BYTE-HEADING (A20)
+       INIT<'*0590.1'>
+     3 #FIELD-NUMBER (A20)
+       INIT<'*0590.2'>
+     3 #TRANSLATION-LDAS (A20)
+       INIT<'*2152.2'>
+     3 #SYSERR-NUMBER (A20)
+       INIT<'*0589.1'>
+     3 #FIELD-LENGTH (A20)
+       INIT<'*0589.2'>
+     3 #SPECIAL-FORMAT (A20)
+       INIT<'*0589.3'>
+     3 #MODIFY-HEADER1 (A30)
+       INIT<'*0101.1'>
+     3 #MODIFY-HEADER2 (A40)
+       INIT<'*0112.1'>
+   2 REDEFINE TEXT
+     3 TRANSLATION-TEXT
+       4 TEXT-ARRAY (A1/1:250)
+   2 ADDITIONAL-PARMS
+     3 #MESSAGE-LIBRARY (A8)
+       INIT<'CSTLDA'>
+     3 #LDA-NAME (A8)
+       INIT<'CSUTRANL'>
+     3 #TEXT-REQUIRED (L)
+       INIT<TRUE>
+     3 #LENGTH-OVERRIDE (N10) /*Explicite len to translate
+END-DEFINE

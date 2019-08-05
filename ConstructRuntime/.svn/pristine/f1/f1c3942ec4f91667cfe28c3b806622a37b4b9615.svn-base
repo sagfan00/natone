@@ -1,0 +1,37 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+*
+* Check for incoming direct command.
+IF DIALOG-INFO.##COMMAND NE ' ' THEN
+  /*
+  /* Get the first part of the direct command (up to the first blank).
+  ASSIGN CDGETDCA.#DIRECT-COMMAND = DIALOG-INFO.##COMMAND
+  CALLNAT 'CDGETDC' CDGETDCA
+  /*
+  /* Check for possible Nat1106 errors.
+  EXAMINE CDGETDCA.#STACK-DATA FOR ' ' GIVING LENGTH #CMD-LENGTH
+  IF #CMD-LENGTH GT #CODE-LENGTH THEN
+    COMPRESS 'X' 'X' TO #CHECK-DELIMITER WITH DELIMITER
+    EXAMINE CDGETDCA.#STACK-DATA FOR #DELIMITER GIVING
+            POSITION #CMD-DELIMITER-POS
+    IF (#CMD-DELIMITER-POS GT 3) OR
+       (#CMD-DELIMITER-POS EQ 0) THEN
+      ASSIGN MSG-INFO.##MSG-DATA(3) = CDGETDCA.#DIRECT-COMMAND
+      ASSIGN MSG-INFO.##RETURN-CODE = 'E'
+      RESET CDGETDCA
+    ELSE
+      STACK TOP DATA CDGETDCA.#STACK-DATA
+      ASSIGN MSG-INFO.##MSG-DATA(3) = CDGETDCA.#STACK-DATA
+    END-IF
+  ELSE
+   /*
+   /* Stack the first part and reassign global command to the remainder.
+    STACK TOP DATA CDGETDCA.#STACK-DATA
+  END-IF
+  RESET CDGETDCA.#DIRECT-COMMAND
+  ASSIGN DIALOG-INFO.##COMMAND = CDGETDCA.#REST-COMMAND
+END-IF

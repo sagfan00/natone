@@ -1,0 +1,23 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Copycode for actions as buttons
+*
+* If the cursor is on the action list, and the user has not modified
+* this list then copy the word that the cursor is on into the #ACTION
+* field.
+IF CDDIALDA.#KD-LINES-CV MODIFIED THEN
+  ASSIGN CDDIALDA.#KD-LINES(*) = CDACTA.#KD-LINES(*)
+  RESET #ACTION
+  ASSIGN MSG-INFO.##MSG = 'Action bar modified, no actions performed'
+  ASSIGN MSG-INFO.##MSG-NR = 8098
+ELSE
+  IF *CURS-FIELD = POS(CDDIALDA.#KD-LINES(1)) OR
+     *CURS-FIELD = POS(CDDIALDA.#KD-LINES(2)) THEN
+    SET CONTROL 'CCC1'     /* Copy cursor word into *COM
+    ASSIGN #ACTION = *COM  /* Set #ACTION
+    EXAMINE #ACTION AND TRANSLATE INTO UPPER CASE
+  END-IF
+END-IF

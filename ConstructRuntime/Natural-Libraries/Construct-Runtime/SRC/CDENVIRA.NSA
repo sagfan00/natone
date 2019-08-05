@@ -1,0 +1,30 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to
+/*  capture and restore environment
+/*  information to be preserved by
+/*  objects invoked at level 2 or
+/*  higher.
+ 1 CDENVIRA /* Used by CDENVIR
+   2 INPUTS
+     3 #CAPTURE-PS (L) /* If true global pagesize will
+/*                                       /* be captured restored.
+   2 RESTRICTED /* Used to keep values across
+/*                                       /* 2 subprogram calls.
+     3 #CAPTURE-RESTORE (L) /* False = Capture, True = Resto
+/*                                       /* Automatically set to true
+/*                                       /* by CDENVIR during first call.
+     3 #WINDOW-LS (N3) /* Window Linesize
+     3 #WINDOW-PS (N3) /* Window Pagesize
+     3 #WINDOW-POS (N6) /* Window Base Position
+     3 #WINDOW-FRAME (L) /* Framing on Y/N
+     3 #GLOBAL-PAGESIZE (P3) /* GLOBALS PS=
+     3 #PF-KEY-LOCATION (A1) /* T=Top, B=Bottom, O=Outside
+/*                                       /* I=Inside (but not top/bottom)
+/*
+     3 #PF-KEY-LINE (P3) /* Line number for KD lines
+/*                                       /* may be off scrren.
+END-DEFINE

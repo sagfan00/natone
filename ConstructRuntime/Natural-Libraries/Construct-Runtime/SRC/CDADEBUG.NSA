@@ -1,0 +1,24 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*
+/*  Data Area Name: CDADEBUG                       Function
+/*  Created on....: Jun 05, 97                     ========
+/*  Created by....: SAG                  This data area is used to pass
+/*                                       debug information to CDUDEBUG.
+ 1 CDADEBUG
+   2 INPUTS
+     3 PROGRAM-NAME (A32)
+     3 REDEFINE PROGRAM-NAME /* REDEF. BEGIN : PROGRAM-NAME
+       4 PROGRAM-CHAR (A1/1:32)
+     3 PGM-LOCATION (I1) /* See CDLDEBUG
+     3 LINE-REF (A6)
+     3 REDEFINE LINE-REF /* REDEF. BEGIN : LINE-REF
+       4 LEFT-BRACKET (A1)
+       4 LINE-NUM (N4)
+       4 RIGHT-BRACKET (A1)
+     3 TRACE-DATA (A250)
+END-DEFINE

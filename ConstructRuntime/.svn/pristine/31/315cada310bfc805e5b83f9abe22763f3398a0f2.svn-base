@@ -1,0 +1,22 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  Data Area Name: CDLRCODE                       Function
+/*  Created on....: Mar 20, 97                     ========
+/*  Created by....: SAG                  This data area defines the valid
+/*                                       return codes for
+/*                                       CDASTD.RETURN-CODE.
+/*
+ 1 CDLRCODE
+   2 #CONTINUE (A1/1:2) CONST<' ','W'>
+   2 REDEFINE #CONTINUE /* REDEF. BEGIN : #CONTINUE
+     3 #OK (A1) /* Information message
+     3 #WARNING (A1) /* Warning message
+   2 #INTERRUPT (A1/1:2) CONST<'C','E'>
+   2 REDEFINE #INTERRUPT /* REDEF. BEGIN : #INTERRUPT
+     3 #COMMUNICATION (A1) /* Communication error message
+     3 #ERROR (A1) /* Termination error message
+END-DEFINE

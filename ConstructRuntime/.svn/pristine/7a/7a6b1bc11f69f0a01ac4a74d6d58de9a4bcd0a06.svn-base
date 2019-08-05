@@ -1,0 +1,31 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDRANGEA
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-17
+/*                        Short Desc:    Wildcard options
+/*                        Long Desc :    This data area is passed to
+/*                                  :    CDRANGE with is used to deduce
+/*                                  :    the starting and ending read
+/*                                  :    values given a certain input
+/*                                  :    key and wildcard option.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDRANGEA
+   2 INPUTS
+     3 METHOD (I1) /* 0=Initialize starting/ending
+/*                                       /*   value based on input value
+/*                                       /* 1=Update starting/ending
+/*                                       /*   value starting from last
+/*                                       /*   key read. (Use CDRANGEL)
+     3 DATABASE-TYPE (N2) /* See CDDBMSL
+     3 RANGE-OPTION (N2) /* See CDRANGEL
+END-DEFINE

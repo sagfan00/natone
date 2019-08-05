@@ -1,0 +1,173 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+ 1 C#NBSREQUEST-DOCUMENT-RC (N3)
+   CONST
+   <38>
+ 1 CDRDTXL
+   2 CDRDEQUEST-DOCUMENT-RC (1:C#NBSREQUEST-DOCUMENT-RC)
+     3 NBSRETURN-CODE (N3)
+       INIT
+       (1) <100>
+       (2) <101>
+       (3) <200>
+       (4) <201>
+       (5) <202>
+       (6) <203>
+       (7) <204>
+       (8) <205>
+       (9) <206>
+       (10) <300>
+       (11) <301>
+       (12) <302>
+       (13) <303>
+       (14) <304>
+       (15) <305>
+       (16) <307>
+       (17) <400>
+       (18) <401>
+       (19) <402>
+       (20) <403>
+       (21) <404>
+       (22) <405>
+       (23) <406>
+       (24) <407>
+       (25) <408>
+       (26) <409>
+       (27) <410>
+       (28) <411>
+       (29) <412>
+       (30) <413>
+       (31) <414>
+       (32) <415>
+       (33) <500>
+       (34) <501>
+       (35) <502>
+       (36) <503>
+       (37) <504>
+       (38) <505>
+     3 NBSRETURN-CODE-DESC (A32)
+       INIT
+       (1) <'*0350'>
+       (2) <'*0351'>
+       (3) <'*0352'>
+       (4) <'*0353'>
+       (5) <'*0354'>
+       (6) <'*0355'>
+       (7) <'*0356'>
+       (8) <'*0357'>
+       (9) <'*0358'>
+       (10) <'*0359'>
+       (11) <'*0360'>
+       (12) <'*0361'>
+       (13) <'*0362'>
+       (14) <'*0363'>
+       (15) <'*0364'>
+       (16) <'*0365'>
+       (17) <'*0366'>
+       (18) <'*0367'>
+       (19) <'*0368'>
+       (20) <'*0369'>
+       (21) <'*0370'>
+       (22) <'*0371'>
+       (23) <'*0372'>
+       (24) <'*0373'>
+       (25) <'*0374'>
+       (26) <'*0375'>
+       (27) <'*0376'>
+       (28) <'*0377'>
+       (29) <'*0378'>
+       (30) <'*0379'>
+       (31) <'*0380'>
+       (32) <'*0381'>
+       (33) <'*0382'>
+       (34) <'*0383'>
+       (35) <'*0384'>
+       (36) <'*0385'>
+       (37) <'*0386'>
+       (38) <'*0387'>
+   2 REDEFINE CDRDEQUEST-DOCUMENT-RC /* BEGIN REDEFINE: NBSREQUEST-
+     3 #CONTINUE (N3)
+     3 #CONTINUE-TXT (A32)
+     3 #SWITCH-PROTOCOLS (N3)
+     3 #SWITCH-PROTOCOLS-TXT (A32)
+     3 #SUCCESS (N3)
+     3 #SUCCESS-TXT (A32)
+     3 #CREATED (N3)
+     3 #CREATED-TXT (A32)
+     3 #ACCEPTED (N3)
+     3 #ACCEPTED-TXT (A32)
+     3 #PARTIAL (N3)
+     3 #PARTIAL-TXT (A32)
+     3 #NO-CONTENT (N3)
+     3 #NO-CONTENT-TXT (A32)
+     3 #RESET-CONTENT (N3)
+     3 #RESET-CONTENT-TXT (A32)
+     3 #PARTIAL-CONTENT (N3)
+     3 #PARTIAL-CONTENT-TXT (A32)
+     3 #AMBIGUOUS (N3)
+     3 #AMBIGUOUS-TXT (A32)
+     3 #MOVED (N3)
+     3 #MOVED-TXT (A32)
+     3 #REDIRECT (N3)
+     3 #REDIRECT-TXT (A32)
+     3 #REDIRECT-METHOD (N3)
+     3 #REDIRECT-METHOD-TXT (A32)
+     3 #NOT-MODIFIED (N3)
+     3 #NOT-MODIFIED-TXT (A32)
+     3 #USE-PROXY (N3)
+     3 #USE-PROXY-TXT (A32)
+     3 #REDIRECT-KEEP-VERB (N3)
+     3 #REDIRECT-KEEP-VERB-TXT (A32)
+     3 #BAD-REQUEST (N3)
+     3 #BAD-REQUEST-TXT (A32)
+     3 #DENIED (N3)
+     3 #DENIED-TXT (A32)
+     3 #PAYMENT-REQ (N3)
+     3 #PAYMENT-REQ-TXT (A32)
+     3 #FORBIDDEN (N3)
+     3 #FORBIDDEN-TXT (A32)
+     3 #NOT-FOUND (N3)
+     3 #NOT-FOUND-TXT (A32)
+     3 #BAD-METHOD (N3)
+     3 #BAD-METHOD-TXT (A32)
+     3 #NONE-ACCEPTABLE (N3)
+     3 #NONE-ACCTEPTABLE-TXT (A32)
+     3 #PROXY-AUTH-REQ (N3)
+     3 #PROXY-AUTH-REQ-TXT (A32)
+     3 #REQUEST-TIMEOUT (N3)
+     3 #REQUEST-TIMOUT-TXT (A32)
+     3 #CONFLICT (N3)
+     3 #CONFLICT-TXT (A32)
+     3 #GONE (N3)
+     3 #GONE-TXT (A32)
+     3 #LENGTH-REQUIRED (N3)
+     3 #LENGTH-REQUIRED-TXT (A32)
+     3 #PRECOND-FAILED (N3)
+     3 #PRECOND-FAILED-TXT (A32)
+     3 #REQUEST-TOO-LARGE (N3)
+     3 #REQUEST-TOO-LARGE-TXT (A32)
+     3 #URL-TOO-LONG (N3)
+     3 #URL-TOO-LONG-TXT (A32)
+     3 #UNSUPPORTED-MEDIA (N3)
+     3 #UNSUPPORTED-MEDIA-TXT (A32)
+     3 #SERVER-ERROR (N3)
+     3 #SERVER-ERROR-TXT (A32)
+     3 #NOT-SUPPORTED (N3)
+     3 #NOT-SUPPORTED-TXT (A32)
+     3 #BAD-GATEWAY (N3)
+     3 #BAD-GATEWAY-TXT (A32)
+     3 #SERVICE-UNAVAIL (N3)
+     3 #SERVICE-UNAVAIL-TXT (A32)
+     3 #GATEWAY-TIMEOUT (N3)
+     3 #GATEWAY-TIMEOUT-TXT (A32)
+     3 #VERSION-NOT-SUP (N3)
+     3 #VERSION-NOT-SUP-TXT (A32)
+ 1 REDEFINE CDRDTXL /* BEGIN REDEFINE: CDRDTXL
+   2 CDUTRANS (A1/1:1330)
+ 1 CDRDTXL-NAME (A8)
+   INIT
+   <'CDRDTXL'>
+END-DEFINE

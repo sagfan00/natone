@@ -1,0 +1,29 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+***********************************************************************
+* Copycode : CCDEFLTA
+* System   : NATURAL-CONSTRUCT
+* Title    : Assign alphanumeric default parameter
+* Written  : Feb 05,96 at 04:28 PM
+* Function : This copycode is used to interface with CSUDEFLT for the
+*          : purpose of collecting alphanumeric default parameter
+*          : values.
+* Invoking : To invoke this routine, the data area CSADEFLT must be
+*          : available. Include this copycode using the following syntax
+*          : INCLUDE CCDEFLTA '''parm-name''' 'parm-target'
+*          : where parm-target is the name of an alpha field. If
+*          : the user has not overridden the specified parm within
+*          : CSXDEFLT, the parm target will maintain its previous
+*          : value.
+* Mod Date   Mod By    Description of Changes
+* MMM DD YY  ________ ______________________________________________
+* ______________________________________________
+***********************************************************************
+ASSIGN CSADEFLT.PARM-NAME = &1&
+CALLNAT 'CSUDEFLT' CSADEFLT CSASTD
+IF CSADEFLT.PARM-NAME NE ' ' THEN
+  ASSIGN &2& = CSADEFLT.PARM-VALUE
+END-IF

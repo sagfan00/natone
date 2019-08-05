@@ -1,0 +1,40 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program  : TRACE
+* System   : SYSSPEC
+* Title    : Set Debug Output
+* Written  : Jul 22,97 by DEVSS
+* Function : This program is used to enable debug mode and set the
+*            debug location. A number from 1 to 5 should be stacked
+*            for this program. This number indicates the print file
+*            where DEBUG data should go.
+* History
+************************************************************************
+DEFINE DATA
+  LOCAL
+  01 #LOCATION(A2)
+  01 REDEFINE #LOCATION
+    02 CHAR(A1/1:2)
+  01 #STACK(A30)
+END-DEFINE
+IF *DATA GT 0 THEN
+  INPUT #LOCATION
+END-IF
+DECIDE FOR FIRST CONDITION
+  WHEN #LOCATION.CHAR(1) = 'W' OR = 'w'
+       AND #LOCATION.CHAR(2) = '1' THRU '5'
+    COMPRESS 'OUTPUT-LOCATION=WRK' #LOCATION.CHAR(2)
+          TO #STACK LEAVING NO
+  WHEN #LOCATION = '1' THRU '5'
+    COMPRESS 'OUTPUT-LOCATION=PRT' #LOCATION.CHAR(1)
+          TO #STACK LEAVING NO
+  WHEN NONE
+    ASSIGN #STACK = 'OUTPUT-LOCATION=PRT1'
+END-DECIDE
+STACK TOP DATA #STACK
+FETCH 'CSUDEBUG'
+END

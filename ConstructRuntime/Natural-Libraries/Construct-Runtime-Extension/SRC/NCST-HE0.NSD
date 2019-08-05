@@ -1,0 +1,33 @@
+DB: 255 FILE: 227  - NCST-HELP-LINES                  DEFAULT SEQUENCE:
+                              Cataloged by CNDKB    on 2002-06-12 21:25:53
+TYPE: ADABAS
+T L DB Name                              F Leng  S D Remark
+- - -- --------------------------------  - ----  - - ------------------------
+*      >Natural Source Header 000000
+*      :CP
+*      
+*      
+*      <Natural Source Header
+*      Generation started
+*      at 2002-06-12 21:25:53
+*      by user CNDKB
+*
+*      ********************************
+*      * Text file field elements  *
+*      ********************************
+  1 AM LINE-TYPE-COMPONENT               A    1  F
+  1 AN LINE-MAJOR-COMPONENT              A   32  N
+  1 AO LINE-MINOR-COMPONENT              A   32  N
+  1 XF LANGUAGE-CODE                     N  2.0  N
+  1 AP LINE-SEQUENCE                     B    2  F
+P 1 AQ PAGE
+  2 AR LINE-TEXT                         A   68  N
+  2 AS LINE-ATTR                         A    4  N
+  1 S2 LINE-MAJOR-MINOR-SEQ              A   69  N S
+*      -------- SOURCE FIELD(S) -------
+*      LINE-TYPE-COMPONENT(1-1)
+*      LINE-MAJOR-COMPONENT(1-32)
+*      LINE-MINOR-COMPONENT(1-32)
+*      LANGUAGE-CODE(1-2)
+*      LINE-SEQUENCE(1-2)
+******DDM OUTPUT TERMINATED******

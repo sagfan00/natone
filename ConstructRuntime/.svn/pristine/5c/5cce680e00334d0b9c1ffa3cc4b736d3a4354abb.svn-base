@@ -1,0 +1,20 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*                        Module    :    CDBDMETH
+/*                        System    :    CST411
+/*                        Author    :    SAG
+/*                        Created   :    1997-06-02
+/*                        Short Desc:    Object Browse Dialog methods
+/*                        Long Desc :    This data area identifies the
+/*                                  :    valid methods for the Object
+/*                                  :    Browse Dialog model
+ 1 CDBDMETH
+   2 #BATCH (I1) INIT<1> /* Batch method
+   2 #EXPORT (I1) INIT<2> /* Export method
+   2 #REPORT (I1) INIT<3> /* Report method
+   2 #SCROLL (I1) INIT<4> /* Scroll method
+   2 #TRANSLATE (I1) INIT<5> /* Translate method
+END-DEFINE

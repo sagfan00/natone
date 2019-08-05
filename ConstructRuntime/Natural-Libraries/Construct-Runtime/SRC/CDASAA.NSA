@@ -1,0 +1,15 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to pass
+/*  SAA style prompts.
+ 1 CDASAA
+   2 INPUTS
+     3 #MAX-MSG-LENGTH (P2) /* Maximum length of text string
+   2 INPUT-OUTPUTS
+     3 #MSG-TXT (A65) /* Text string
+     3 REDEFINE #MSG-TXT /* REDEF. BEGIN : #MSG-TXT
+       4 #CHAR (A1/1:65)
+END-DEFINE

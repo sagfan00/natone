@@ -1,0 +1,24 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDDBMSL
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-17
+/*                        Short Desc:    Database types
+/*                        Long Desc :    This data area defines the
+/*                                  :    valid database types for
+/*                                  :    CDRANGE.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDDBMSL
+   2 ADABAS (N1) INIT<0> /* Default
+   2 SQL (N1) INIT<1>
+   2 VSAM (N1) INIT<2>
+END-DEFINE

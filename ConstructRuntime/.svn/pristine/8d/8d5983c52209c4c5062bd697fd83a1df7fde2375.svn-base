@@ -1,0 +1,59 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CNAEXIST
+   2 INPUTS
+     3 #OBJECT-NAME (A8) /* Object Name
+     3 SEARCH-OPTIONS
+       4 #OBJECT-SOURCE (A1) /* O=Object Code
+/*                                       /* S=Source Code
+/*                                       /* B=Both
+/*  Search rules:
+/*  If #INCLUDE-STEPLIB-SEARCH then
+/*    search current lib & steplibs
+/*  else if #LIBRARY-NAME NE ' '
+/*    search explicit library
+/*  else
+/*    search current library only
+       4 STEPLIB-SEARCH
+         5 #INCLUDE-STEPLIB-SEARCH (L) /* True = search #Library-name +
+/*                                       /* all steplibs of *Library-id.
+/*                                       /* False = search #Library-name
+/*                                       /* with default db/fnr only.
+         5 METHOD (I1) /* 0 = Check pseudo steplibs
+/*                                       /* 1 = Check actual steplibs
+       4 SPECIFIC-LIBRARY-SEARCH
+         5 #DBID (N5)
+         5 #FNR (N5)
+         5 #LIBRARY-NAME (A8) /* Library name
+   2 OUTPUTS
+     3 #SOURCE-EXISTS (L) /* True=Source Code Exists
+     3 #OBJECT-EXISTS (L) /* True=Object Code Exists
+     3 #SOURCE-LIBRARY (A8) /* Library where source exists
+     3 #OBJECT-LIBRARY (A8) /* Library where object exists
+     3 #SOURCE-DBID (I2) /* Dbid of found source library.
+     3 #SOURCE-FNR (I2) /* Fnr of found source library.
+     3 #OBJECT-DBID (I2) /* Dbid of found object library.
+     3 #OBJECT-FNR (I2) /* Fnr of found object library.
+     3 #SOURCE-TYPE (A1) /* Source Type
+     3 #OBJECT-TYPE (A1) /* Object Type
+/*                                       /* P=Program
+/*                                       /* N=Subprogram
+/*                                       /* S=External Subroutine
+/*                                       /* H=Helproutine
+/*                                       /* C=Copy Code
+/*                                       /* G=Global Data Area
+/*                                       /* A=Parameter Data Area
+/*                                       /* L=Local Data Area
+/*                                       /* M=Map
+/*                                       /* 3=Processor
+/*                                       /* 4=Server
+     3 #SOURCE-USER (A8) /* User id who saved
+     3 #OBJECT-USER (A8) /* User id who cataloged
+     3 #SOURCE-SAVE-DATE (A8)
+     3 #OBJECT-SAVE-DATE (A8)
+     3 #SOURCE-SAVE-TIME (A8)
+     3 #OBJECT-SAVE-TIME (A8)
+END-DEFINE

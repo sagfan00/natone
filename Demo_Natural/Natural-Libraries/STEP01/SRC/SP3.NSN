@@ -1,0 +1,11 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA PARAMETER
+1 IN3 (A10)
+1 OUT3 (A10)
+END-DEFINE
+CALLNAT 'sp4' IN3 OUT3
+END 

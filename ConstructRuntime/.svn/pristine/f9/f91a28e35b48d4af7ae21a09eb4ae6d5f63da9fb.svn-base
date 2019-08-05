@@ -1,0 +1,30 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This data area is passed to
+/*  CDSPPFK to retrieve pfkey
+/*  information from CD--PFK.
+/*
+ 1 CDSPPFKA
+   2 INPUTS (A1/1:9)
+   2 REDEFINE INPUTS /* REDEF. BEGIN : INPUTS
+     3 METHOD (A2) /* Method requested
+     3 VERSION (N1) /* Method version
+     3 SOURCE-ID (A2) /* Source id
+     3 PFKEY-ID (N4) /* Pfkey id
+   2 INPUT-OUTPUTS (A1/1:113)
+   2 REDEFINE INPUT-OUTPUTS /* REDEF. BEGIN : INPUT-OUTPUTS
+     3 PFKEY-POSITION (A4) /* Pfkey position
+     3 PFKEY-POSITION-VARIABLE (A32) /* Position variable for source
+     3 PFKEY-NAME-VARIABLE (A32) /* Name variable for source code
+     3 PFKEY-NAME (A12) /* Pfkey name as text or *nnnn.n
+     3 PFKEY-NAME-LONG (A32) /* Pfkey name long as text or *n
+     3 PFKEY-STATUS (A1) /* C - Cond. O - Opt. R - Req.
+   2 OUTPUTS (A1/1:68)
+   2 REDEFINE OUTPUTS /* REDEF. BEGIN : OUTPUTS
+     3 METHOD-LIBRARY (A8)
+     3 METHOD-DESCRIPTION (A60)
+END-DEFINE

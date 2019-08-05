@@ -1,0 +1,821 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: CST module ...
+**SAG SYSTEM: APPLICATION
+**SAG DESCS(1): This CST module is used to access action information
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CD1VACTA
+**SAG PARAMETER-NAME(2): CDPDA-M
+**SAG LOCAL-NAME(1): CD--ACTM
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CD--ACT
+* System   : APPLICATION
+* Title    : CST module ...
+* Generated: May 28,97 at 01:06 PM by SAG
+* Function : This CST module is used to access action information
+*
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CD1VACTA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CD--ACTM
+  LOCAL USING CDAMSG                  /* Message retrieval passing area
+  LOCAL USING CDLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Key default values
+  01 MAX-API (I2) CONST<2>
+  01 SUPPORTED-API (A8/1:MAX-API)
+     INIT (1)<'CDSAACT'> (2)<'CDAAACT'>
+  01 CD--ACTA
+    02 INPUTS (A1/1:15)
+    02 REDEFINE INPUTS
+      03 METHOD(A2)
+      03 VERSION(N1)
+      03 INPUTS-PARMS(A12)
+      03 REDEFINE INPUTS-PARMS
+        04 SINGLE-ACTION-INPUTS
+          05 SA-SOURCE-ID (A2)
+          05 SA-ACTION-ID (N4)
+      03 REDEFINE INPUTS-PARMS
+        04 MODEL-ACTIONS-INPUTS
+          05 MA-SOURCE-ID (A2)
+          05 MA-ACTION-ID (N4)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-SINGLE-ACTIONS-INPUTS
+          05 AS-START-SOURCE-ID (A2)
+          05 AS-START-ACTION-ID (N4)
+          05 AS-MAX-ACTION-REQUESTED (N4)
+          05 AS-RESTRICT-SOURCE-ID (A2)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-MODEL-ACTIONS-INPUTS
+          05 AM-START-SOURCE-ID (A2)
+          05 AM-START-ACTION-ID (N4)
+          05 AM-MAX-ACTION-REQUESTED (N4)
+          05 AM-RESTRICT-SOURCE-ID (A2)
+      03 REDEFINE INPUTS-PARMS
+        04 ALL-ACTIONS-INPUTS
+          05 AK-PARM1 (A12)
+      03 REDEFINE INPUTS-PARMS
+        04 MODEL-ACTION-DETAIL-INPUTS
+          05 MD-SOURCE-ID (A2)
+          05 MD-ACTION-ID (N4)
+    02 INPUT-OUTPUTS (A1/1:95)
+    02 OUTPUTS (A1/1:72)
+    02 REDEFINE OUTPUTS
+      03 METHOD-LIBRARY (A8)
+      03 METHOD-DESCRIPTION (A60)
+      03 OUTPUTS-PARMS(A4)
+      03 REDEFINE OUTPUTS-PARMS
+        04 ALL-SINGLE-ACTIONS-OUTPUTS
+          05 AS-MAX-ACTION-RETURNED (N4)
+      03 REDEFINE OUTPUTS-PARMS
+        04 ALL-MODEL-ACTIONS-OUTPUTS
+          05 AM-MAX-ACTION-RETURNED (N4)
+  01 #E (I2)  /* end byte counter
+  01 #S (I2)  /* start byte counter
+  01 #START (N4)  /* start byte counter
+  01 #END (N4)  /* start byte counter
+  01 #I (I2)
+  01 #J (I2)
+  01 #MAX-ACT (I2)
+  01 #MAX-ACT-FOUND (L)
+  01 #ACT-FOUND (L)
+  01 #TOTAL-ACT (I2)
+  01 #SACT (I2)
+  01 #MACT (I2)
+  01 #METHOD-NOT-FOUND (L)
+  01 #PARM-NOT-FOUND (L)
+*
+* Single key initial values Construct
+  01 SINGLE-CST
+    02 INITIAL-VALUES (A95/1:MAX-SAC)
+*    action name variable/action code/action name/act. name long/status
+*                       /       ____/           /              /      /
+*                      /       /       ________/              /      /
+*                     /       /       /       _______________/      /
+*                    /       /       /       / ____________________/
+*                   /       /       /       / /
+     INIT (1)<'#ADD/*8001.1/*8001.2/*8001.3/O'>
+          (2)<'#BROWSE/*8002.1/*8002.2/*8002.3/O'>
+          (3)<'#CLEAR/*8003.1/*8003.2/*8003.3/O'>
+          (4)<'#COPY/*8004.1/*8004.2/*8004.3/O'>
+          (5)<'#DETAIL/*8005.1/*8005.2/*8005.3/O'>
+          (6)<'#DISPLAY/*8006.1/*8006.2/*8006.3/O'>
+          (7)<'#MODIFY/*8007.1/*8007.2/*8007.3/O'>
+          (8)<'#NEXT/*8008.1/*8008.2/*8008.3/O'>
+          (9)<'#PURGE/*8009.1/*8009.2/*8009.3/O'>
+         (10)<'#RECALL/*8010.1/*8010.2/*8010.3/O'>
+         (11)<'#REPLACE/*8011.1/*8011.2/*8011.3/O'>
+         (12)<'#SELECT/*8012.1/*8012.2/*8012.3/O'>
+         (13)<'#FORMER/*8012.1/*8012.2/*8012.3/O'>
+*
+* Single action layout
+  01 SL-MAX (I2) CONST<89>
+  01 SINGLE-LAYOUT (A1/1:SL-MAX)
+  01 REDEFINE SINGLE-LAYOUT
+    02 SINGLE-LAYOUT-STRUCTURE
+      03 ACTION-NAME-VARIABLE (A32)
+      03 ACTION-CODE (A12)
+      03 ACTION-NAME (A12)
+      03 ACTION-NAME-LONG (A32)
+      03 ACTION-STATUS (A1)
+*
+* Model action initial values Construct
+  01 MODEL-CST
+    02 INITIAL-MODEL-VALUES (A40/1:MAX-MAC)
+*      model source id/model action id/model name/
+*                    /    ___________/          /
+*                   /    /      _______________/
+*                  /    /      /
+*                 /    /      /
+    INIT (1) <'MC/0001/*8501.1'>
+*
+*
+    02 INITIAL-MODEL-ACTION-VALUES (A10/1:MAX-MAC,1:24)
+*    Model\   source id/action id/status override
+*          \          /    _____/               /
+*           \        /    / ___________________/
+*            \      /    / /
+    INIT (1,1) <'SC/0001/ '>
+         (1,2) <'SC/0005/ '>
+         (1,3) <'SC/0006/ '>
+         (1,4) <'SC/0007/ '>
+         (1,5) <'SC/0009/ '>
+         (1,6) <'SC/0012/ '>
+*
+* Model detail layout
+  01 MD-MAX (I2) CONST<38>
+  01 MODEL-DETAIL-LAYOUT (A1/1:MD-MAX)
+  01 REDEFINE MODEL-DETAIL-LAYOUT
+    02 SOURCE-ID (A2)
+    02 ACTION-ID (A4)
+    02 REDEFINE ACTION-ID
+      03 ACTION-ID-N4 (N4)
+    02 NAME (A32)
+*
+* Model action layout
+  01 ML-MAX (I2) CONST<7>
+  01 MODEL-LAYOUT (A1/1:ML-MAX)
+  01 REDEFINE MODEL-LAYOUT
+    02 SOURCE-ID (A2)
+    02 ACTION-ID (A4)
+    02 ACTION-STATUS-OVERRIDE (A1)
+*
+* Action identifier layout
+  01 AI-MAX (I2) CONST<95>
+  01 ACTION-IDENTIFIER-LAYOUT (A1/1:AI-MAX)
+  01 REDEFINE ACTION-IDENTIFIER-LAYOUT
+    02 SOURCE-ID (A2)
+    02 ACTION-ID (A4)
+    02 REDEFINE ACTION-ID
+      03 ACTION-ID-N4 (N4)
+    02 ACTION-STRUCTURE
+      03 ACTION-NAME-VARIABLE (A32)
+      03 ACTION-NAME (A12)
+      03 ACTION-CODE (A12)
+      03 ACTION-NAME-LONG (A32)
+      03 ACTION-STATUS (A1)
+**SAG END-EXIT
+**SAG DEFINE EXIT POSTGEN-LOCAL-DATA
+*
+* Single action initial values Application
+  01 SINGLE-APP
+    02 INITIAL-VALUES (A90/1:MAX-SAA)
+*    action name variable/action code/action name/act. name long/status
+*                       /       ____/           /              /      /
+*                      /       /       ________/              /      /
+*                     /       /       /       _______________/      /
+*                    /       /       /       / ____________________/
+*                   /       /       /       / /
+     INIT (1)<'#GET/*9001.1/*9001.2/*9001.3/O'>
+          (2)<'#SKIP/*9002.1/*9002.2/*9002.3/O'>
+*
+* Model action initial values Application
+  01 MODEL-APP
+    02 INITIAL-MODEL-VALUES (A40/1:MAX-MAA)
+*            source id/action id/ model name /
+*                    /    _____/            /
+*                   /    /      ___________/
+*                  /    /      /
+*                 /    /      /
+    INIT (1) <'MA/0001/*9501.1'>
+*
+*
+    02 INITIAL-MODEL-ACTION-VALUES (A15/1:MAX-MAA,1:24)
+*    Model\   source id/action id/status override/
+*          \          /    _____/               /
+*           \        /    / ___________________/
+*            \      /    / /
+    INIT (1,1) <'SC/0012/C'>
+         (1,2) <'SC/0010/ '>
+         (1,3) <'SC/0008/ '>
+         (1,4) <'SC/0006/ '>
+         (1,5) <'SC/0004/ '>
+         (1,6) <'SC/0002/ '>
+         (1,7) <'SA/0001/ '>
+         (1,8) <'SC/0003/ '>
+         (1,9) <'SA/0002/ '>
+         (1,10)<'SC/0009/ '>
+         (1,11)<'SC/0008/ '>
+         (1,12)<'SC/0011/ '>
+*
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+  IF CD1VACTA.API-NAME = SUPPORTED-API(*) THEN
+    PERFORM METHODS
+  ELSE
+    ASSIGN CDAMSG.RETURN-CODE = CDLRCODE.#ERROR
+    ASSIGN CDAMSG.MSG-DATA(1) = '*8444.1'  /* API
+    ASSIGN CDAMSG.MSG-DATA(2) = CD1VACTA.API-NAME
+    ASSIGN CDAMSG.MSG-DATA(3) = *PROGRAM
+    INCLUDE CC--GMSG '8109'
+      '''Invalid:1::2:passed to:3:'''
+    ESCAPE ROUTINE IMMEDIATE
+  END-IF
+*
+************************************************************************
+DEFINE SUBROUTINE METHODS
+************************************************************************
+*
+  RESET CD--ACTA CD1VACTA.INPUT-OUTPUTS(*) CD1VACTA.OUTPUTS(*)
+        MSG-INFO #METHOD-NOT-FOUND #PARM-NOT-FOUND
+  ASSIGN CD--ACTA.INPUTS(1:3) = CD1VACTA.INPUTS(1:3)
+  DECIDE ON FIRST VALUE OF CD--ACTA.METHOD
+    VALUE CD--ACTM.SINGLE-ACTION
+      ASSIGN CD--ACTA.INPUTS(4:9) = CD1VACTA.INPUTS(4:9)
+      PERFORM SINGLE-ACTION-METHOD
+      ASSIGN CD1VACTA.INPUT-OUTPUTS(1:89) = SINGLE-LAYOUT(1:89)
+      ASSIGN CD1VACTA.OUTPUTS(1:68) = CD--ACTA.OUTPUTS(1:68)
+    VALUE CD--ACTM.MODEL-ACTIONS
+      ASSIGN CD--ACTA.INPUTS(4:9) = CD1VACTA.INPUTS(4:9)
+      PERFORM MODEL-ACTIONS-METHOD
+    VALUE CD--ACTM.ALL-SINGLE-ACTIONS
+      ASSIGN CD--ACTA.INPUTS(4:13) = CD1VACTA.INPUTS(4:13)
+      PERFORM ALL-SINGLE-ACTIONS-METHOD
+    VALUE CD--ACTM.ALL-MODEL-ACTIONS
+      ASSIGN CD--ACTA.INPUTS(4:13) = CD1VACTA.INPUTS(4:13)
+      PERFORM ALL-MODEL-ACTIONS-METHOD
+    VALUE CD--ACTM.ALL-ACTIONS
+      PERFORM ALL-ACTIONS-METHOD
+    VALUE CD--ACTM.MODEL-ACTION-DETAIL
+      ASSIGN CD--ACTA.INPUTS(4:9) = CD1VACTA.INPUTS(4:9)
+      PERFORM MODEL-ACTION-DETAIL-METHOD
+      ASSIGN CD1VACTA.INPUT-OUTPUTS(1:89) = SINGLE-LAYOUT(1:89)
+      ASSIGN CD1VACTA.OUTPUTS(1:68) = CD--ACTA.OUTPUTS(1:68)
+    NONE VALUE
+      ASSIGN #METHOD-NOT-FOUND = TRUE
+  END-DECIDE
+  DECIDE FOR FIRST CONDITION
+    WHEN #METHOD-NOT-FOUND
+      ASSIGN CDAMSG.MSG-DATA(1) = '*8444.2'  /* Method
+      ASSIGN CDAMSG.MSG-DATA(2) = CD--ACTA.METHOD
+    WHEN #PARM-NOT-FOUND
+      ASSIGN CDAMSG.MSG-DATA(1) = '*8444.3'  /* Parameter
+      ASSIGN CDAMSG.MSG-DATA(2) = CD--ACTA.INPUTS-PARMS
+    WHEN ANY
+      ASSIGN CDAMSG.RETURN-CODE = CDLRCODE.#ERROR
+      ASSIGN CDAMSG.MSG-DATA(3) = *PROGRAM
+      INCLUDE CC--GMSG '8109'
+        '''Invalid:1::2:passed to:3:'''
+      ESCAPE ROUTINE IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+*
+END-SUBROUTINE /* METHODS
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-ACTIONS-METHOD
+************************************************************************
+*
+* Pass selected method values to PDA
+  ESCAPE ROUTINE IMMEDIATE
+*
+END-SUBROUTINE /* ALL-ACTIONS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-MODEL-ACTIONS-METHOD
+************************************************************************
+*
+  ASSIGN #MAX-ACT = CD--ACTA.AM-MAX-ACTION-REQUESTED
+  RESET #E #TOTAL-ACT
+  DECIDE ON FIRST VALUE OF CD--ACTA.AM-RESTRICT-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      PERFORM ALL-MODEL-CST-LIST
+      ASSIGN CD--ACTA.AM-MAX-ACTION-RETURNED = #TOTAL-ACT
+    VALUE MODEL-APPLICATION
+      PERFORM ALL-MODEL-APP-LIST
+      ASSIGN CD--ACTA.AM-MAX-ACTION-RETURNED = #TOTAL-ACT
+    NONE VALUE
+      DECIDE ON FIRST VALUE OF CD--ACTA.AM-START-SOURCE-ID
+        VALUE CD--ACTM.SINGLE-APPLICATION
+          PERFORM ALL-MODEL-APP-LIST
+          ASSIGN CD--ACTA.AM-MAX-ACTION-RETURNED = #TOTAL-ACT
+        NONE VALUE
+          PERFORM ALL-MODEL-CST-LIST
+          IF NOT #MAX-ACT-FOUND THEN
+            PERFORM ALL-MODEL-APP-LIST
+          END-IF
+          ASSIGN CD--ACTA.AM-MAX-ACTION-RETURNED = #TOTAL-ACT
+      END-DECIDE
+  END-DECIDE
+  ASSIGN CD--ACTA.METHOD-LIBRARY = CD--ACTD.METHOD-LIBRARY
+  ASSIGN CD--ACTA.METHOD-DESCRIPTION = CD--ACTD.METHOD-DESCRIPTION
+  ASSIGN CD1VACTA.OUTPUTS(1:72) = CD--ACTA.OUTPUTS(1:72)
+*
+END-SUBROUTINE /* ALL-MODEL-ACTIONS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-MODEL-CST-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #ACT-FOUND
+  FOR #MACT = 1 TO CD--ACTD.MAX-MAC
+    IF CD--ACTA.AM-START-SOURCE-ID = CD--ACTM.SINGLE-CONSTRUCT AND
+           CD--ACTM.MAC-ACTION-ID(#SACT) = CD--ACTA.AM-START-ACTION-ID
+      ASSIGN #ACT-FOUND = TRUE
+      COMPUTE #START = #MACT + 1
+      COMPUTE #END = #MACT + CD--ACTA.AM-MAX-ACTION-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start action identifier doesn't exist
+  IF NOT #ACT-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--ACTA.AM-MAX-ACTION-REQUESTED
+  END-IF
+*
+* Retrieve action detail
+  FOR #MACT = #START TO #END
+    /*
+    /* If actions requested is more than exist, then exit
+    IF #MACT GT CD--ACTD.MAX-MAC THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-ACT
+    SEPARATE MODEL-CST.INITIAL-MODEL-VALUES(#MACT)
+        INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+             MODEL-DETAIL-LAYOUT.ACTION-ID
+             MODEL-DETAIL-LAYOUT.NAME
+        WITH DELIMITER '/' IGNORE
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-NAME-LONG =
+                                                MODEL-DETAIL-LAYOUT.NAME
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID = MODEL-CONSTRUCT
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                            CD--ACTM.MAC-ACTION-ID(#MACT)
+    ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                             ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+    COMPUTE #E = AI-MAX * #TOTAL-ACT
+    /*
+    /* If we've found enough actions then we're finished
+    IF #TOTAL-ACT GE #MAX-ACT THEN
+      ASSIGN #MAX-ACT-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-MODEL-CST-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-MODEL-APP-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #ACT-FOUND
+  FOR #MACT = 1 TO CD--ACTD.MAX-MAA
+    IF CD--ACTA.AM-START-SOURCE-ID = CD--ACTM.SINGLE-APPLICATION AND
+           CD--ACTM.MAA-ACTION-ID(#SACT) = CD--ACTA.AM-START-ACTION-ID
+      ASSIGN #ACT-FOUND = TRUE
+      COMPUTE #START = #MACT + 1
+      COMPUTE #END = #MACT + CD--ACTA.AM-MAX-ACTION-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start action identifier doesn't exist
+  IF NOT #ACT-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--ACTA.AM-MAX-ACTION-REQUESTED
+  END-IF
+*
+* Retrieve action detail
+  FOR #MACT = #START TO #END
+    /*
+    /* If actions requested is more than exist, then exit
+    IF #MACT GT CD--ACTD.MAX-MAA THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-ACT
+    SEPARATE MODEL-APP.INITIAL-MODEL-VALUES(#MACT)
+        INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+             MODEL-DETAIL-LAYOUT.ACTION-ID
+             MODEL-DETAIL-LAYOUT.NAME
+        WITH DELIMITER '/' IGNORE
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-NAME-LONG =
+                                                MODEL-DETAIL-LAYOUT.NAME
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID = MODEL-APPLICATION
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                            CD--ACTM.MAA-ACTION-ID(#MACT)
+    ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                             ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+    COMPUTE #E = AI-MAX * #TOTAL-ACT
+    /*
+    /* If we've found enough actions then we're finished
+    IF #TOTAL-ACT GE #MAX-ACT THEN
+      ASSIGN #MAX-ACT-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-MODEL-APP-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-ACTIONS-METHOD
+************************************************************************
+*
+  ASSIGN #MAX-ACT = CD--ACTA.AS-MAX-ACTION-REQUESTED
+  RESET #E #TOTAL-ACT
+  DECIDE ON FIRST VALUE OF CD--ACTA.AS-RESTRICT-SOURCE-ID
+    VALUE SINGLE-CONSTRUCT
+      PERFORM ALL-SINGLE-CST-LIST
+      ASSIGN CD--ACTA.AS-MAX-ACTION-RETURNED = #TOTAL-ACT
+    VALUE SINGLE-APPLICATION
+      PERFORM ALL-SINGLE-APP-LIST
+      ASSIGN CD--ACTA.AS-MAX-ACTION-RETURNED = #TOTAL-ACT
+    NONE VALUE
+      DECIDE ON FIRST VALUE OF CD--ACTA.AS-START-SOURCE-ID
+        VALUE CD--ACTM.SINGLE-APPLICATION
+          PERFORM ALL-SINGLE-APP-LIST
+          ASSIGN CD--ACTA.AS-MAX-ACTION-RETURNED = #TOTAL-ACT
+        NONE VALUE
+          PERFORM ALL-SINGLE-CST-LIST
+          IF NOT #MAX-ACT-FOUND THEN
+            PERFORM ALL-SINGLE-APP-LIST
+          END-IF
+          ASSIGN CD--ACTA.AS-MAX-ACTION-RETURNED = #TOTAL-ACT
+      END-DECIDE
+  END-DECIDE
+  ASSIGN CD--ACTA.METHOD-LIBRARY = CD--ACTD.METHOD-LIBRARY
+  ASSIGN CD--ACTA.METHOD-DESCRIPTION = CD--ACTD.METHOD-DESCRIPTION
+  ASSIGN CD1VACTA.OUTPUTS(1:72) = CD--ACTA.OUTPUTS(1:72)
+*
+END-SUBROUTINE /* ALL-SINGLE-ACTIONS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-CST-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #ACT-FOUND
+  FOR #SACT = 1 TO CD--ACTD.MAX-SAC
+    IF CD--ACTA.AS-START-SOURCE-ID = CD--ACTM.SINGLE-CONSTRUCT AND
+           CD--ACTM.SAC-ACTION-ID(#SACT) = CD--ACTA.AS-START-ACTION-ID
+      ASSIGN #ACT-FOUND = TRUE
+      COMPUTE #START = #SACT + 1
+      COMPUTE #END = #SACT + CD--ACTA.AS-MAX-ACTION-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start action identifier doesn't exist
+  IF NOT #ACT-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--ACTA.AS-MAX-ACTION-REQUESTED
+  END-IF
+*
+* Retrieve action detail
+  FOR #SACT = #START TO #END
+    /*
+    /* If actions requested is more than exist, then exit
+    IF #SACT GT CD--ACTD.MAX-SAC THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-ACT
+    SEPARATE SINGLE-CST.INITIAL-VALUES(#SACT)
+        INTO SINGLE-LAYOUT.ACTION-NAME-VARIABLE
+             SINGLE-LAYOUT.ACTION-CODE
+             SINGLE-LAYOUT.ACTION-NAME
+             SINGLE-LAYOUT.ACTION-NAME-LONG
+             SINGLE-LAYOUT.ACTION-STATUS
+         WITH DELIMITER '/' IGNORE
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID = SINGLE-CONSTRUCT
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                            CD--ACTM.SAC-ACTION-ID(#SACT)
+    MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO ACTION-STRUCTURE
+    ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                                   ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+    COMPUTE #E = AI-MAX * #TOTAL-ACT
+    /*
+    /* If we've found enough actions then we're finished
+    IF #TOTAL-ACT GE #MAX-ACT THEN
+      ASSIGN #MAX-ACT-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+END-SUBROUTINE /* ALL-SINGLE-CST-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE ALL-SINGLE-APP-LIST
+************************************************************************
+*
+* Determine starting position
+  RESET #START #END #ACT-FOUND
+  FOR #SACT = 1 TO CD--ACTD.MAX-SAA
+    IF CD--ACTA.AS-START-SOURCE-ID = CD--ACTM.SINGLE-APPLICATION AND
+           CD--ACTM.SAA-ACTION-ID(#SACT) = CD--ACTA.AS-START-ACTION-ID
+      ASSIGN #ACT-FOUND = TRUE
+      COMPUTE #START = #SACT + 1
+      COMPUTE #END = #SACT + CD--ACTA.AS-MAX-ACTION-REQUESTED
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+*
+* Start action identifier doesn't exist
+  IF NOT #ACT-FOUND THEN
+    ASSIGN #START = 1
+    ASSIGN #END = CD--ACTA.AS-MAX-ACTION-REQUESTED
+  END-IF
+*
+* Retrieve action detail
+  FOR #SACT = #START TO #END
+    /*
+    /* If actions requested is more than exist, then exit
+    IF #SACT GT CD--ACTD.MAX-SAA THEN
+      ESCAPE ROUTINE
+    END-IF
+    ADD 1 TO #TOTAL-ACT
+    SEPARATE SINGLE-APP.INITIAL-VALUES(#SACT)
+        INTO SINGLE-LAYOUT.ACTION-NAME-VARIABLE
+             SINGLE-LAYOUT.ACTION-CODE
+             SINGLE-LAYOUT.ACTION-NAME
+             SINGLE-LAYOUT.ACTION-NAME-LONG
+             SINGLE-LAYOUT.ACTION-STATUS
+         WITH DELIMITER '/' IGNORE
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID = SINGLE-APPLICATION
+    ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                            CD--ACTM.SAA-ACTION-ID(#SACT)
+    MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO ACTION-STRUCTURE
+    ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                                   ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+    COMPUTE #E = AI-MAX * #TOTAL-ACT
+    IF #TOTAL-ACT GE #MAX-ACT THEN
+      ASSIGN #MAX-ACT-FOUND = TRUE
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+  END-FOR
+*
+END-SUBROUTINE /* ALL-SINGLE-APP-LIST
+*
+************************************************************************
+DEFINE SUBROUTINE MODEL-ACTION-DETAIL-METHOD
+************************************************************************
+*
+  DECIDE ON FIRST VALUE OF CD--ACTA.MD-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      IF CD--ACTA.MD-ACTION-ID = CD--ACTM.MAC-ACTION-ID(*) THEN
+        ASSIGN #MACT = CD--ACTA.MD-ACTION-ID
+        SEPARATE MODEL-CST.INITIAL-MODEL-VALUES(#MACT)
+            INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+                 MODEL-DETAIL-LAYOUT.ACTION-ID
+                 MODEL-DETAIL-LAYOUT.NAME
+             WITH DELIMITER '/' IGNORE
+        ASSIGN SINGLE-LAYOUT.ACTION-NAME-LONG = MODEL-DETAIL-LAYOUT.NAME
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE MODEL-APPLICATION
+      IF CD--ACTA.MD-ACTION-ID = CD--ACTM.MAA-ACTION-ID(*) THEN
+        ASSIGN #MACT = CD--ACTA.MD-ACTION-ID
+        SEPARATE MODEL-APP.INITIAL-MODEL-VALUES(#MACT)
+            INTO MODEL-DETAIL-LAYOUT.SOURCE-ID
+                 MODEL-DETAIL-LAYOUT.ACTION-ID
+                 MODEL-DETAIL-LAYOUT.NAME
+             WITH DELIMITER '/' IGNORE
+        ASSIGN SINGLE-LAYOUT.ACTION-NAME-LONG = MODEL-DETAIL-LAYOUT.NAME
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--ACTA.METHOD-LIBRARY = CD--ACTD.METHOD-LIBRARY
+      ASSIGN CD--ACTA.METHOD-DESCRIPTION = CD--ACTD.METHOD-DESCRIPTION
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+END-SUBROUTINE /* MODEL-ACTION-DETAIL-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE MODEL-ACTIONS-METHOD
+************************************************************************
+*
+  ASSIGN #MACT = CD--ACTA.MA-ACTION-ID
+  DECIDE ON FIRST VALUE OF CD--ACTA.MA-SOURCE-ID
+    VALUE MODEL-CONSTRUCT
+      IF CD--ACTA.MA-ACTION-ID = CD--ACTM.MAC-ACTION-ID(*) THEN
+        IF #MACT GT 0 OR #MACT LE CD--ACTD.MAX-MAC THEN
+          RESET #E
+          FOR #I = 1 TO 12
+            SEPARATE MODEL-CST.INITIAL-MODEL-ACTION-VALUES(#MACT,#I)
+                INTO MODEL-LAYOUT.SOURCE-ID
+                     MODEL-LAYOUT.ACTION-ID
+                     MODEL-LAYOUT.ACTION-STATUS-OVERRIDE
+                WITH DELIMITER '/' IGNORE
+            IF MODEL-LAYOUT.ACTION-ID IS (N4) THEN
+              ASSIGN CD--ACTA.SA-SOURCE-ID = MODEL-LAYOUT.SOURCE-ID
+              ASSIGN CD--ACTA.SA-ACTION-ID = VAL(MODEL-LAYOUT.ACTION-ID)
+              PERFORM SINGLE-ACTION-METHOD
+              IF #PARM-NOT-FOUND THEN
+                RESET #PARM-NOT-FOUND
+              ELSE
+                ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID =
+                                              CD--ACTA.SA-SOURCE-ID
+                ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                                         CD--ACTA.SA-ACTION-ID
+                IF MODEL-LAYOUT.ACTION-STATUS-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.ACTION-STATUS =
+                               MODEL-LAYOUT.ACTION-STATUS-OVERRIDE
+                END-IF
+                MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO ACTION-STRUCTURE
+                ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                                      ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+              END-IF
+            END-IF
+            COMPUTE #E = AI-MAX * #I
+          END-FOR
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE MODEL-APPLICATION
+      IF CD--ACTA.MA-ACTION-ID = CD--ACTM.MAA-ACTION-ID(*) THEN
+        IF #MACT GT 0 OR #MACT LE CD--ACTD.MAX-MAA THEN
+          RESET #E
+          FOR #I = 1 TO 12
+            SEPARATE MODEL-APP.INITIAL-MODEL-ACTION-VALUES(#MACT,#I)
+                INTO MODEL-LAYOUT.SOURCE-ID
+                     MODEL-LAYOUT.ACTION-ID
+                     MODEL-LAYOUT.ACTION-STATUS-OVERRIDE
+                WITH DELIMITER '/' IGNORE
+            IF MODEL-LAYOUT.ACTION-ID IS (N4) THEN
+              ASSIGN CD--ACTA.SA-ACTION-ID = VAL(MODEL-LAYOUT.ACTION-ID)
+              ASSIGN CD--ACTA.SA-SOURCE-ID = MODEL-LAYOUT.SOURCE-ID
+              PERFORM SINGLE-ACTION-METHOD
+              IF #PARM-NOT-FOUND THEN
+                RESET #PARM-NOT-FOUND
+              ELSE
+                ASSIGN ACTION-IDENTIFIER-LAYOUT.SOURCE-ID =
+                                              CD--ACTA.SA-SOURCE-ID
+                ASSIGN ACTION-IDENTIFIER-LAYOUT.ACTION-ID-N4 =
+                                         CD--ACTA.SA-ACTION-ID
+                IF MODEL-LAYOUT.ACTION-STATUS-OVERRIDE NE ' ' THEN
+                  ASSIGN SINGLE-LAYOUT.ACTION-STATUS =
+                               MODEL-LAYOUT.ACTION-STATUS-OVERRIDE
+                END-IF
+                MOVE BY NAME SINGLE-LAYOUT-STRUCTURE TO ACTION-STRUCTURE
+                ASSIGN CD1VACTA.INPUT-OUTPUTS(1 + #E:AI-MAX + #E) =
+                                      ACTION-IDENTIFIER-LAYOUT(1:AI-MAX)
+              END-IF
+            END-IF
+            COMPUTE #E = AI-MAX * #I
+          END-FOR
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--ACTA.METHOD-LIBRARY = CD--ACTD.METHOD-LIBRARY
+      ASSIGN CD--ACTA.METHOD-DESCRIPTION = CD--ACTD.METHOD-DESCRIPTION
+      ASSIGN CD1VACTA.OUTPUTS(1:68) = CD--ACTA.OUTPUTS(1:68)
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+END-SUBROUTINE /* MODEL-ACTIONS-METHOD
+*
+************************************************************************
+DEFINE SUBROUTINE SINGLE-ACTION-METHOD
+************************************************************************
+*
+  ASSIGN #SACT = CD--ACTA.SA-ACTION-ID
+  DECIDE ON FIRST VALUE OF CD--ACTA.SA-SOURCE-ID
+    VALUE SINGLE-CONSTRUCT
+      IF CD--ACTA.SA-ACTION-ID = CD--ACTM.SAC-ACTION-ID(*) THEN
+        IF #SACT GT 0 OR #SACT LE CD--ACTD.MAX-SAC THEN
+          SEPARATE SINGLE-CST.INITIAL-VALUES(#SACT)
+              INTO SINGLE-LAYOUT.ACTION-NAME-VARIABLE
+                   SINGLE-LAYOUT.ACTION-CODE
+                   SINGLE-LAYOUT.ACTION-NAME
+                   SINGLE-LAYOUT.ACTION-NAME-LONG
+                   SINGLE-LAYOUT.ACTION-STATUS
+              WITH DELIMITER '/' IGNORE
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    VALUE SINGLE-APPLICATION
+      IF CD--ACTA.SA-ACTION-ID = CD--ACTM.SAA-ACTION-ID(*) THEN
+        IF #SACT GT 0 OR #SACT LE CD--ACTD.MAX-SAA THEN
+          SEPARATE SINGLE-APP.INITIAL-VALUES(#SACT)
+              INTO SINGLE-LAYOUT.ACTION-NAME-VARIABLE
+                   SINGLE-LAYOUT.ACTION-CODE
+                   SINGLE-LAYOUT.ACTION-NAME
+                   SINGLE-LAYOUT.ACTION-NAME-LONG
+                   SINGLE-LAYOUT.ACTION-STATUS
+              WITH DELIMITER '/' IGNORE
+        ELSE
+          ASSIGN #PARM-NOT-FOUND = TRUE
+        END-IF
+      ELSE
+        ASSIGN #PARM-NOT-FOUND = TRUE
+      END-IF
+    ANY VALUE
+      ASSIGN CD--ACTA.METHOD-LIBRARY = CD--ACTD.METHOD-LIBRARY
+      ASSIGN CD--ACTA.METHOD-DESCRIPTION = CD--ACTD.METHOD-DESCRIPTION
+    NONE VALUE
+      ASSIGN #PARM-NOT-FOUND = TRUE
+  END-DECIDE
+*
+END-SUBROUTINE /* SINGLE-ACT-METHOD
+**SAG END-EXIT
+**SAG DEFINE EXIT POSTGEN-GENERATE-CODE
+*
+***********************************************************************
+DEFINE SUBROUTINE USER-DEFINED-METHOD
+***********************************************************************
+*
+  ESCAPE ROUTINE IMMEDIATE
+*
+END-SUBROUTINE /* USER-DEFINED-METHOD
+**SAG END-EXIT
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CDAMSG TO MSG-INFO
+  RESET CDAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CDAMSG MSG-INFO
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

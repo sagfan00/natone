@@ -1,0 +1,64 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  ********************************
+/*  * Fields required by CMZUL     *
+/*  ********************************
+ 1 CBINIT
+   2 INLIB (A8)
+   2 INMEM (A8)
+   2 INLINNR-INIT (B2)
+   2 INLENGTH (B2) INIT<251>
+   2 INCONFIG (A1) INIT<'X'>
+   2 INSCRSIZE (B1) INIT<H'01'>
+   2 INECOM (B4) INIT<H'FFFFFFFF'>
+   2 INLCOM (B2) INIT<H'FFFF'>
+   2 ININSDEF (B2) INIT<9> /* H'0009'
+   2 INCOMLEN (B1) INIT<120>
+   2 INDUMMYI (B12)
+ 1 CBCONFIG
+   2 COSCLEN1 (B1) INIT<H'FF'>
+   2 COSCLEN2 (B1) INIT<H'FF'>
+   2 COPOS (B2) INIT<2> /* H'0002'
+   2 COPOSP (A1) INIT<'P'>
+   2 COABSSC (A1) INIT<'X'>
+   2 CORNGSC (A1) INIT<' '>
+   2 CONULREP (A1) INIT<' '>
+   2 COEDITOR (B1)
+   2 COESC (A1) INIT<'.'>
+   2 COLWLENGTH (B2)
+   2 CODUMMY (B2)
+ 1 CBRUN
+   2 RUXPOS (B2) INIT<H'9999'>
+   2 RUXCOL (B2) INIT<H'9999'>
+   2 RUYPOS (B2) INIT<H'9999'>
+   2 RUYCOL (B2) INIT<H'9999'>
+   2 RULINPO (B2) INIT<1>
+   2 REDEFINE RULINPO /* REDEF. BEGIN : RULINPO
+     3 RULINPO-I (I2)
+   2 RULINNR (B2) INIT<1>
+   2 REDEFINE RULINNR /* REDEF. BEGIN : RULINNR
+     3 RULINNR-I (I2)
+   2 RUROW (B2) INIT<1>
+   2 RUCOL (B2) INIT<1>
+   2 RUBNUM (B2) INIT<1>
+   2 RUMODE (A1) INIT<'C'>
+   2 RURSP (A4)
+   2 REDEFINE RURSP /* REDEF. BEGIN : RURSP
+     3 RSP1 (A1)
+     3 RSP2 (A1)
+     3 RSP3 (A1)
+     3 RSP4 (A1)
+   2 RUERRLIN (B2)
+   2 RUUPDSW (B1)
+   2 RUAB (A1) INIT<'+'>
+   2 RUENTR (A1) INIT<' '>
+   2 RUTOTLEN (B4)
+   2 RUREMLEN (B4)
+   2 RUDUMMY (B4)
+   2 RUCOM (A150) INIT<' '>
+   2 REDEFINE RUCOM /* REDEF. BEGIN : RUCOM
+     3 CB-COM (A36)
+END-DEFINE

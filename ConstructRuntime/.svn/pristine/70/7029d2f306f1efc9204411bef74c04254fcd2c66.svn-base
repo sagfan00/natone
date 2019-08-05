@@ -1,0 +1,30 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep       These error numbers will be
+/*  text strings required by the         translated by calling CDUTRANS
+/*  MENU model.
+/*
+ 1 CDMNTXL
+/*
+   2 #HELP-TXT (A15) INIT<'*8370'> /* Help
+   2 #TERMINATE-TXT (A15) INIT<'*8371'> /* Terminate
+   2 #REQUIRED-TXT (A15) INIT<'*8372'> /* R = Required
+   2 REDEFINE #REQUIRED-TXT
+     3 #REQ-CHAR (A1)
+   2 #OPTIONAL-TXT (A15) INIT<'*8373'> /* O = Optional
+   2 REDEFINE #OPTIONAL-TXT
+     3 #OPT-CHAR (A1)
+   2 #CODE-PROMPT (A8) INIT<'*8374,>'> /*     Code:
+/*                                       /* The #CODE-HDG field must be 4
+/*                                       /* Characters for proper
+/*                                       /* alignment.
+   2 #CODE-HDG-LONG (A8) INIT<'*8374'>
+   2 REDEFINE #CODE-HDG-LONG /* REDEF. BEGIN : #CODE-HDG-LONG
+     3 #CODE-HDG (A4)
+ 1 REDEFINE CDMNTXL /* REDEF. BEGIN : CDMNTXL
+   2 CDUTRANS (A1/1:76)
+ 1 CDMNTXL-NAME (A8) INIT<'CDMNTXL'>
+END-DEFINE

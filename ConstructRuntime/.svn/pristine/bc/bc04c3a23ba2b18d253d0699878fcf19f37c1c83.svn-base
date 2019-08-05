@@ -1,0 +1,51 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This data area is passed
+/*  to CNUMSG in order to retrieve
+/*  messages.
+ 1 CNAMSG
+   2 INPUTS
+     3 INSTALL-LANGUAGE (I1) /* Text message language
+     3 DEFAULT-LANGUAGE (I1/1:8) INIT /* Sequence from 1 to 8
+       (1) <1>
+       (2) <1>
+       (3) <1>
+       (4) <1>
+       (5) <1>
+       (6) <1>
+       (7) <1>
+       (8) <1>
+     3 MESSAGE-LIBRARY (A8) INIT<'CSTMSG'> /* msg library
+     3 MSG-DATA-LIBRARY (A8/1:3) INIT /* msg-data 1 to 3 library
+       (1) <'CSTLDA'>
+       (2) <'CSTLDA'>
+       (3) <'CSTLDA'>
+     3 RETRIEVAL-METHOD (A1) INIT<'B'>
+/*                                       /* 'B' Both Retrieve & Substitut
+/*                                       /* 'R' Retrieve only
+/*                                       /* 'S' Substitute only
+/*                                       /* ' ' Defaults to 'B' for Both
+     3 FORMAT-METHOD (A2) INIT<'  '> /* format method
+/*                                                  /* for future use
+     3 FORMAT-METHOD-LENGTH (N2) /* format method length
+   2 INPUT-OUTPUTS
+     3 MSG (A250) /* Receive/Return message text
+     3 REDEFINE MSG /* REDEF. BEGIN : MSG
+       4 CNAMSG-CHAR (A1/1:250)
+     3 REDEFINE MSG /* REDEF. BEGIN : MSG
+       4 MSG-CHUNK (A60/1:4)
+     3 MSG-NR (N4) /* Receive/Return message number
+     3 MSG-DATA (A32/1:3) /* Used to pass variables
+/*                                       /* to be substituted into msg.
+     3 RETURN-CODE (A1) /* Type of message:
+/*                                       /* ' ' = Informatory message
+/*                                       /* 'C' = Communication error
+/*                                       /* 'E' = Error
+/*                                       /* 'W' = Warning
+   2 OUTPUTS
+     3 RESPONSE-CODE (N4) /* Response code from USR0320N
+END-DEFINE

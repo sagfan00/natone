@@ -1,0 +1,17 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM1140
+/* <Natural Source Header
+/*
+/* This is used in CDXMLSUB
+/*
+/* Required for XML escape character substitution
+ 1 #REP-IND (I2)
+/* If index change value in substituion routine of request documents
+/* must change too
+ 1 #REPLACEMENT-TABLE (1:*)
+   2 #SEARCH-STRING (A32)
+   2 #REPLACE-STRING (A32)
+/* /* incremented
+END-DEFINE

@@ -1,0 +1,16 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  text strings required by the
+/*  HELP models.
+/*
+ 1 CDHDTXL
+/*
+   2 #SELECT-TXT (A20) INIT<'*8400'> /* Enter Selection
+ 1 REDEFINE CDHDTXL /* REDEF. BEGIN : CDHDTXL
+   2 CDUTRANS (A1/1:20)
+ 1 CDHDTXL-NAME (A8) INIT<'CDHDTXL'>
+END-DEFINE

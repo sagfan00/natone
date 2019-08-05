@@ -1,0 +1,42 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  Data area: CVGETFIL                  Function
+/*                                       This data area is used in
+/*                                       conjunction with copycode
+/*                                       CVGETFIC which is used to
+/*                                       get the current FNAT and
+/*                                       FUSER system file settings
+/*                                       without calling a NAT routine.
+ 1 CVGETFIL
+   2 SYS-FILES (1:2)
+     3 SYSF-LFILE (I4) INIT<0,255> /* Fuser, Fnat
+     3 SYSF-DBID (N5)
+     3 SYSF-FNR (N5)
+   2 REDEFINE SYS-FILES /* REDEF. BEGIN : SYS-FILES
+     3 FUSER-LFILE (I4)
+     3 FUSER-DBID (N5)
+     3 FUSER-FNR (N5)
+     3 FNAT-LFILE (I4)
+     3 FNAT-DBID (N5)
+     3 FNAT-FNR (N5)
+   2 CMSLFT-PARMS
+     3 FUNCTION_CODE (I4) INIT<5>
+     3 FIL1 (A12)
+     3 L_FILE (I4)
+     3 DBID (I4)
+     3 FNR (I4)
+     3 PASSWORD (A8)
+     3 CIPHER (N8)
+     3 BLOCKSIZE (I4)
+     3 DBTYPE (I1)
+     3 DBOPTIONS (B1)
+     3 AUTO_XLATE (A1)
+     3 FREE (A1)
+   2 REDEFINE CMSLFT-PARMS /* REDEF. BEGIN : CMSLFT-PARMS
+     3 STRING (B52)
+   2 RSP-CODE (I4)
+   2 CVGETFIL-INDEX (I1)
+END-DEFINE

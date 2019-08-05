@@ -1,0 +1,12 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+** Scrolling button is pressed.
+  IF *CURS-FIELD = POS(CDKEYLDA.#BKWRD-LAB1) THEN
+      CALLNAT 'CDSETKEY' CDKEYLDA.#BACKWARD-KEY
+  END-IF
+  IF *CURS-FIELD = POS(CDKEYLDA.#FRWRD-LAB1) THEN
+    CALLNAT 'CDSETKEY' CDKEYLDA.#FORWARD-KEY
+  END-IF

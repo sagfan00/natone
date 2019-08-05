@@ -1,0 +1,58 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDACTA /* Used by CDACT
+   2 INPUTS
+     3 #CALLING-PROGRAM (A8) /* Can be used to restrict
+/*                                       /* Action based on user.
+   2 INPUT-OUTPUTS
+/*
+/*  The following table contains
+/*  the set of all valid actions
+/*  and acceptable mneumonics.
+/*
+/*  Mark the first occurrence of
+/*  the actions you wish to
+/*  support. The value of marked
+/*  actions will be substituted for
+/*  the correct action value and
+/*  acceptable mneumonics for the
+/*  current language.
+/*  ********** Warning *************
+/*  The order of the #APPL-ACTIONS
+/*  must exactly match the order of
+/*  the action keys in CDKEYLDA
+/*  ******** End of Warning ********
+     3 #APPL-ACTIONS (A3/1:30,1:3)
+     3 REDEFINE #APPL-ACTIONS /* REDEF. BEGIN : #APPL-ACTIONS
+       4 #ADD (A3/1:3) /* Always extend this
+       4 #BROWSE (A3/1:3) /* list of actions at the
+       4 #CLEAR (A3/1:3) /* end since the browse
+       4 #DISPLAY (A3/1:3) /* select model stores
+       4 #MODIFY (A3/1:3) /* the selected actions
+       4 #NEXT (A3/1:3) /* as an occurrence number
+       4 #PURGE (A3/1:3) /* within this table.
+       4 #COPY (A3/1:3)
+       4 #RECALL (A3/1:3)
+       4 #REPLACE (A3/1:3)
+       4 #SELECT (A3/1:3)
+       4 #DETAIL (A3/1:3)
+       4 #FORMER (A3/1:3)
+   2 OUTPUTS
+/*
+/*  The KD-LINES will be assigned
+/*  the expanded action names in the
+/*  current language.
+/*  The line will be split based on
+/*  the current window setting.
+     3 #KD-LINES (A79/1:2)
+/*
+/*
+/*
+     3 #INVALID-ACT-MSG (A50) /* Can be used as msg text if
+/*                                       /* a valid action is not entered
+     3 #INVALID-ACT-MSG-NR (N4) /* corresponding msg number.
+     3 #INVALID-ACT-MSG-DATA (A45) /* Data to substitute into msg.
+END-DEFINE

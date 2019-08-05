@@ -1,0 +1,12 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* This copy code is used to suppress execution of the DEFINE PRINTER...
+* statement under platforms for which this causes new print files to be
+* opened each time it is executed.
+IF *LEVEL = 1 THEN
+  DEFINE PRINTER(SRC=1) OUTPUT 'SOURCE'
+END-IF
+FORMAT(SRC) PS=0 LS=250 SG=OFF ZP=OFF AD=Z

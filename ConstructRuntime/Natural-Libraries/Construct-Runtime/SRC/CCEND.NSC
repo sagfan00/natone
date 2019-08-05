@@ -1,0 +1,9 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* This copycode member should be invoked at the termination of all
+* dialog programs to make sure that the environment is restored to
+* what it was upon entry.
+CALLNAT 'CDENVIR' CDENVIRA

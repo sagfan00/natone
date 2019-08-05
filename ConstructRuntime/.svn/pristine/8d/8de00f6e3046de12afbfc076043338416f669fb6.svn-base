@@ -1,0 +1,26 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  DATA AREA NAME: CDLGXCON                    Function
+/*  Created on....: Oct 21, 2003               ==========
+/*  Created by....: SAG                  This data area is used by
+/*                                       CST-PROXY model subprograms that
+/*                                       are used to convert model pdas
+/*                                       between internal and streamed
+/*                                       (expanded printable) format.
+/*
+ 1 CDLGXCON
+   2 #ADABAS-ERROR-END (N4) CONST<3999> /* End of ADABAS
+/* *                                                 /* error range
+   2 #ADABAS-ERROR-START (N4) CONST<3001> /* Start of ADABAS
+/* *                                                 /* error range
+   2 #DEFAULT-DATE (A8) CONST<'00000000'>
+   2 #DATA-LENGTH (N4) CONST<8452>
+   2 #UNKNOWN-ERROR (N4) CONST<8453>
+   2 #LOGIC-ERROR (N4) CONST<8454>
+   2 #ERROR-CODE (A1) CONST<'E'> /* Error Condition
+   2 #TRUE (L) CONST<TRUE>
+END-DEFINE

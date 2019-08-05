@@ -1,0 +1,9 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+** Copycode: CCIFDEB
+** Function: This debug member should be included whenever you want to
+**           check whether debugging is currently enabled.
+IF *COM = 'DB=Y' THEN

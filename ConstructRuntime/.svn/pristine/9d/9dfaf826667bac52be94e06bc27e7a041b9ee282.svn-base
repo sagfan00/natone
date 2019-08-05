@@ -1,0 +1,175 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**********************************************************************
+* Program    : CDGETDC
+* System     : NATURAL-CONSTRUCT
+* Application: All generated applications which use Direct Commands
+* Title      : Natural Construct Get Command
+* Written    : 15 Feb 1988
+* Function   : The principle behind the standard direct command
+*              mechanism is that direct commands entered by the user
+*              match the same information that would be typed in if
+*              the users is navigating through the menu hierarchy.
+*
+*              A blank is used to delimit commands intended for use
+*              by subsequent levels in the menu hierarchy. Multiple
+*              data values can be supplied for each traversed process
+*              by separating the data with a slash character or the
+*              current input delimiter character.
+*
+*              This method of direct command processign has the
+*              following benefits:
+*              1. Users learn the direct command syntax by first
+*                 navigating via menus.
+*              2. No specialized direct command processor is required
+*                 for each application.
+*              3. Processes invoked by the direct command need not
+*                 be of type program.
+*              4. You can branch to any given process from any other
+*                 process.
+*
+*              This program analyzes a direct command line and
+*              splits it into two pieces. The first portion of the
+*              direct command is placed in the variable #STACK-DATA.
+*              This will contain the direct command value up to the
+*              first blank character. This information will normally
+*              be stacked by the invoking object. Any slash characters
+*              within #STACK-DATA are replaced with the current input
+*              delimiter character.
+*
+*              The second part of the direct command is placed in
+*              the variable #REST-COMMAND. This should be assigned
+*              back to the global direct command variable.
+*
+*              The final retuned value, #FIRST-COMMAND contains the
+*              first portion of #STACK-DATA up to the first input
+*              delimiter or / character. The value of #FIRST-COMMAND
+*              is used by menu programs to determine whether the
+*              direct command should be processed starting from the
+*              current menu (if first part of the command matched a
+*              code on the current menu), or from the main menu.
+*
+* History
+**********************************************************************
+DEFINE DATA
+  PARAMETER USING CDGETDCA
+  LOCAL
+    01 #DC-LENGTH(P3) CONST<60>
+    01 #GET-ID-CHAR(A3)
+    01 REDEFINE #GET-ID-CHAR
+      02 #1(A1)
+      02 #INPUT-DELIMITER(A1)
+      02 #3(A1)
+    01 #I(I2)
+    01 #J(I2) INIT<0>
+    01 #INSIDE-QUOTES(L) INIT<FALSE>
+    01 #POS(I2)
+END-DEFINE
+*
+* Find out what the input delimiter is set to (ID= )
+COMPRESS '1' '3' INTO #GET-ID-CHAR WITH DELIMITERS
+*
+* Left justify the incoming data.
+MOVE LEFT JUSTIFIED CDGETDCA.#DIRECT-COMMAND TO CDGETDCA.#DIRECT-COMMAND
+*
+* Initialize return parameters.
+RESET CDGETDCA.OUTPUTS
+*
+* Loop through characters in direct command line.
+PARSE-COMMAND.
+FOR #I = 1 TO #DC-LENGTH
+  /*
+  /* Decide on what to do based on first character and whether
+  /* or not we are inside a quoted string.
+  IF #INSIDE-QUOTES THEN
+    /*
+    /* Check if next character is a quote.
+    IF CDGETDCA.#DIRECT-COMMAND-CHAR(#I) EQ '"' THEN
+      /*
+      /* Terminate quoted string.
+      ASSIGN #INSIDE-QUOTES = FALSE
+    ELSE
+      /*
+      /* Not a quote, shift it over to the result.
+      ADD 1 TO #J
+      ASSIGN CDGETDCA.#STACK-DATA-CHAR(#J) =
+             CDGETDCA.#DIRECT-COMMAND-CHAR(#I)
+    END-IF
+  ELSE
+    /*
+    /* Not inside a quoted string.  Check for blank character.
+    IF CDGETDCA.#DIRECT-COMMAND-CHAR(#I) EQ ' ' THEN
+      /*
+      /* End of command.  Set up CDGETDCA.#REST-COMMAND to contain the
+      /* unused part of the direct command.
+      ASSIGN CDGETDCA.#REST-COMMAND = CDGETDCA.#DIRECT-COMMAND
+      MOVE ALL ' ' TO CDGETDCA.#REST-COMMAND UNTIL #I
+      MOVE LEFT CDGETDCA.#REST-COMMAND TO CDGETDCA.#REST-COMMAND
+      /*
+      /* Remove the first part of the item (up to the input delimiter)
+      /* and place it into CDGETDCA.#FIRST-COMMAND.
+      EXAMINE CDGETDCA.#STACK-DATA FOR '/' AND REPLACE
+        WITH #INPUT-DELIMITER
+      EXAMINE CDGETDCA.#STACK-DATA FOR #INPUT-DELIMITER
+        GIVING POSITION IN #POS
+      IF #POS = 2 THRU 14
+        ASSIGN CDGETDCA.#FIRST-COMMAND-CHAR(1:#POS - 1) =
+               CDGETDCA.#STACK-DATA-CHAR(1:#POS - 1)
+      ELSE
+        ASSIGN CDGETDCA.#FIRST-COMMAND = CDGETDCA.#STACK-DATA
+      END-IF
+      ESCAPE BOTTOM(PARSE-COMMAND.) IMMEDIATE
+    ELSE
+      /*
+      /* Not in quoted string, check if starting a quoted string.
+      IF CDGETDCA.#DIRECT-COMMAND-CHAR(#I) = '"' THEN
+        /*
+        /* Start a quoted string.
+        ASSIGN #INSIDE-QUOTES = TRUE
+      ELSE
+        /*
+        /* Non-blank, non-quote character so shift it across.
+        ADD 1 TO #J
+        ASSIGN CDGETDCA.#STACK-DATA-CHAR(#J) =
+          CDGETDCA.#DIRECT-COMMAND-CHAR(#I)
+        END-IF
+    END-IF
+  END-IF
+END-FOR
+*
+* Input line was completely full with one command.  Return
+* the value after setting CDGETDCA.#FIRST-COMMAND to the first
+* part (up to the input delimiter) of the command.
+EXAMINE CDGETDCA.#STACK-DATA FOR '/' AND REPLACE WITH #INPUT-DELIMITER
+EXAMINE CDGETDCA.#STACK-DATA FOR #INPUT-DELIMITER
+        GIVING POSITION IN #POS
+DECIDE FOR FIRST CONDITION
+  WHEN #POS = 0
+    CDGETDCA.#FIRST-COMMAND := CDGETDCA.#STACK-DATA
+  WHEN #POS  > 15
+    CDGETDCA.#FIRST-COMMAND-CHAR(1:15)
+      := CDGETDCA.#STACK-DATA-CHAR(1:15)
+  WHEN #POS  <= 15
+    CDGETDCA.#FIRST-COMMAND-CHAR(1:#POS)
+      := CDGETDCA.#STACK-DATA-CHAR(1:#POS)
+  WHEN NONE
+    IGNORE
+END-DECIDE
+*
+* Trap LOGON and FIN as special commands.
+DECIDE FOR FIRST CONDITION
+  WHEN CDGETDCA.#STACK-DATA = 'FIN' OR = 'LOGOFF'
+    TERMINATE
+  WHEN CDGETDCA.#STACK-DATA = 'LOGON'
+    RELEASE STACK
+    ASSIGN *ERROR-TA = ' '
+    SET CONTROL 'WB'
+    SET CONTROL 'YB'
+    STACK TOP COMMAND 'LOGON' CDGETDCA.#REST-COMMAND
+    STOP
+  WHEN NONE IGNORE
+END-DECIDE
+END

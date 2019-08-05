@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+* This is just a note for development so it's not shipped.
+* CDHASH and CDHASHA have been shipped with NAT4 because they need
+* to be compiled in NAT41.  This means they need to be in library
+* SYSCMD1 in order to UQAC them.

@@ -1,0 +1,78 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**********************************************************************
+*
+* This routine receives a function, an I1 variable and an array of
+* logicals.
+*
+* For #FUNC = 1 (get bit settings of the I1)
+*     --> The routine examines the bits of the I1 and returns an
+*         an array of logicals that indicate which bits are set.
+*
+* For #FUNC = 2 (set bits based on the contents of the I1)
+*     --> The routine examines the logicals array and sets the I1
+*         to contain a value that reflects the requested bits.
+*
+**********************************************************************
+DEFINE DATA
+  PARAMETER USING CDBITOPA
+  LOCAL     USING CDBITOPL
+  LOCAL
+  01 #LOOP(I1)                    /* Loop counter
+  01 #I-BIT(I1)                   /* Value to calculate bit setting
+  01 #I1-LOC(I1)                  /* Copy of PDA #I1
+  01 #BIT-VAL(I2)                 /* Incremented bit value for set
+     INIT<1>
+END-DEFINE
+**
+** Perform requested function.
+DECIDE ON FIRST VALUE CDBITOPA.FUNC
+  /*
+  /* Get the bit settings of the I1.
+  VALUE CDBITOPL.GET-BITS
+    /*
+    /* Reset the logical array and copy the PDA I1 to a local copy.
+    RESET CDBITOPA.BIT-SET(*)
+    ASSIGN #I1-LOC = CDBITOPA.INT-1
+    /*
+    /* For each bit, right to left.
+    FOR #LOOP = 0 TO 7
+      /*
+      /* Do integer divide by 2.
+      COMPUTE #I-BIT = #I1-LOC / 2
+      /*
+      /* If the integer divide result multiplied by 2 differs from the
+      /* original value, the bit is set.
+      IF #I-BIT * 2 NE #I1-LOC THEN
+        ASSIGN CDBITOPA.BIT-SET(#LOOP) = TRUE
+      END-IF
+      /*
+      /* Set the local to the integer divide result for checking the
+      /* next bit.
+      ASSIGN #I1-LOC = #I-BIT
+    END-FOR
+  /*
+  /* Set the bit settings of the I1.
+  VALUE CDBITOPL.SET-BITS
+    /*
+    /* Reset I1 being used.
+    RESET CDBITOPA.INT-1
+    /*
+    /* For each value in the logical array.
+    FOR #LOOP = 0 TO 7
+      /*
+      /* If the bit is to be set, set it using appropriate bit value.
+      IF CDBITOPA.BIT-SET(#LOOP) THEN
+        ADD #BIT-VAL TO CDBITOPA.INT-1
+      END-IF
+      /*
+      /* Set up for the next bit.
+      COMPUTE #BIT-VAL = #BIT-VAL * 2
+    END-FOR
+  NONE
+    IGNORE
+END-DECIDE
+END

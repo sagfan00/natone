@@ -1,0 +1,10 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP windows-1252
+* :LineIncrement 10
+* <Natural Source Header
+DEFINE DATA LOCAL
+1 DATA01 (A4)
+END-DEFINE
+FETCH "CLI-P1"
+END

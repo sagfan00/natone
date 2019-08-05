@@ -1,0 +1,14 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDNCPHA /* Used by CDNCPH
+   2 INPUT-OUTPUTS
+/*
+     3 #DIRECT-COMMAND (A60) /* Direct command as entered
+/*                                          by the user.
+     3 #NCP-ACTIVE (L) /* True if a NATURAL Command
+/*                                          Processor is currently
+/*                                          active.
+END-DEFINE

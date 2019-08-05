@@ -1,0 +1,18 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This 01 level contains fields
+/*  that could be used by an
+/*  error transaction (*ERROR-TA)
+/*  to recover from or log errors.
+ 1 ERROR-INFO /* Can be used by *ERROR-TA
+   2 ##LAST-PROGRAM (A8) /* Last active program (type p)
+/*                                       /* at level 1.
+   2 ##LAST-ERROR-TIME (T) /* For each error, check the
+/*                                       /* time of the last error to
+/*                                       /* prevent error cycles within
+/*                                       /* the error transaction.
+END-DEFINE

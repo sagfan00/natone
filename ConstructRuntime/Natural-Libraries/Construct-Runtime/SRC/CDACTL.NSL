@@ -1,0 +1,58 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/* ** Translation LDA for map text
+/* ** used by map CDACT.
+/* ** Note: this translation LDA
+/* ** is being used by CONSTRUCT to
+/* ** display valid actions in the
+/* ** BROWSE-SELECT* models.
+/* ** If you want CONSTRUCT to
+/* ** reflect these changes then you
+/* ** must recompile the modules
+/* ** CDACT and CDACTCST.
+ 1 CDACTC
+   2 #USED-CODES (P3) CONST<13> /* Number of codes
+ 1 CDACTL
+   2 TEXT
+     3 #FLIP-NAME (A10) INIT<'*8422,</10'>
+     3 #ACTION-NAMES
+       4 #ACTION-INIT (A10/1:#USED-CODES) INIT
+         (1) <'*8410.1'>
+         (2) <'*8410.2'>
+         (3) <'*8410.3'>
+         (4) <'*8410.4'>
+         (5) <'*8410.5'>
+         (6) <'*8410.6'>
+         (7) <'*8410.7'>
+         (8) <'*8411.1'>
+         (9) <'*8411.2'>
+         (10) <'*8411.3'>
+         (11) <'*8411.4'>
+         (12) <'*8411.5'>
+         (13) <'*8411.6'>
+       4 REDEFINE #ACTION-INIT
+         5 #ADD (A10) /* Always extend this
+         5 #BROWSE (A10) /* list of actions at the
+         5 #CLEAR (A10) /* end since the browse
+         5 #DISPLAY (A10) /* select model stores
+         5 #MODIFY (A10) /* the selected actions
+         5 #NEXT (A10) /* as an occurrence number
+         5 #PURGE (A10) /* within this table.
+         5 #COPY (A10)
+         5 #RECALL (A10)
+         5 #REPLACE (A10)
+         5 #SELECT (A10)
+         5 #DETAIL (A10)
+         5 #FORMER (A10)
+   2 REDEFINE TEXT
+     3 TRANSLATION-TEXT
+       4 TEXT-ARRAY (A1/1:140)
+   2 ADDITIONAL-PARMS
+     3 #MESSAGE-LIBRARY (A8) INIT<'CSTAPPL'>
+     3 #LDA-NAME (A8) INIT<'CDACTL'>
+     3 #TEXT-REQUIRED (L) INIT<TRUE>
+     3 #LENGTH-OVERRIDE (N10) /* Explicite len to translat
+END-DEFINE

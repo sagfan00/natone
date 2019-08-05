@@ -1,0 +1,15 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+1 #ZONE-PARAM-VEH
+  2 #VEH-FONCTION (A1)
+  2 #VEH-CODE-RET (A1)
+  2 #VEH-REG-NUM (A15)
+  2 #VEH-CHASSIS-NUM (B4)
+  2 #VEH-PERSONNEL-ID (A8)
+  2 #VEH-MAKE (A20)
+  2 #VEH-MODEL (A20)
+  2 #VEH-COLOR (A20)
+END-DEFINE

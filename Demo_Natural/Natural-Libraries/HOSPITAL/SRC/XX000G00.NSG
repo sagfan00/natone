@@ -1,0 +1,8 @@
+DEFINE DATA GLOBAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+1 #G-SELECTED-OPTION (A1)
+1 #G-MESSAGE (A70)
+END-DEFINE

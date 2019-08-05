@@ -1,0 +1,34 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+***********************************************************************
+* Copycode : CCDEFLTL
+* System   : NATURAL-CONSTRUCT
+* Title    : Assign logical default parameter
+*          : Note: this routine is used for assigning parameters of
+*          :       format L. See CCDEFLTA for alpha parameters.
+*          :                 See CCDEFLTN for all other formats.
+* Written  : Feb 05,96
+* Function : This copycode is used to interface with CSUDEFLT for the
+*          : purpose of collecting numeric default parameter
+*          : values.
+* Invoking : To invoke this routine, the data area CSADEFLT must be
+*          : available. Include this copycode using the following syntax
+*          : INCLUDE CCDEFLTL '''parm-name''' 'parm-target'
+*          : where parm-target is the name of a logical field.
+* Mod Date   Mod By    Description of Changes
+* MMM DD YY  ________ ______________________________________________
+* ______________________________________________
+***********************************************************************
+ASSIGN CSADEFLT.PARM-NAME = &1&
+CALLNAT 'CSUDEFLT' CSADEFLT
+                   CSASTD
+IF CSADEFLT.PARM-NAME NE ' ' THEN
+  IF CSADEFLT.PARM-VALUE = ' ' OR = 'FALSE' OR = '0' THEN
+    RESET &2&
+  ELSE
+    ASSIGN &2& = TRUE
+  END-IF
+END-IF

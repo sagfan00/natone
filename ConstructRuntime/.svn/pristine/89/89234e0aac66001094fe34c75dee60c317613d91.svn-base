@@ -1,0 +1,33 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+INCLUDE CCDCPOP /* Pop up direct command if requested.
+*
+* Check for an new direct command on the current screen.
+* If one was entered then check if it applies to current screen.
+IF CDGETDCA.#DIRECT-COMMAND NE ' ' THEN
+  /*
+  /* Get first item (up to blank) from direct command
+  CALLNAT 'CDGETDC' CDGETDCA
+  /*
+  /* Check if the first part of the command is on this menu
+  EXAMINE #CODE-IN-LIST(*) FOR CDGETDCA.#FIRST-COMMAND
+          WITH DELIMITERS ' ' GIVING INDEX IN #INDEX
+  IF #INDEX NE 0
+    /*
+    /* Assign the remainder of the command not to be used by this
+    /* menu to the global command area and clear the screen area.
+    ASSIGN DIALOG-INFO.##COMMAND = CDGETDCA.#REST-COMMAND
+    RESET CDGETDCA.#DIRECT-COMMAND
+    STACK TOP DATA CDGETDCA.#STACK-DATA
+    ESCAPE TOP
+  ELSE
+    /*
+    /* Check if command is executable by a Natural command processor.
+    ASSIGN DIALOG-INFO.##COMMAND = CDGETDCA.#DIRECT-COMMAND
+    PERFORM FINAL-PROCESSING
+    CALLNAT 'CDNCPX' DIALOG-INFO MSG-INFO
+  END-IF
+END-IF

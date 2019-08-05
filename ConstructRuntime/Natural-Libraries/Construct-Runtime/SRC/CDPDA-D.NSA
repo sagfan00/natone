@@ -1,0 +1,22 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  These variables are passed from
+/*  the GDA variables and must match
+/*  the structure of DIALOG-INFO in
+/*  the Global Data Area.
+/*
+/*  This 01 level is used to define
+/*  variables to be passed to all
+/*  dialog (screen related)
+/*  subprograms.
+ 1 DIALOG-INFO
+   2 ##COMMAND (A60) /* Passed direct command
+   2 REDEFINE ##COMMAND /* REDEF. BEGIN : +COMMAND
+     3 ##GDA-COMMAND-CHAR (A1/1:60)
+   2 ##MAIN (A8) /* Main menu screen
+   2 ##QUIT (A8) /* Termination program
+END-DEFINE

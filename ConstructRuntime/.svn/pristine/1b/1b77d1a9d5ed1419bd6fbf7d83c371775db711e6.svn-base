@@ -1,0 +1,72 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #ACTION #DIRECT-COMMAND #HEADER1 #HEADER2 #HPARM #KD-LINES-CV
+*     #LEFT-PROMPT #PROGRAM #RIGHT-PROMPT #VAL-ACT2
+*     CDACTA.#APPL-ACTIONS(*,*) CDDIALDA.#KD-LINES(*)
+DEFINE DATA PARAMETER
+1 #ACTION (A002)
+1 #DIRECT-COMMAND (A060)
+1 #HEADER1 (A060)
+1 #HEADER2 (A058)
+1 #HPARM (A065)
+1  #KD-LINES-CV (C)
+1 #LEFT-PROMPT (A009)
+1 #PROGRAM (A008)
+1 #RIGHT-PROMPT (A009)
+1 #VAL-ACT2 (A079)
+1 CDACTA.#APPL-ACTIONS (A003/00001:00030,00001:00003)
+1 CDDIALDA.#KD-LINES (A079/00001:00002)
+END-DEFINE
+FORMAT PS=021 LS=080 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'NCCSELH',#HPARM    *
+* 023080NCLAYOUTN1NNUCN____         X        01 SYSPROF YL           0 *
+************************************************************************
+INPUT          (     IP=OFF      HE='NCCSELH',#HPARM                  /*
+                                                                       )
+ 001T CDDIALDA.#KD-LINES (001)  (AD=MY' ' CV=#KD-LINES-CV /*.99D079 A079 .
+      DY='00V(NP'02                     )
+   /**A1000020000100001000010000100001100002001001000001000HV
+/
+ 001T CDDIALDA.#KD-LINES (002)  (AD=MY' ' CV=#KD-LINES-CV /*.99D079 A079 .
+      DY='00V(NP'02                     )
+/
+ 001T #PROGRAM  (AD=OD' ' ) /*.01U008 A008 .
+ 010T #HEADER1  (AD=OI' ' ) /*.01U060 A060 .
+ 072T *PROGRAM  (AD=ODR ) /*.01S008 A008 .
+/
+ 001T #LEFT-PROMPT  (AD=OV ) /*.01U009 A009 .
+ 011T #HEADER2  (AD=OI' ' ) /*.01U058 A058 .
+ 071T #RIGHT-PROMPT  (AD=OVR ) /*.01U009 A009 .
+/
+ 002T 'Action...........:'
+ 021T #ACTION  (AD=MYT'_' HE='CDACTHL2',CDACTA.#APPL-ACTIONS(*,*) ) /*.99U002 A002 .
+ 032T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+ 034T #VAL-ACT2  (AD=ON AL=001  ) /*.01U001 A079 .
+ 036T CDACTA.#APPL-ACTIONS (001,001)  (AD=ON AL=001  ) /*.01U001 A003 .
+   /**A2000300000300001000010000100001120001001001000001000HV
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+ 002T 'Direct Command:'(I)
+ 018T #DIRECT-COMMAND  (AD=MILT'_' HE='CDDCHELP' ) /*.99U060 A060 .
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

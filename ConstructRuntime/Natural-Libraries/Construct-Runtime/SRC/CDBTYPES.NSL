@@ -1,0 +1,17 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 BUSINESS-SERVICE-TYPES
+/*  Contains Object Maint & Browse
+   2 #TRADITIONAL-OBJECTS (A1) INIT<"1">
+/*  ObjectBrowseSelect with Maint
+   2 #FULL-OBJECT-BROWSE-SEL (A1) INIT<"2">
+/*  ObjectBrowseSelect without Maint
+   2 #BROWSE-ONLY-OBJECT-BROWSE-SEL (A1) INIT<"3">
+/*  ObjectGeneric
+   2 #OBJECT-GENERIC (A1) INIT<"4">
+/*  Everything else
+   2 #ARBSUB (A1) INIT<" " >
+END-DEFINE

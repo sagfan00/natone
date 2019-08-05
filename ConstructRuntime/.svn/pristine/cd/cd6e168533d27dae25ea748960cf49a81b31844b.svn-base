@@ -1,0 +1,23 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Copycode: CC--GMSG                                                   *
+* Written : Apr 30, 97                                                 *
+* Author  : SAG                                                        *
+* Title   : Get message text                                           *
+* Function: This copycode should be included whenever a message is     *
+*           required. The message text, return code and message        *
+*           number are assigned.                                       *
+*           For example:                                               *
+*           ASSIGN CDAMSG.##MSG-DATA(1) = 'Phase'                      *
+*           ASSIGN CDAMSG.##MSG-DATA(2) = #CURRENT-METHOD              *
+*           ASSIGN CDAMSG.##MSG-DATA(3) = *PROGRAM                     *
+*           INCLUDE CC--GMSG '8109'              /* Msg number         *
+*             '''Invalid:1::2:passed to:3:'''    /* Msg text           *
+************************************************************************
+ASSIGN CDAMSG.##MSG-NR = &1&
+ASSIGN CDAMSG.##MSG = &2&
+PERFORM GET-MESSAGE

@@ -1,0 +1,37 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDDB2MG2
+* System     : NATURLA-CONSTRUCT
+* Application: All DB2 or SQL/DS Systems
+* Title      : Return Error Reason
+* Written    : 89-02-15
+* Function   : This subprogram should be called from within the error
+*              handling function of all programs which access DB2 or
+*              SQL/DS tables if the Natural error number is 3700.
+*              This subroutine will lookup the error message and
+*              return code using NDB232.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDPDA-M  /* Msg info.
+  LOCAL
+  01 #NDBERR-DATA
+    02 #SQLCODE(I4)                         /* SQL  Return Code.
+    02 #SQLSTATE(A5)                        /* Reason Code for the
+                                            /* last SQL command executed
+    02 #NATSQL-SQLCA(A136)                  /* SQL Communications area
+    02 #DBTYPE(B1)                          /* DATABASE TYPE
+  01 #PACKED-CODE(P15)
+END-DEFINE
+CALLNAT 'NDBERR' #NDBERR-DATA
+ASSIGN #PACKED-CODE = #SQLCODE
+MOVE EDITED #PACKED-CODE(EM=S999) TO MSG-INFO.##MSG
+COMPRESS 'SQL' MSG-INFO.##MSG INTO MSG-INFO.##MSG
+ASSIGN MSG-INFO.##MSG-NR = #SQLCODE
+ASSIGN MSG-INFO.##RETURN-CODE = 'E'
+END

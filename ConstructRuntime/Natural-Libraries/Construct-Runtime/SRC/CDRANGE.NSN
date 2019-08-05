@@ -1,0 +1,1014 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 5
+* <Natural Source Header
+************************************************************************
+* Program  : CDRANGE
+* System   : NATURAL-CONSTRUCT
+* Title    : Compute starting/ending value based in input key
+* Generated: Jan  9,96
+* Function : This subprogram receives a key value and a description
+*            of what the key looks like (format/length of each of the
+*            key components). It also receives a qualifier to indicate
+*            how the value is to be used. This qualifier could be one
+*            of:
+*            =        Value must equal the specified value
+*            *        Value must be prefixed by the specified value
+*            >,GT     Value must be greater than the specified value
+*            >=,=>,GE Value must be greater than or equal to the
+*                     specified value
+*            <,LT     Value must be less tha the specified value
+*            <=,=<,LT Value must be less than or equal to the
+*                     specified value
+*
+*            Using this information, this routine determines
+*            what the corresponding starting and ending key values
+*            for the search criteria should be.
+*
+*            Note that this criteria is an attribute of the entire
+*            key, and compound keys are treated as one long key for
+*            the purpose of this computation.
+* History
+*
+************************************************************************
+DEFINE DATA
+  PARAMETER
+  01 KEY (A1/1:3,1:V)
+  01 SUPERDE (L) /* Superdescriptor search
+  01 C#KEY-COMPONENTS (I1)
+  01 FIXED-COMPONENTS (I1) /* components that must match exactly
+  01 FORMAT-LEN-SEQ (A20/1:1,1:V)
+  PARAMETER USING CDRANGEA /* Wildcard options
+  PARAMETER USING CDPDA-M  /* Msg info
+  LOCAL USING CDRANGEL     /* Valid wildcard types
+  LOCAL
+*
+* Constants.
+  01 #1 (I1) CONST<1>
+  01 #DATE-SIZE (I1) CONST<4>
+  01 #DELIMITER (A1) CONST<','>
+  01 #DESCENDING (A1) CONST<'D'>
+  01 #DETERMINED-LAST-COMPONENT (L)
+  01 #DIGITS-ENTERED (I2) /* Number of key characters supplied
+  01 #ERROR (A1) CONST<'E'>
+  01 #FROM (I1) CONST<1>
+  01 #FIRST-PACKED-BYTE (I1) CONST<1>
+  01 #HIGH (I1) CONST<2>
+  01 #INPUT-KEY (I1)   CONST<1> /* Passed in start value
+  01 #LAST-PACKED-BYTE (I1) CONST<2>
+  01 #LOW (I1) CONST<1>
+  01 #MAX-INT-BYTES (I1) CONST<4>
+  01 #MAX-KEY-COMPONENTS (I1) CONST<10>
+  01 #MAX-NUM-BYTES (I1) CONST<29>
+  01 #MAX-PACKED-BYTES (I1) CONST<15>
+  01 #MAX-PACKED-DIGITS (I1) CONST<29>
+  01 #PERIOD (A1) CONST<'.'>
+  01 #READ-THRU (I1)    CONST<3> /* Ending key for search
+  01 #READ-FROM (I1)  CONST<2> /* Key to begin reading by
+  01 #REMAINDER (I1)
+  01 #SIGN-BYTE (I1) CONST<2>
+  01 #THRU (I1) CONST<2>
+  01 #TIME-SIZE (I1) CONST<7>
+  01 #UPPER (A1) INIT<'U'>
+  01 #WILDCARD-CHAR (A1/1:4) INIT<'*','=','<','>'>
+  01 REDEFINE #WILDCARD-CHAR
+    02 #PREFIX (A1)
+    02 #EQUAL (A1)
+    02 #LESS-THAN (A1)
+    02 #GREATER-THAN (A1)
+  01 #ZERO-CHAR (A1) CONST<'0'>
+  01 #FMT
+    02 #ALPHA (A1) INIT<'A'>
+    02 #NUMERIC (A1) INIT<'N'>
+    02 #INTEGER (A1) INIT<'I'>
+    02 #PACKED (A1) INIT<'P'>
+    02 #BINARY (A1) INIT<'B'>
+    02 #LOGICAL (A1) INIT<'L'>
+    02 #DATE (A1) INIT<'D'>
+    02 #TIME (A1) INIT<'T'>
+  01 #ADJUSTMENT (I2)
+  01 #ADJUSTMENT-A (I1)
+  01 #ALPHA-CHAR (A1)
+  01 REDEFINE #ALPHA-CHAR
+    02 #INT (I1)
+  01 #D-VAR (D)
+  01 REDEFINE #D-VAR
+    02 #CHAR (A1/1:#DATE-SIZE)
+  01 #DIGITS (P3) /* Warning, do not change to Integer format due to
+                  /* problems with the ROUNDED option.
+  01 #EMBEDDED-WILDCARD (L)
+  01 #END (I2)
+  01 #END-COMPONENT (I2)
+  01 #FORMATTED-KEY (A1/1:200)
+  01 #GET-DC (A2)
+  01 REDEFINE #GET-DC
+    02 #CHAR (A1/1:2)
+  01 #I (I2)
+  01 #J (I2)
+  01 #K (P3)
+  01 #L (P3)
+  01 #LOW-COMPONENTS-SET (P3)
+  01 #SET-TO-ZERO (L) INIT <FALSE>
+  01 #KEY-INFO (1:#MAX-KEY-COMPONENTS)
+    02 #DBMS-FORMAT (A2)
+    02 #NAT-FORMAT (A1)
+    02 #LENGTH (N3.1)
+    02 REDEFINE #LENGTH
+      03 #UNIT (N3)
+      03 #DECIMAL (N1)
+    02 #ASC-DESC (A1)
+    02 #FORMATTED (A1)  /* Numeric is formatted (eg date)
+    02 #UPPER-CASE (A1) /* U means translate to upper case
+    02 #BYTES (I1)
+    02 #START-POS (I2)
+    02 #END-POS (I2)
+    02 #EVEN-PACKED (L)
+  01 #KEY-LENGTH (I2)
+  01 #L-VAR (L)
+  01 REDEFINE #L-VAR
+    02 #CHAR (A1)
+  01 #L-H (I1)
+  01 #LARGE-INTEGER (I4)
+  01 REDEFINE #LARGE-INTEGER
+    02 #CHAR (A1/1:#MAX-INT-BYTES)
+  01 #LARGE-NUM (N29)
+  01 REDEFINE #LARGE-NUM
+    02 #CHAR (A1/1:#MAX-NUM-BYTES)
+  01 #LARGE-PACKED (P29)
+  01 REDEFINE #LARGE-PACKED
+    02 #CHAR (A1/1:#MAX-PACKED-BYTES)
+  01 #LAST-NON-NULL (I2)
+  01 #LAST-SIGNIFICANT-POS (I2)
+  01 #LAST-SIGNIFICANT-CHAR (A1)
+  01 #LENGTH-A (A5)
+  01 #LOW-HIGH (#LOW:#HIGH)
+    02 #ALPHA (A1) INIT<H'00',H'FF'>
+    02 #NUMERIC (N2) INIT<-99,99>
+    02 REDEFINE #NUMERIC
+      03 #NUMERIC-CHAR (A1/1:#SIGN-BYTE)
+    02 #NUMERIC-ZERO (N2) INIT<00,99>
+    02 REDEFINE #NUMERIC-ZERO
+      03 #NUMERIC-ZERO-CHAR (A1/1:#SIGN-BYTE)
+    02 #INT1 (I1) INIT<-128,127>
+    02 REDEFINE #INT1
+      03 #INT1-CHAR (A1/1:1)
+    02 #INT2 (I2) INIT<-32768,32767>
+    02 REDEFINE #INT2
+      03 #INT2-CHAR (A1/1:2)
+    02 #INT4 (I4) INIT<-2147483647,2147483647>
+    02 REDEFINE #INT4
+      03 #INT4-CHAR (A1/1:4)
+    02 #PACKED (P3) INIT<-999,999>
+    02 REDEFINE #PACKED
+      03 #PACKED-CHAR (A1/1:#SIGN-BYTE)
+    02 #PACKED-ZERO (P3) INIT<000,999>
+    02 REDEFINE #PACKED-ZERO
+      03 #PACKED-ZERO-CHAR (A1/1:#SIGN-BYTE)
+    02 #SHORT-PACKED (P2) INIT<-99,99>
+    02 REDEFINE #SHORT-PACKED
+      03 #SHORT-PACKED-CHAR (A1/1:#SIGN-BYTE)
+    02 #SHORT-PACKED-ZERO (P2) INIT<00,99>
+    02 REDEFINE #SHORT-PACKED-ZERO
+      03 #SHORT-PACKED-ZERO-CHAR (A1/1:#SIGN-BYTE)
+    02 #BINARY (B1) INIT<H'00',H'FF'>
+    02 #LOGICAL (L) INIT<FALSE,TRUE>
+    02 REDEFINE #LOGICAL
+      03 #LOGICAL-CHAR (A1)
+    02 #DATE (D) INIT(2)<D'2500-12-31'>
+    02 REDEFINE #DATE
+      03 #DATE-CHAR (A1/1:#DATE-SIZE)
+    02 #TIME (T) INIT(2)<E'2500-12-31 23:59:59'>
+    02 REDEFINE #TIME
+      03 #TIME-CHAR (A1/1:#TIME-SIZE)
+    02 #UNPACKED (A30)
+    02 REDEFINE #UNPACKED
+      03 #UNPACKED-CHAR (A1/1:30)
+  01 #NULL-CHAR (A1/1:2) INIT<' ',H'00'>
+  01 #NUM-START (I1)
+  01 #READ-FROM-THRU (I1)
+  01 #START (I2)
+  01 #START-COMPONENT (I2)
+  01 #T-VAR (T)
+  01 REDEFINE #T-VAR
+    02 #CHAR (A1/1:#TIME-SIZE)
+  01 #TEMP (A29)
+  01 REDEFINE #TEMP
+    02 #CHAR (A1/1:#MAX-NUM-BYTES)
+  01 #TEMP-CHAR (A1)
+  01 #DEFAULT-DATE(D)
+  01 #ALPHA-DATE (A10)
+  01 REDEFINE #ALPHA-DATE
+    02 #ALPHA-DATE-CHAR (A1/10)
+END-DEFINE
+  PROG.
+REPEAT /* Repeat loop to allow escape of program from within subroutine.
+  PERFORM INITIALIZATIONS
+*
+  DECIDE ON FIRST VALUE CDRANGEA.METHOD
+    VALUE CDRANGEL.INITIAL-ASSIGNMENT
+      PERFORM INITIAL-ASSIGNMENT
+    VALUE CDRANGEL.ASSIGN-NEXT-START-VALUES
+      PERFORM UPDATE-STARTING-ENDING-VALUES
+    NONE
+      ASSIGN MSG-INFO.##MSG = 'Invalid method:1:passed to:2:'
+      COMPRESS CDRANGEA.METHOD TO MSG-INFO.##MSG-DATA(1)
+      ASSIGN MSG-INFO.##MSG-DATA(2) = *PROGRAM
+      PERFORM SIGNAL-ERROR
+  END-DECIDE
+*
+************************************************************************
+DEFINE SUBROUTINE ADJUST-LAST-COMPONENT
+************************************************************************
+*
+  IF #LAST-NON-NULL = 0 THEN
+    ASSIGN #I = C#KEY-COMPONENTS
+  ELSE
+    ASSIGN #I = #LAST-NON-NULL
+  END-IF
+  ASSIGN #START = #KEY-INFO.#START-POS(#I)
+  ASSIGN #END = #KEY-INFO.#END-POS(#I)
+  DECIDE ON FIRST VALUE #KEY-INFO.#NAT-FORMAT(#I)
+    VALUE #FMT.#ALPHA, #FMT.#BINARY
+      ASSIGN #ALPHA-CHAR = KEY(#READ-FROM-THRU,#END)
+      MOVE #ADJUSTMENT TO #ADJUSTMENT-A
+      ADD #ADJUSTMENT-A TO #ALPHA-CHAR.#INT
+      ASSIGN KEY(#READ-FROM-THRU,#END) = #ALPHA-CHAR
+    VALUE #FMT.#NUMERIC
+      COMPUTE #NUM-START = #MAX-NUM-BYTES - #KEY-INFO.#BYTES(#I) + 1
+      ASSIGN #LARGE-NUM.#CHAR(#NUM-START:#MAX-NUM-BYTES) =
+        KEY(#READ-FROM-THRU,#START:#END)
+      ADD #ADJUSTMENT TO #LARGE-NUM
+      ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+        #LARGE-NUM.#CHAR(#NUM-START:#MAX-NUM-BYTES)
+    VALUE #FMT.#PACKED
+      COMPUTE #NUM-START = #MAX-PACKED-BYTES - #KEY-INFO.#BYTES(#I) + 1
+      ASSIGN #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES) =
+        KEY(#READ-FROM-THRU,#START:#END)
+      ADD #ADJUSTMENT TO #LARGE-PACKED
+      ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+        #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES)
+    VALUE #FMT.#INTEGER
+      COMPUTE #NUM-START = #MAX-INT-BYTES - #KEY-INFO.#BYTES(#I) + 1
+      ASSIGN #LARGE-INTEGER.#CHAR(#NUM-START:#MAX-INT-BYTES) =
+        KEY(#READ-FROM-THRU,#START:#END)
+      ADD #ADJUSTMENT TO #LARGE-INTEGER
+      ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+        #LARGE-INTEGER.#CHAR(#NUM-START:#MAX-INT-BYTES)
+    VALUE #FMT.#LOGICAL
+      ASSIGN #L-VAR.#CHAR = KEY(#READ-FROM-THRU,#START)
+      IF #ADJUSTMENT GT 0 AND #L-VAR = FALSE
+        ASSIGN #L-VAR = TRUE
+      ELSE
+        IF #ADJUSTMENT LT 0 AND #L-VAR = TRUE
+          ASSIGN #L-VAR = FALSE
+        END-IF
+      END-IF
+      ASSIGN KEY(#READ-FROM-THRU,#START:#START) = #L-VAR.#CHAR
+    VALUE #FMT.#DATE
+      ASSIGN #D-VAR.#CHAR(1:#DATE-SIZE) =
+        KEY(#READ-FROM-THRU,#START:#START + 3)
+      IF #D-VAR = 0 THEN
+        ASSIGN #D-VAR = *DATX /* Assign valid date
+      END-IF
+      ADD #ADJUSTMENT TO #D-VAR
+      ASSIGN KEY(#READ-FROM-THRU,#START:#START + 3) =
+        #D-VAR.#CHAR(1:#DATE-SIZE)
+    VALUE #FMT.#TIME
+      ASSIGN #T-VAR.#CHAR(1:#TIME-SIZE) =
+        KEY(#READ-FROM-THRU,#START:#START + 6)
+      IF #T-VAR = 0 THEN
+        ASSIGN #T-VAR = *TIMX
+      END-IF
+      ADD #ADJUSTMENT TO #T-VAR
+      ASSIGN KEY(#READ-FROM-THRU,#START:#START + 6) =
+        #T-VAR.#CHAR(1:#TIME-SIZE)
+    NONE VALUE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* ADJUST-LAST-COMPONENT
+*
+************************************************************************
+DEFINE SUBROUTINE ASSIGN-LAST-NON-NULL-COMPONENT
+************************************************************************
+*
+* Set trailing zeroes/blanks on the last entered component to
+* low and high values.
+  IF #LAST-NON-NULL NE 0 THEN
+    ASSIGN #I = #LAST-NON-NULL
+    ASSIGN #START = #KEY-INFO.#START-POS(#I)
+    /*
+    /* If we found an embedded wildcard character, use this to
+    /* determine the significant leading characters. Otherwise,
+    /* use use the last non-null character
+    IF #EMBEDDED-WILDCARD OR
+      CDRANGEA.RANGE-OPTION = CDRANGEL.BEGINS-WITH THEN
+      ASSIGN #END = #KEY-INFO.#END-POS(#I)
+    ELSE
+      ASSIGN #END = #LAST-SIGNIFICANT-POS
+    END-IF
+    DECIDE ON FIRST VALUE #KEY-INFO.#NAT-FORMAT(#I)
+      VALUE #FMT.#ALPHA
+        ASSIGN-TRAILING-BLANKS.
+        FOR #J = #END TO #START STEP -1
+          IF KEY(#INPUT-KEY,#J) NE ' ' THEN
+            ESCAPE BOTTOM(ASSIGN-TRAILING-BLANKS.) IMMEDIATE
+          ELSE
+            IF #KEY-INFO.#DBMS-FORMAT(#I) = #FMT.#DATE
+              KEY(#READ-FROM,#J) := #LOW-HIGH.#DATE(#LOW)
+              KEY(#READ-THRU,#J) := #LOW-HIGH.#DATE(#HIGH)
+            ELSE
+              KEY(#READ-FROM,#J) := #LOW-HIGH.#ALPHA(#LOW)
+              KEY(#READ-THRU,#J) := #LOW-HIGH.#ALPHA(#HIGH)
+            END-IF
+          END-IF
+        END-FOR
+      VALUE #FMT.#NUMERIC
+        IF #I = #LAST-NON-NULL AND
+          CDRANGEA.RANGE-OPTION = CDRANGEL.BEGINS-WITH THEN
+          ADD #DIGITS-ENTERED TO #START
+        END-IF
+        ASSIGN-TRAILING-NUMBERS.
+        FOR #J = #END TO #START STEP -1
+          IF NOT (#FORMATTED-KEY(#J) = #ZERO-CHAR OR = ' ') THEN
+            ESCAPE BOTTOM(ASSIGN-TRAILING-NUMBERS.) IMMEDIATE
+          ELSE
+            ASSIGN KEY(#READ-FROM,#J) = #ZERO-CHAR
+            ASSIGN KEY(#READ-THRU,#J) = '9'
+          END-IF
+        END-FOR
+      VALUE #FMT.#PACKED
+        /*
+        /* For packed number, first unpack then adjust trailing
+        /* zeros into low and high values, then repack.
+        COMPUTE #NUM-START = #MAX-PACKED-BYTES -
+          #KEY-INFO.#BYTES(#I) + 1
+        ASSIGN #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES) =
+          KEY(#INPUT-KEY,#START:#END)
+        MOVE EDITED #LARGE-PACKED(EM=S9(29)) TO
+          #LOW-HIGH.#UNPACKED(#LOW)
+        ASSIGN #LOW-HIGH.#UNPACKED(#HIGH) = #LOW-HIGH.#UNPACKED(#LOW)
+        ASSIGN-TRAILING-PACKED.
+        FOR #J = #MAX-PACKED-DIGITS TO 1 STEP -1
+          IF #LOW-HIGH.#UNPACKED-CHAR(#LOW,#J) NE '0' THEN
+            ESCAPE BOTTOM(ASSIGN-TRAILING-PACKED.) IMMEDIATE
+          ELSE
+            ASSIGN #LOW-HIGH.#UNPACKED-CHAR(#LOW,#J) = #ZERO-CHAR
+            ASSIGN #LOW-HIGH.#UNPACKED-CHAR(#HIGH,#J) = '9'
+          END-IF
+        END-FOR
+        MOVE EDITED #LOW-HIGH.#UNPACKED(#LOW) TO
+          #LARGE-NUM(EM=S9(29))
+        ASSIGN #LARGE-PACKED = #LARGE-NUM
+        ASSIGN KEY(#READ-FROM,#START:#END) =
+          #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES)
+        MOVE EDITED #LOW-HIGH.#UNPACKED(#HIGH) TO
+          #LARGE-NUM(EM=S9(29))
+        ASSIGN #LARGE-PACKED = #LARGE-NUM
+        ASSIGN KEY(#READ-THRU,#START:#END) =
+          #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES)
+      VALUE #FMT.#BINARY
+        ASSIGN-TRAILING-NULLS.
+        FOR #J = #END TO #START STEP -1
+          IF KEY(#INPUT-KEY,#J) NE #LOW-HIGH.#BINARY(#LOW) THEN
+            ESCAPE BOTTOM(ASSIGN-TRAILING-NULLS.) IMMEDIATE
+          ELSE
+            ASSIGN KEY(#READ-FROM,#J) = #LOW-HIGH.#BINARY(#LOW)
+            ASSIGN KEY(#READ-THRU,#J) = #LOW-HIGH.#BINARY(#HIGH)
+          END-IF
+        END-FOR
+      VALUE #FMT.#LOGICAL
+        IGNORE /* Only one byte, can't be trailing characters
+      VALUE #FMT.#DATE
+        IGNORE /* No prefix support
+      VALUE #FMT.#TIME
+        IGNORE /* No prefix support
+      NONE VALUE
+        IGNORE
+    END-DECIDE
+  END-IF
+END-SUBROUTINE /* ASSIGN-LAST-NON-NULL-COMPONENT
+*
+************************************************************************
+DEFINE SUBROUTINE ASSIGN-LOW-HIGH
+************************************************************************
+*
+* Assign the specified components to their low or high values.
+*
+* If there is a locked prefix, don't allow this to be changed.
+  IF #START-COMPONENT LE FIXED-COMPONENTS THEN
+    COMPUTE #START-COMPONENT = FIXED-COMPONENTS + 1
+  END-IF
+*
+  ASSIGN-KEY-COMPONENTS.
+  FOR #I = #START-COMPONENT TO #END-COMPONENT
+    ASSIGN #START = #KEY-INFO.#START-POS(#I)
+    ASSIGN #END = #KEY-INFO.#END-POS(#I)
+    DECIDE ON FIRST VALUE #KEY-INFO.#NAT-FORMAT(#I)
+      VALUE #FMT.#ALPHA, #FMT.#BINARY
+        IF #KEY-INFO.#DBMS-FORMAT(#I) = #FMT.#DATE
+          MOVE EDITED #LOW-HIGH.#DATE(#L-H)
+                     (EM=YYYY-MM-DD) TO #ALPHA-DATE
+          KEY(#READ-FROM-THRU,#START:#END) :=
+                     #ALPHA-DATE-CHAR(#START:#END)
+        ELSE
+          KEY(#READ-FROM-THRU,#START:#END) := #LOW-HIGH.#ALPHA(#L-H)
+        END-IF
+      VALUE #FMT.#NUMERIC
+        IF #SET-TO-ZERO THEN
+          ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+            #LOW-HIGH.#NUMERIC-ZERO-CHAR(#L-H,#1)
+        ELSE
+          ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+            #LOW-HIGH.#NUMERIC-CHAR(#L-H,#1)
+          ASSIGN KEY(#READ-FROM-THRU,#END) =
+            #LOW-HIGH.#NUMERIC-CHAR(#L-H,#SIGN-BYTE)
+        END-IF
+      VALUE #FMT.#PACKED
+        IF #SET-TO-ZERO THEN
+          ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+            #LOW-HIGH.#PACKED-ZERO-CHAR(#L-H,#1)
+          IF #KEY-INFO.#EVEN-PACKED(#I) THEN
+            ASSIGN KEY(#READ-FROM-THRU,#START) =
+              #LOW-HIGH.#SHORT-PACKED-ZERO-CHAR(#L-H,#1)
+          END-IF
+        ELSE
+          ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+            #LOW-HIGH.#PACKED-CHAR(#L-H,#1)
+          ASSIGN KEY(#READ-FROM-THRU,#END) =
+            #LOW-HIGH.#PACKED-CHAR(#L-H,#SIGN-BYTE)
+          IF #KEY-INFO.#EVEN-PACKED(#I) THEN
+            ASSIGN KEY(#READ-FROM-THRU,#START) =
+              #LOW-HIGH.#SHORT-PACKED-ZERO-CHAR(#L-H,#1)
+          END-IF
+        END-IF
+      VALUE #FMT.#INTEGER
+        DECIDE ON FIRST VALUE #KEY-INFO.#UNIT(#I)
+          VALUE 4
+            ASSIGN KEY(#READ-FROM-THRU,#START:#START + 3) =
+              #LOW-HIGH.#INT4-CHAR(#L-H,1:4)
+          VALUE 2
+            ASSIGN KEY(#READ-FROM-THRU,#START:#START + 1) =
+              #LOW-HIGH.#INT2-CHAR(#L-H,1:2)
+          NONE
+            ASSIGN KEY(#READ-FROM-THRU,#START:#START) =
+              #LOW-HIGH.#INT1-CHAR(#L-H,1:1)
+        END-DECIDE
+      VALUE #FMT.#LOGICAL
+        ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+          #LOW-HIGH.#LOGICAL-CHAR(#L-H)
+      VALUE #FMT.#DATE
+        ASSIGN KEY(#READ-FROM-THRU,#START:#START + 3) =
+          #LOW-HIGH.#DATE-CHAR(#L-H,1:#DATE-SIZE)
+      VALUE #FMT.#TIME
+        ASSIGN KEY(#READ-FROM-THRU,#START:#START + 6) =
+          #LOW-HIGH.#TIME-CHAR(#L-H,1:#TIME-SIZE)
+      NONE VALUE
+        IGNORE
+    END-DECIDE
+  END-FOR /* ASSIGN-KEY-COMPONENTS.
+END-SUBROUTINE /* ASSIGN-LOW-KEY
+*
+************************************************************************
+DEFINE SUBROUTINE ASSIGN-TRAILING-COMPONENTS
+************************************************************************
+*
+* This subroutine assigns the starting and ending read values for
+* the components beyond the last specified component in a wildcard
+* search to the lowest and highest values.
+  DECIDE ON FIRST VALUE #LAST-NON-NULL
+    VALUE 0 : FIXED-COMPONENTS
+      /*
+      /* No key entered, wildcard represents the whole file.
+      PERFORM MINIMIZE-START-KEY
+      PERFORM MAXIMIZE-END-KEY
+    VALUE C#KEY-COMPONENTS
+      IGNORE /* No trailing components to be adjusted.
+    NONE
+      /*
+      /* Set low values on from suffix (trailing) components
+      ASSIGN #L-H = #LOW
+      ASSIGN #READ-FROM-THRU = #READ-FROM
+      COMPUTE #START-COMPONENT = #LAST-NON-NULL + #1
+      ASSIGN #END-COMPONENT = C#KEY-COMPONENTS
+      PERFORM ASSIGN-LOW-HIGH
+      /*
+      /* Set hi values on thru suffix
+      ASSIGN #L-H = #HIGH
+      ASSIGN #READ-FROM-THRU = #READ-THRU
+      PERFORM ASSIGN-LOW-HIGH
+  END-DECIDE
+END-SUBROUTINE /* ASSIGN-TRAILING-COMPONENTS
+*
+************************************************************************
+DEFINE SUBROUTINE BEGINS-WITH
+************************************************************************
+*
+  IF NOT #DETERMINED-LAST-COMPONENT THEN
+    PERFORM DETERMINE-LAST-COMPONENT
+  END-IF
+  PERFORM ASSIGN-TRAILING-COMPONENTS
+  PERFORM ASSIGN-LAST-NON-NULL-COMPONENT
+END-SUBROUTINE /* BEGINS-WITH
+*
+************************************************************************
+DEFINE SUBROUTINE DETERMINE-LAST-COMPONENT
+************************************************************************
+*
+  ASSIGN #DETERMINED-LAST-COMPONENT = TRUE
+  GET-LAST-NON-NULL.
+  FOR #I = C#KEY-COMPONENTS TO 1 STEP -1
+    /*
+    /* If certain prefix components are locked, don't consider these
+    /* when looking for the non-null components
+    IF #I LE FIXED-COMPONENTS THEN
+      ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+    END-IF
+    ASSIGN #START = #KEY-INFO.#START-POS(#I)
+    ASSIGN #END = #KEY-INFO.#END-POS(#I)
+    DECIDE ON FIRST VALUE #KEY-INFO.#NAT-FORMAT(#I)
+      VALUE #FMT.#ALPHA
+        IF KEY(#INPUT-KEY,#START:#END) NE ' ' THEN
+          ASSIGN #LAST-NON-NULL = #I
+          PERFORM GET-LAST-ENTERED-CHARACTER
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#NUMERIC
+        IF KEY(#INPUT-KEY,#START:#END) NE #ZERO-CHAR AND
+            KEY(#INPUT-KEY,#START:#END) NE ' ' THEN
+          ASSIGN #LAST-NON-NULL = #I
+          ASSIGN #NULL-CHAR(2) = #ZERO-CHAR
+          PERFORM GET-LAST-ENTERED-CHARACTER
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#PACKED
+        COMPUTE #NUM-START = #MAX-PACKED-BYTES -
+          #KEY-INFO.#BYTES(#I) + 1
+        ASSIGN #LARGE-PACKED.#CHAR(#NUM-START:#MAX-PACKED-BYTES) =
+          KEY(#INPUT-KEY,#START:#END)
+        IF #LARGE-PACKED NE 0 THEN
+          ASSIGN #LAST-NON-NULL = #I
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#BINARY, #FMT.#INTEGER
+        IF KEY(#INPUT-KEY,#START:#END) NE #LOW-HIGH.#BINARY(#LOW)
+          ASSIGN #LAST-NON-NULL = #I
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#LOGICAL
+        IF KEY(#INPUT-KEY,#START:#START) =
+            #LOW-HIGH.#LOGICAL-CHAR(#HIGH) /* TRUE
+          ASSIGN #LAST-NON-NULL = #I
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#DATE
+        ASSIGN #D-VAR.#CHAR(1:#DATE-SIZE) =
+          KEY(#INPUT-KEY,#START:#START + 3)
+        IF #D-VAR NE #DEFAULT-DATE  THEN
+          ASSIGN #LAST-NON-NULL = #I
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      VALUE #FMT.#TIME
+        ASSIGN #T-VAR.#CHAR(1:#TIME-SIZE) =
+          KEY(#INPUT-KEY,#START:#START + 6)
+        IF #T-VAR NE #LOW-HIGH.#TIME(#LOW) THEN
+          ASSIGN #LAST-NON-NULL = #I
+          ESCAPE BOTTOM(GET-LAST-NON-NULL.) IMMEDIATE
+        END-IF
+      NONE VALUE
+        IGNORE
+    END-DECIDE
+  END-FOR /* ASSIGN-KEY-COMPONENTS.
+END-SUBROUTINE /* DETERMINE-LAST-COMPONENT
+*
+************************************************************************
+DEFINE SUBROUTINE EMBEDDED-WILDCARD
+************************************************************************
+*
+  PERFORM DETERMINE-LAST-COMPONENT
+*
+* If a wildcard character was entered, use this to determine
+* what starting and ending keys to use.
+  IF #LAST-SIGNIFICANT-CHAR = #WILDCARD-CHAR(*) THEN
+    /*
+    /* Substitute the wildcard character for the null-character.
+    ASSIGN #EMBEDDED-WILDCARD = TRUE
+    IF #KEY-INFO.#NAT-FORMAT(#LAST-NON-NULL) = #FMT.#ALPHA
+      KEY(*,#LAST-SIGNIFICANT-POS) := ' '
+    ELSE
+      KEY(*,#LAST-SIGNIFICANT-POS) := #ZERO-CHAR
+    END-IF
+    DECIDE ON FIRST VALUE #LAST-SIGNIFICANT-CHAR
+      VALUE #WILDCARD-CHAR.#PREFIX
+        PERFORM ASSIGN-TRAILING-COMPONENTS
+        PERFORM ASSIGN-LAST-NON-NULL-COMPONENT
+      VALUE #WILDCARD-CHAR.#EQUAL
+        IGNORE /* Already done
+      VALUE #WILDCARD-CHAR.#LESS-THAN
+        PERFORM LESS-THAN
+      VALUE #WILDCARD-CHAR.#GREATER-THAN
+        PERFORM GREATER-THAN
+      NONE
+        IGNORE
+    END-DECIDE
+    /*
+    /* Copy the wildcard character back to the input value
+    ASSIGN KEY(#INPUT-KEY,#LAST-SIGNIFICANT-POS) =
+      #LAST-SIGNIFICANT-CHAR
+  ELSE
+    PERFORM NO-WILDCARD
+  END-IF
+END-SUBROUTINE /* EMBEDDED-WILDCARD
+*
+************************************************************************
+DEFINE SUBROUTINE GET-LAST-ENTERED-CHARACTER
+************************************************************************
+*
+* If this is the default handling, check for a wildcard
+* character in the last significant position.
+  IF CDRANGEA.RANGE-OPTION = CDRANGEL.DEFAULT THEN
+    GET-LAST-SIGNIFICANT-CHAR.
+    FOR #J = #END TO #START STEP -1
+      IF NOT (KEY(#INPUT-KEY,#J) = #NULL-CHAR(*)) THEN
+        ASSIGN #LAST-SIGNIFICANT-POS = #J
+        ASSIGN #LAST-SIGNIFICANT-CHAR = KEY(#INPUT-KEY,#J)
+        ESCAPE BOTTOM(GET-LAST-SIGNIFICANT-CHAR.) IMMEDIATE
+      END-IF
+    END-FOR
+  END-IF
+END-SUBROUTINE /* GET-LAST-ENTERED-CHARACTER
+*
+************************************************************************
+DEFINE SUBROUTINE GREATER-THAN
+************************************************************************
+*
+  PERFORM MAXIMIZE-END-KEY
+*
+* Increase the last component of the start-key to ensure a strict
+* greater than condition
+  ASSIGN #READ-FROM-THRU = #READ-FROM
+  ASSIGN #ADJUSTMENT = 1
+  PERFORM ADJUST-LAST-COMPONENT
+END-SUBROUTINE /* GREATER-THAN
+*
+************************************************************************
+DEFINE SUBROUTINE INITIAL-ASSIGNMENT
+************************************************************************
+*
+  ASSIGN #FORMATTED-KEY(1:#KEY-LENGTH) = KEY(#INPUT-KEY,1:#KEY-LENGTH)
+*
+* If the input key contains numbers that contain trailing blanks,
+* and no wildcard characters, right-justify these numbers.
+  IF #KEY-INFO.#NAT-FORMAT(*) = #FMT.#NUMERIC THEN
+    PERFORM REFORMAT-NUMERICS
+  END-IF
+  ASSIGN KEY(#READ-FROM,1:#KEY-LENGTH) = #FORMATTED-KEY(1:#KEY-LENGTH)
+  ASSIGN KEY(#READ-THRU,1:#KEY-LENGTH) = #FORMATTED-KEY(1:#KEY-LENGTH)
+  DECIDE ON FIRST VALUE CDRANGEA.RANGE-OPTION
+    VALUE CDRANGEL.EQUAL
+      IGNORE /* All done
+    VALUE CDRANGEL.LESS-THAN
+      PERFORM LESS-THAN
+    VALUE CDRANGEL.LESS-THAN-OR-EQUAL
+      PERFORM MINIMIZE-START-KEY
+    VALUE CDRANGEL.GREATER-THAN
+      PERFORM GREATER-THAN
+    VALUE CDRANGEL.GREATER-THAN-OR-EQUAL
+      PERFORM MAXIMIZE-END-KEY
+    VALUE CDRANGEL.BEGINS-WITH
+      PERFORM BEGINS-WITH
+    VALUE CDRANGEL.DEFAULT
+      PERFORM EMBEDDED-WILDCARD
+    VALUE CDRANGEL.NO-WILDCARD
+      PERFORM NO-WILDCARD
+    NONE
+      PERFORM EMBEDDED-WILDCARD
+  END-DECIDE
+END-SUBROUTINE /* INITIAL-ASSIGNMENT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*  Assign initial value for date
+  MOVE EDITED '1600-01-01' TO #LOW-HIGH.#DATE(1)(EM=YYYY-MM-DD)
+* Get the current decimal character
+  MOVE EDITED #1(EM=9.) TO #GET-DC
+*
+    COPY-KEY-INFO.
+  FOR #I = 1 TO C#KEY-COMPONENTS
+    SEPARATE FORMAT-LEN-SEQ(1,#I)
+      INTO
+      #KEY-INFO.#NAT-FORMAT(#I)
+      #KEY-INFO.#DBMS-FORMAT(#I)
+      #LENGTH-A
+      #KEY-INFO.#ASC-DESC(#I)
+      #KEY-INFO.#FORMATTED(#I)
+      #KEY-INFO.#UPPER-CASE(#I)
+      WITH DELIMITER #DELIMITER
+    IF #LENGTH-A NE ' ' THEN
+      /*
+      /* If the decimal character is not a ., change the embedded .
+      /* characters to the current decimal character.
+      IF #GET-DC.#CHAR(2) NE #PERIOD THEN
+        EXAMINE #LENGTH-A
+        FOR #PERIOD REPLACE WITH #GET-DC.#CHAR(2)
+      END-IF
+        COMPUTE #KEY-INFO.#LENGTH(#I) = VAL(#LENGTH-A)
+    END-IF
+    /*
+    DECIDE ON FIRST VALUE #KEY-INFO.#NAT-FORMAT(#I)
+      VALUE #FMT.#ALPHA
+        ASSIGN #KEY-INFO.#BYTES(#I) = #KEY-INFO.#LENGTH(#I)
+      VALUE #FMT.#NUMERIC
+        COMPUTE #KEY-INFO.#BYTES(#I) =
+          #KEY-INFO.#UNIT(#I) + #KEY-INFO.#DECIMAL(#I)
+      VALUE #FMT.#PACKED
+        /* Add 1 for sign nibble
+        COMPUTE #DIGITS =
+            #KEY-INFO.#UNIT(#I) + #KEY-INFO.#DECIMAL(#I) + #1
+        /* Round up to nearest byte and note if there is a wasted
+        /* nibble.
+        DIVIDE 2 INTO #DIGITS
+            GIVING #KEY-INFO.#BYTES(#I)
+            REMAINDER #REMAINDER
+        IF #REMAINDER = #1 THEN
+          ASSIGN #KEY-INFO.#EVEN-PACKED(#I) = TRUE
+          ADD #1 TO #KEY-INFO.#BYTES(#I)
+        END-IF
+      VALUE #FMT.#LOGICAL
+        COMPUTE #KEY-INFO.#BYTES(#I) = #1
+      VALUE #FMT.#DATE
+        COMPUTE #KEY-INFO.#BYTES(#I) = 4
+      VALUE #FMT.#TIME
+        COMPUTE #KEY-INFO.#BYTES(#I) = 7
+      NONE VALUE
+        ASSIGN #KEY-INFO.#BYTES(#I) = #KEY-INFO.#LENGTH(#I)
+    END-DECIDE
+    IF #I = #1 THEN
+      ASSIGN #KEY-INFO.#START-POS(#I) = #1
+    ELSE
+     ASSIGN #KEY-INFO.#START-POS(#I) = #KEY-INFO.#END-POS(#I - 1) + #1
+    END-IF
+    COMPUTE #KEY-INFO.#END-POS(#I) =
+        #KEY-INFO.#START-POS(#I) + #KEY-INFO.#BYTES(#I) - #1
+    IF #KEY-INFO.#NAT-FORMAT(#I) = #FMT.#ALPHA AND
+       #KEY-INFO.#UPPER-CASE(#I) = #UPPER THEN
+      ASSIGN #START = #KEY-INFO.#START-POS(#I)
+      ASSIGN #END = #KEY-INFO.#END-POS(#I)
+      /*
+      /*
+      EXAMINE KEY(1,#START:#END) TRANSLATE INTO UPPER CASE
+    END-IF
+  END-FOR /* COPY-KEY-INFO.
+  ASSIGN #KEY-LENGTH = #KEY-INFO.#END-POS(C#KEY-COMPONENTS)
+*
+* If this is a superdescriptor search, low values is zero rather
+* than a large negative number.
+  IF SUPERDE THEN
+    RESET #LOW-HIGH.#NUMERIC(#LOW)
+          #LOW-HIGH.#PACKED(#LOW)
+          #LOW-HIGH.#INT1(#LOW)
+          #LOW-HIGH.#INT2(#LOW)
+          #LOW-HIGH.#INT4(#LOW)
+  END-IF
+END-SUBROUTINE /* INITIALIZATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE LESS-THAN
+************************************************************************
+*
+  PERFORM MINIMIZE-START-KEY
+*
+* Reduce the last component of the key to ensure strict less than
+* condition
+  ASSIGN #READ-FROM-THRU = #READ-THRU
+  ASSIGN #ADJUSTMENT = -1
+  PERFORM ADJUST-LAST-COMPONENT
+END-SUBROUTINE /* LESS-THAN
+*
+************************************************************************
+DEFINE SUBROUTINE MAXIMIZE-END-KEY
+************************************************************************
+*
+  ASSIGN #L-H = #HIGH
+  ASSIGN #READ-FROM-THRU = #READ-THRU
+  ASSIGN #START-COMPONENT = #1
+  ASSIGN #END-COMPONENT = C#KEY-COMPONENTS
+  PERFORM ASSIGN-LOW-HIGH
+END-SUBROUTINE /* MAXIMIZE-END-KEY
+*
+************************************************************************
+DEFINE SUBROUTINE MINIMIZE-START-KEY
+************************************************************************
+*
+* Since the start-key is being minimized, this means that the
+* ending key should be used to determine the equal components of
+* the key in a search. For example:
+*
+* Input criteria  FORD   E<
+* Results in Start-Key: '               '
+*            End Key..: 'FORD          E'
+* Select statement:
+* MAKE GT ' ' AND LT 'FORD' OR
+* MAKE = 'FORD' AND   /* Note MAKE = Ending make
+* MODEL GT ' ' AND LT 'E'
+*
+* Input criteria  FORD   E>
+* Results in Start-Key: 'FORD          E'
+*            End Key..: '99999999999999999999999999'
+* Select statement:
+* MAKE GT 'FORD' AND LT '9999999999999' OR
+* MAKE = 'FORD' AND   /* Note MAKE = Starting make
+* MODEL GT 'E' AND LT '999999999999'
+*
+  ASSIGN #L-H = #LOW
+  ASSIGN #READ-FROM-THRU = #READ-FROM
+  ASSIGN #START-COMPONENT = #1
+  ASSIGN #END-COMPONENT = C#KEY-COMPONENTS
+  PERFORM ASSIGN-LOW-HIGH
+END-SUBROUTINE /* MINIMIZE-START-KEY
+*
+************************************************************************
+DEFINE SUBROUTINE NO-WILDCARD
+************************************************************************
+*
+* No wildcard, default processing means that we use the supplied
+* key value as a starting point for read logical processing. The
+* ending values are determined by the default search direction. For
+* example, if the key is ascending, the ending value is assumed to
+* be greater than the supplied key, otherwise it is assimed to be
+* less than the supplied key.
+* IF SUPERDE THEN
+*   PERFORM MAXIMIZE-END-KEY
+* ELSE
+  /*
+  /* Make sure the last specified key component is known.
+  IF NOT #DETERMINED-LAST-COMPONENT THEN
+    PERFORM DETERMINE-LAST-COMPONENT
+  END-IF
+  /*
+  /* If this is a SQL compound key, set the individual low and
+  /* high range based on whether the key is to be shown in
+  /* ascending or descending sequence.
+  COMPUTE #J = FIXED-COMPONENTS + 1
+    ASSIGN-LOW-HIGH-SUFFIX.
+  FOR #START-COMPONENT = #J TO C#KEY-COMPONENTS
+    /*
+    /* For components up to and including the specified key component,
+    /* the min/max key is based on what was entered. For subsequent
+    /* components, the min/max is set to low/high values, respectively
+    ASSIGN #END-COMPONENT = #START-COMPONENT
+    IF #START-COMPONENT LE #LAST-NON-NULL THEN
+      IF #KEY-INFO.#ASC-DESC(#START-COMPONENT) = #DESCENDING THEN
+        ASSIGN #L-H = #LOW
+        ASSIGN #READ-FROM-THRU = #READ-FROM
+        ADD 1 TO #LOW-COMPONENTS-SET
+      ELSE
+        ASSIGN #L-H = #HIGH
+        ASSIGN #READ-FROM-THRU = #READ-THRU
+      END-IF
+      PERFORM ASSIGN-LOW-HIGH
+    ELSE
+      ASSIGN #L-H = #LOW
+      ADD 1 TO #LOW-COMPONENTS-SET
+      ASSIGN #READ-FROM-THRU = #READ-FROM
+      PERFORM ASSIGN-LOW-HIGH
+      ASSIGN #L-H = #HIGH
+      ASSIGN #READ-FROM-THRU = #READ-THRU
+      PERFORM ASSIGN-LOW-HIGH
+    END-IF
+  END-FOR /* ASSIGN-LOW-HIGH-SUFFIX.
+*
+*  Check for super where low values need to be set over all
+  IF #LOW-COMPONENTS-SET = C#KEY-COMPONENTS AND
+    CDRANGEA.DATABASE-TYPE = 0 /* Adabas database
+    IF  #ASC-DESC(1) = "D"
+      #SET-TO-ZERO :=  TRUE /* Have low values set to 0 instead of -9
+      PERFORM MINIMIZE-START-KEY
+    ELSE
+      PERFORM MAXIMIZE-END-KEY
+    END-IF
+  END-IF
+END-SUBROUTINE /* NO-WILDCARD
+*
+************************************************************************
+DEFINE SUBROUTINE REFORMAT-NUMERICS
+************************************************************************
+*
+  IF CDRANGEA.RANGE-OPTION = CDRANGEL.BEGINS-WITH THEN
+    PERFORM DETERMINE-LAST-COMPONENT
+  END-IF
+*
+    RIGHT-JUSTIFY-NUMERICS.
+  FOR #I = 1 TO C#KEY-COMPONENTS
+    IF #KEY-INFO.#NAT-FORMAT(#I) = #FMT.#NUMERIC AND
+        #KEY-INFO.#FORMATTED(#I) NE ' ' THEN
+      RESET #TEMP
+      ASSIGN #START = #KEY-INFO.#START-POS(#I)
+      ASSIGN #END = #KEY-INFO.#END-POS(#I)
+      COMPUTE #J = #KEY-INFO.#BYTES(#I)
+      COMPUTE #NUM-START = #MAX-NUM-BYTES - #KEY-INFO.#BYTES(#I) + 1
+      ASSIGN #TEMP.#CHAR(1:#J) = KEY(#INPUT-KEY,#START:#END)
+      RESET #LARGE-NUM
+      IF #TEMP IS (N29) THEN
+        COMPUTE #LARGE-NUM = VAL(#TEMP)
+      ELSE
+        FOR #K = 1 TO #J
+          IF #K = #J
+            IF #TEMP.#CHAR(#K) NE MASK(Z)
+              RESET #LARGE-NUM
+              ESCAPE BOTTOM END-IF
+          ELSE
+            IF #TEMP.#CHAR(#K) NE MASK(N)
+              RESET #LARGE-NUM
+              ESCAPE BOTTOM END-IF
+          END-IF
+          ASSIGN #L = 29 - #J + #K
+          MOVE #TEMP.#CHAR(#K) TO #LARGE-NUM.#CHAR(#L)
+        END-FOR
+      END-IF
+      IF #LARGE-NUM NE 0
+        /*
+        /* If this is the last numeric key component, and there is no
+        /* embedded wildcard character and range-option = begins-with
+        /* then treat the number as a string (left justify).
+        IF #I = #LAST-NON-NULL AND
+          CDRANGEA.RANGE-OPTION = CDRANGEL.BEGINS-WITH
+          ASSIGN #DIGITS-ENTERED = #KEY-INFO.#BYTES(#I)
+            SHIFT-LEFT.
+          REPEAT UNTIL #LARGE-NUM.#CHAR(#NUM-START) NE '0'
+            MULTIPLY #LARGE-NUM BY 10
+            SUBTRACT 1 FROM #DIGITS-ENTERED
+          END-REPEAT /* SHIFT-LEFT.
+        END-IF
+      ELSE
+        /*
+        /* See whether it is only invalid because of the wildcard
+        /* character by stripping off the last character.
+        MOVE RIGHT #TEMP TO #TEMP
+        IF #TEMP.#CHAR(#MAX-NUM-BYTES) = #WILDCARD-CHAR(*) THEN
+          ASSIGN #TEMP-CHAR = #TEMP.#CHAR(#MAX-NUM-BYTES)
+          RESET #TEMP.#CHAR(#MAX-NUM-BYTES)
+          IF #TEMP IS (N29) THEN
+            /*
+            /* If the wildcard character is a * (for prefix) keep
+            /* the number left justified, otherwise right justify.
+            IF #TEMP-CHAR = #WILDCARD-CHAR.#PREFIX OR
+                = #WILDCARD-CHAR.#LESS-THAN OR
+                = #WILDCARD-CHAR.#GREATER-THAN
+              /*
+              /* Left-justify the number, fill with zeroes on the right
+              /* then copy it to a numeric.
+              MOVE LEFT #TEMP TO #TEMP
+              EXAMINE FULL #TEMP FOR ' ' REPLACE WITH #ZERO-CHAR
+              COMPUTE #J = #KEY-INFO.#BYTES(#I) + 1
+              IF #J LE #MAX-NUM-BYTES THEN
+                RESET #TEMP.#CHAR(#J:#MAX-NUM-BYTES)
+              END-IF
+              COMPUTE #LARGE-NUM = VAL(#TEMP)
+            ELSE
+              COMPUTE #LARGE-NUM = VAL(#TEMP)
+            END-IF
+          ELSE
+            RESET #LARGE-NUM /* Invalid number, reset it.
+          END-IF
+        END-IF
+      END-IF
+      ASSIGN #FORMATTED-KEY(#START:#END) =
+        #LARGE-NUM.#CHAR(#NUM-START:#MAX-NUM-BYTES)
+    END-IF
+  END-FOR /* RIGHT-JUSTIFY-NUMERICS.
+END-SUBROUTINE /* REFORMAT-NUMERICS
+*
+************************************************************************
+DEFINE SUBROUTINE SIGNAL-ERROR
+************************************************************************
+*
+  ASSIGN MSG-INFO.##RETURN-CODE = #ERROR
+  ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-SUBROUTINE /* SIGNAL-ERROR
+*
+************************************************************************
+DEFINE SUBROUTINE UPDATE-STARTING-ENDING-VALUES
+************************************************************************
+*
+* Update either the starting or ending key value (depending on
+* ascending/descending) to reflect the last record read.
+  COMPUTE #J = FIXED-COMPONENTS + 1
+  REASSIGN-START-END.
+  FOR #START-COMPONENT = #J TO C#KEY-COMPONENTS
+    IF #KEY-INFO.#ASC-DESC(#START-COMPONENT) = #DESCENDING THEN
+      ASSIGN #READ-FROM-THRU = #READ-THRU
+    ELSE
+      ASSIGN #READ-FROM-THRU = #READ-FROM
+    END-IF
+    ASSIGN #START = #KEY-INFO.#START-POS(#START-COMPONENT)
+    ASSIGN #END = #KEY-INFO.#END-POS(#START-COMPONENT)
+    ASSIGN KEY(#READ-FROM-THRU,#START:#END) =
+      KEY(#INPUT-KEY,#START:#END)
+  END-FOR /* REASSIGN-START-END.
+END-SUBROUTINE /* UPDATE-STARTING-ENDING-VALUES
+*
+  ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT /* PROG.
+END

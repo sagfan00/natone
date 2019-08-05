@@ -1,0 +1,18 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+  /* Horizontal Scrolling
+  DECIDE FOR FIRST CONDITION
+    WHEN *PF-KEY = CDKEYLDA.#LEFT-KEY
+      SUBTRACT 1 FROM #PANEL
+    WHEN *PF-KEY = CDKEYLDA.#RIGHT-KEY
+      ADD 1 TO #PANEL
+    WHEN #NEXT-PANEL NE #PANEL
+      ASSIGN #PANEL = #NEXT-PANEL
+    WHEN ANY
+      ASSIGN #LEFT-RIGHT-SCROLLING = TRUE
+    WHEN NONE
+      IGNORE
+  END-DECIDE

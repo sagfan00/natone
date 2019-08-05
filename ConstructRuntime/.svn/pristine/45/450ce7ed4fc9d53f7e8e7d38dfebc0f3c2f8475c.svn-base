@@ -1,0 +1,20 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  text strings required by the
+/*  QUIT model.
+/*
+ 1 CDQTTXL
+/*
+   2 #CONFIRM-HEADER-TXT (A40) INIT<'*8380'> /* confirm termin.
+   2 #PRESSED (A15) INIT<'*8381'> /* was pressed
+   2 #PRESS (A10) INIT<'*8382'> /* press
+   2 #QUIT-TXT (A40) INIT<'*8383'> /* to quit entirel
+   2 #RESUME-TXT (A40) INIT<'*8384'> /* to resume
+ 1 REDEFINE CDQTTXL /* REDEF. BEGIN : CDQTTXL
+   2 CDUTRANS (A1/1:145)
+ 1 CDQTTXL-NAME (A8) INIT<'CDQTTXL'>
+END-DEFINE

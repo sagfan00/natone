@@ -1,0 +1,50 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* Vertical Scrolling.
+  IF *PF-KEY = CDKEYLDA.#BACKWARD-KEY OR = CDKEYLDA.#FORWARD-KEY THEN
+    IF #SCROLL-REGION = 0 THEN
+      ASSIGN #FIRST-REGION = 1
+      ASSIGN #LAST-REGION = #MAX-SCROLL-REGIONS
+    ELSE
+      ASSIGN #FIRST-REGION = #LAST-REGION = #SCROLL-REGION
+      ASSIGN #CURSOR-SET = TRUE
+    END-IF
+  END-IF
+  DECIDE FOR FIRST CONDITION
+    WHEN *PF-KEY = CDKEYLDA.#BACKWARD-KEY /* Backward Scroll
+      /*
+      /* Reduce indexes by size of scroll regions, wrap around.
+      FOR #I1 = #FIRST-REGION TO #LAST-REGION
+        IF #CURR-INDEX(#PANEL,#I1) = 1 THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = #MAX-INDEX-VAL(#PANEL,#I1)
+        ELSE
+          SUBTRACT #MAX-SCREEN-OCCURS(#PANEL,#I1) FROM
+                   #CURR-INDEX(#PANEL,#I1)
+        END-IF
+      END-FOR
+    WHEN *PF-KEY = CDKEYLDA.#FORWARD-KEY  /* Forward Scroll
+      /*
+      /* Increment indexes by size of scroll regions, wrap around
+      FOR #I1 = #FIRST-REGION TO #LAST-REGION
+        IF #CURR-INDEX(#PANEL,#I1) = #MAX-INDEX-VAL(#PANEL,#I1) THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = 1
+        ELSE
+          ADD #MAX-SCREEN-OCCURS(#PANEL,#I1)
+           TO #CURR-INDEX(#PANEL,#I1)
+        END-IF
+      END-FOR
+    WHEN NOT (#NEXT-INDEXES(*) = #ARRAY-INDEXES(*))
+      ASSIGN #CURSOR-SET = TRUE
+      FOR #I1 = 1 TO #MAX-SCROLL-REGIONS
+        IF #CURR-INDEX(#PANEL,#I1) NE #NEXT-INDEXES(#I1) THEN
+          ASSIGN #CURR-INDEX(#PANEL,#I1) = #NEXT-INDEXES(#I1)
+        END-IF
+      END-FOR
+    WHEN ANY
+      ASSIGN #BACKWARD-FORWARD-SCROLLING = TRUE
+    WHEN NONE
+      IGNORE
+  END-DECIDE

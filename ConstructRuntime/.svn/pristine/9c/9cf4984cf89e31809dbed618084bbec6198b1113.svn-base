@@ -1,0 +1,16 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDBITOPL
+   2 BIT-FUNCTIONS (I1/1:5) INIT
+     (1) <1>
+     (2) <2>
+     (3) <3>
+     (4) <4>
+     (5) <5>
+   2 REDEFINE BIT-FUNCTIONS /* REDEF. BEGIN : BIT-FUNCTIONS
+     3 GET-BITS (I1)
+     3 SET-BITS (I1)
+END-DEFINE

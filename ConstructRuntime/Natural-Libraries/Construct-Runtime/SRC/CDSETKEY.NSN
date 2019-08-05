@@ -1,0 +1,39 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDSETKEY
+* System     : NATURAL-CONSTRUCT
+* Application: ALL PROGRAMS.
+* Written on : 27 JAN 1993
+* Description: THIS SUBPROGRAM RECEIVES A PF-KEY STRING,
+*            | SUCH AS 'PF12' AND ISSUES A SET CONTROL
+*            | COMMAND TO SIMULATE THIS KEY BEING PRESSED.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER
+  01 #PF-KEY(A4)
+  01 REDEFINE #PF-KEY
+    02 #PF-PART(A2)
+    02 #NUMBER-PART(A2)
+  LOCAL
+  01 #SET(A3) INIT<'K'>
+  01 REDEFINE #SET
+    02 FILLER(A1)
+    02 #NUMBER-PART(A2)
+END-DEFINE
+*
+DECIDE FOR FIRST CONDITION
+  WHEN #PF-KEY = 'ENTR' OR = ' '
+    SET CONTROL 'K0'
+  WHEN #PF-KEY.#PF-PART = 'PF'
+    ASSIGN #SET.#NUMBER-PART = #PF-KEY.#NUMBER-PART
+    SET CONTROL #SET
+  WHEN NONE
+    INPUT(AD=IO) 'Invalid PF-KEY:' #PF-KEY 'passed to' *PROGRAM
+END-DECIDE
+END

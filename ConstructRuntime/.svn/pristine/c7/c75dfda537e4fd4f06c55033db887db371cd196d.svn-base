@@ -1,0 +1,34 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+***********************************************************************
+DEFINE SUBROUTINE CALL-EDITOR
+***********************************************************************
+*
+* API to ISPF EDITOR.
+*
+* Set the date and time values in the control block.
+  ASSIGN CEREDT.ED-DATE(1) = *DATE
+  ASSIGN CEREDT.ED-TIME(1) = *TIME
+*
+* Call the ISPF editor with the requested function.
+  CALL 'EDITOR' CEREDT.EDIT-CB(1)
+                CB-ALIN(1,*)
+                L-PREFIX(1,*)
+                CB-ADAT(1,*)
+                L-DATA(1,*)
+*
+* Build the message data if necessary
+  IF CEREDT.ED-ERRNUM(1) GT 500 THEN
+    ASSIGN CNAMSG.MSG-DATA(1) = *PROGRAM
+    ASSIGN CNAMSG.MSG-DATA(2) = CEREDT.ED-SESNUM(1) /* Move to convert
+    ASSIGN CNAMSG.RETURN-CODE = CSLRCODE.#ERROR
+    CNAMSG.MSG-NR := CEREDT.ED-ERRNUM(1) /* First move to convert to I
+    COMPUTE CNAMSG.MSG-NR = CNAMSG.MSG-NR + 8000 /* then add 8000
+    PERFORM GET-MESSAGE
+    PERFORM CHECK-ERROR
+  END-IF
+END-SUBROUTINE /* CALL-EDITOR

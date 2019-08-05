@@ -1,0 +1,591 @@
+NAT
+8001
+8099
+8001E Top van huidige blader-sessie bereikt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8002E Scherm heeft maar een horizontale paneel
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8003E Ongeldige programma-funktie toets
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8004E Einde bestand bereikt, nieuwe beginwaarde invoeren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8005E Einde gegevens bereikt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8006E Einde bestand bereikt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8007E Sleutel is minder dan minimum toegestane waarde:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8008E Sleutel is groter dan maximum toegestane waarde:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8009E Iemand anders heeft gegevens verwijderd, svp opnieuw proberen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8010E Iemand anders heeft gegevens gewijzigd, svp opnieuw proberen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8011E :1:is verplicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8012E :1:bestaat al
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8013E Ongeldige actiecode:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8014E :1:bestaat niet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8015E Maximum waarde:1:bereikt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8016E Voer een geldige selectiecode in tussen 1 en:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8017E Ongeldige code:1:geselecteerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8018E Er is geen record geselecteerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8019E Selecteren mogelijk tot:1:records
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8020E Ongeldige keuze
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8021E Voer keuze in
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8022E Laatst getoonde:1:weer opgehaald
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8023E :1:met succes verwijderd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8024E :1:met succes gewijzigd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8025E :1:met succes toegevoegd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8026E :1:met success getoond
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8027E Volgend:1:getoond
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8028E Voer wijzigingen in
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8029E Druk ENTER om te verwijderen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8030E Probleem met programmalogica
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8031E Geen actie uitgevoerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8032E Schermwaarden met succes leeggemaakt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8033E :1:omvat meer dan :2:regels; kan niet worden gelezen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8034E Dubbele invoer op regel:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8035E Selecteer met cursor of voer schermwaarde in
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8036E Laatst getoonde:1:weer opgehaald
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8037E Laatst getoonde:1:weer opgehaald, gebruik:2:voor toevoegen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8038E Regel acties kunnen alleen met ENTER toets worden uitgevoerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8039E Markeer gewenste records met een niet-blanco teken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8040E Functie afgebroken met:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8041E PF-KEY formaat met succes gewijzigd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8042E Druk:1:om te stoppen, Druk:2:om verder te gaan met:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8043E PF-KEY kleuren met succes gewijzigd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8044E Ongeldig direkte-commando::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8045E Gevraagde record momenteel geblokkeerd door andere gebruiker
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8046E :1:zoekt naar een NATURAL fout anders dan 3700
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8047E Toegang tot programma beeindigd op verzoek van gebruiker
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8048E Ongeldig password, probeer het nog een keer svp
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8049E Teveel password overtredingen, toegang geblokkeerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8050E Ongeldige:1:parameter aan:2:doorgegeven, waarde::3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8051E Window-hoogte aangepast tot minimum toegestane waarde:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8052E Window aangepast tot de met cursor aangegeven positie
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8053E PF-KEY lijnen zijn op verzoek verwijderd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8054E Window-onderkant aangepast aan cursorpositie
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8055E Kopregels verwijderd op verzoek van gebruiker
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8056E Vul gegevens in die toegevoegd moeten worden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8057E Vul nieuw record in
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8058E Ongeldige actie, gebruik een van de volgende::1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8059E NATURAL foutnummer:1:kwam op regel:2:van:3:voor
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8060E Bijbehorende informatie getoond
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8061E Bladeren uitgevoerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8062E Volgende:1:getoond
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8063E Bijwerken/Verwijderen van:1:geprobeerd; was niet geblokkeerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8064E Ongeldige:1:functie opgegeven::2:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8065E :1:sleutel is verplicht
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8066E :1::2:niet gevonden in bestand:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8067E Gegevens-integriteitsfout,:1:komt:2:keer voor
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8068E Ongeldige aktie:1:aan:2:doorgegeven
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8069E :2:moet minimaal 1 keer voorkomen:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8070E :2:moet minimaal:1:keer voorkomen:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8071E :1::2:bestaat nog steeds in bestand:3:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8072E Additonele informatie getoond
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8073E Geen records gevonden met voorvoegsel:1:
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8074E Geen records voor huidige invoer gevonden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8075E :1:records op printer:2:afgedrukt
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8076E Geen helptekst aanwezig voor het gewenste objekt.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8077E Slechts een van de mogelijke formaten specificeren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8078E Slechts een van de mogelijke regel:1:kleuren specificeren
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8079E Vul verplichte parameter in.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8080E Invoerwaarde voor een numeriek veld is niet numeriek.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8081E Stoppen is herroepen.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8082E Voer een geldige te omschrijven aktie kode:1:in.
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8083E     **** HELPINFORMATIE AKTIEWAARDEN ****
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8084E Voor programma helpinformatie: kies "HELP" met cursor niet
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8086E Voer te omschrijven aktie in
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8087E Ongeldige parameter doorgegeven aan helproutine
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8088E Druk ENTER voor voortzetting
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8089E *** Geen geschikte Uitgebreide PREDICT Beschrijving gevonden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8090E Helptekst profiel ontbreekt: PREDICT
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8091E Geen velden om op dit paneel te tonen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8092E Ongeldige datum/tijd ingevoerd - Gebruik YYYY-MM_DD-HH.MM.SS
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8093E Ongeldige tijd ingevoerd. Gebruik HH.MM.SS formaat
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8094E Ongeldige datum ingevoerd. Gebruik YYYY-MM-DD formaat
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8095E Geen records om af te drukken
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8096E Druk:1:om toevoegen te bevestigen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8097E Druk:1:om wijzigen te bevestigen
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8098E Aktie-balk gewijzigd, geen aktie uitgevoerd
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#
+8099E Tekst voor foutnummer:1:niet gevonden
+#-------------------------------------------------------------------------------
+#TEXT:
+#EXPL:
+#ACTN:
+#

@@ -1,0 +1,17 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP IBM01140
+/* <Natural Source Header
+/* ** Translation PDA for map text
+/* ** used by map CST models.
+ 1 CDACTD
+   2 #ACTION-COUNT (P3.0)
+   2 TEXT
+     3 #ACTION-INIT (A10/1:60)
+   2 ADDITIONAL-PARM
+     3 #MESSAGE-LIBRARY (A8)
+     3 #LDA-NAME (A8)
+     3 #TEXT-REQUIRED (L)
+     3 #LENGTH-OVERRIDE (N10)
+END-DEFINE

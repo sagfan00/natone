@@ -1,0 +1,133 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+**SAG GENERATOR: CST-SHELL                        VERSION: 4.1.1
+**SAG TITLE: API for CD--PFK
+**SAG SYSTEM: APPLICATION
+**SAG DESCS(1): This module is used for all key method
+**SAG DESCS(2): call to CD--PFK
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDAPPFKA
+**SAG PARAMETER-NAME(2): CDPDA-M
+**SAG MESSAGING-SUPPORT: X
+************************************************************************
+* Program  : CDAPPFK
+* System   : APPLICATION
+* Title    : API for CD--PFK
+* Generated: May 28,97 at 01:03 PM by SAG
+* Function : This module is used for all method
+*            call to CD--PFK
+*
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDAPPFKA
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDAMSG                  /* Message retrieval passing area
+  LOCAL USING CDLRCODE                /* Message return codes
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+  01 #MAX-PFKEY (I2) CONST<12>
+  01 CD--PFKA
+    02 INPUTS (A1/1:15)
+    02 REDEFINE INPUTS
+      03 METHOD (A2)
+      03 VERSION (N1)
+      03 START-SOURCE-ID (A2)
+      03 START-PFKEY-ID (N4)
+      03 MAX-PFKEY-REQUESTED (N4)
+      03 RESTRICT-SOURCE-ID (A2)
+    02 INPUT-OUTPUTS (A1/1:1428)  /* #MAX-PFKEY (12) * 119 bytes
+    02 REDEFINE INPUT-OUTPUTS
+      03 PFKEY-ARRAY (1:#MAX-PFKEY)
+        04 PFKEY-IDENTIFIER (A6)
+        04 REDEFINE PFKEY-IDENTIFIER
+          05 PFKEY-SOURCE-ID (A2)
+          05 PFKEY-PFKEY-ID (N4)
+        04 PFKEY-POSITION (A4)
+        04 PFKEY-POSITION-VARIABLE (A32)
+        04 PFKEY-NAME-VARIABLE (A32)
+        04 PFKEY-NAME (A12)
+        04 PFKEY-NAME-LONG (A32)
+        04 PFKEY-STATUS (A1)
+    02 OUTPUTS (A1/1:72)
+    02 REDEFINE OUTPUTS
+      03 METHOD-LIBRARY(A8)
+      03 METHOD-DESCRIPTION(A60)
+      03 MAX-PFKEY-RETURNED (N4)
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+* Validate maximum request
+  IF CDAPPFKA.MAX-PFKEY-REQUESTED LE 0 OR
+                         CDAPPFKA.MAX-PFKEY-REQUESTED GT #MAX-PFKEY THEN
+    ASSIGN CDAPPFKA.MAX-PFKEY-REQUESTED = #MAX-PFKEY
+  END-IF
+  RESET CDAPPFKA.INPUT-OUTPUTS(*) CDAPPFKA.OUTPUTS(*)
+  MOVE BY NAME CDAPPFKA TO CD--PFKA
+  CALLNAT 'CD--PFK' #PROGRAM
+                    CD--PFKA.INPUTS(*)
+                    CD--PFKA.INPUT-OUTPUTS(*)
+                    CD--PFKA.OUTPUTS(*)
+                    MSG-INFO
+  PERFORM CHECK-ERROR
+  MOVE BY NAME CD--PFKA TO CDAPPFKA
+*
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE CHECK-ERROR
+************************************************************************
+*
+  DECIDE FOR FIRST CONDITION
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#CONTINUE(*)
+      IGNORE
+    WHEN MSG-INFO.##RETURN-CODE = CDLRCODE.#INTERRUPT(*)
+      ESCAPE BOTTOM(PROG.) IMMEDIATE
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+END-SUBROUTINE /* CHECK-ERROR
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE
+***********************************************************************
+*
+* Retrieve message text and move to messaging data area
+  PERFORM GET-MESSAGE-TEXT
+  MOVE BY NAME CDAMSG TO MSG-INFO
+  RESET CDAMSG.INPUT-OUTPUTS
+END-SUBROUTINE /* GET-MESSAGE
+*
+***********************************************************************
+DEFINE SUBROUTINE GET-MESSAGE-TEXT
+***********************************************************************
+*
+* Call message retrieval and substitution module
+  CALLNAT 'CNUMSG' CDAMSG MSG-INFO
+  PERFORM CHECK-ERROR
+END-SUBROUTINE /* GET-MESSAGE-TEXT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

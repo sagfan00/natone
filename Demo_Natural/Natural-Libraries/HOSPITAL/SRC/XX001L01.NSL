@@ -1,0 +1,8 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+1 #M-OPTION (A1)
+1 #L-MESSAGE (A70) /* Message at bottom of Screen
+END-DEFINE

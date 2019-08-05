@@ -1,0 +1,41 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #LAST-PF-KEY #RESUME-PF-KEY CDDIALDA.#PROGRAM
+DEFINE DATA PARAMETER
+1 #LAST-PF-KEY (A004)
+1 #RESUME-PF-KEY (A004)
+1 CDDIALDA.#PROGRAM (A008)
+END-DEFINE
+FORMAT PS=007 LS=070 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(                       *
+* 009070        N1NNUCN____         X        01 NCST    YL           1 *
+************************************************************************
+INPUT          (     IP=OFF                                           /*
+                                                                       )
+ 001T CDDIALDA.#PROGRAM  (AD=ODL ) /*.01U008 A008 .
+ 018T '***** TERMINATION CONFIRMATION *****'(I)
+ 062T *PROGRAM  (AD=ODR ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'ZD','YY ) /*.01S009 D    .
+ 062T *TIMX  (AD=ODR EM=HH:II' 'AP ) /*.01S008 T    .
+/
+/
+ 001T *PF-KEY  (AD=OI ) /*.01S004 A004 .
+ 006T 'was pressed ...'(I)
+/
+ 001T 'Press'
+ 007T #LAST-PF-KEY  (AD=OI ) /*.01U004 A004 .
+ 012T 'again to quit entirely out of the current application'
+/
+ 001T 'Press'
+ 007T #RESUME-PF-KEY  (AD=OI ) /*.01U004 A004 .
+ 012T 'to resume from where you left off'
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

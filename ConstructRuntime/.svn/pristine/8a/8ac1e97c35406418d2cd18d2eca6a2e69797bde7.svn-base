@@ -1,0 +1,70 @@
+* >Natural Source Header 000000
+* :Mode R
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDSETPS
+* System     : NATURAL-CONSTRUCT
+* Application: All browse programs.
+* Written on : 15 JUNE 1989
+* Description: Accept the number of lines that are to be written
+*              in an END OF PAGE input. Based on this set the
+*              global Page Size equal to the size necessary to
+*              exactly fill the screen and still leave enough
+*              room for the specified number of input lines.
+*              This page size setting will be based on the
+*              window size and framing option.
+*
+*              This subprogram determines whether the PF-Key lines
+*              are being displayed in order to know whether to
+*              reserve two additional lines. If you wish to
+*              reserve the PF-Key lines irrespective of whether
+*              the PF-Keys are displayed, set the #RESERVE-KD-AREA
+*              flag to TRUE. This would be done if a list of
+*              available commands is to be displayed in the Key
+*              display area when the keys are not shown.
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDSETPSA
+  LOCAL USING CDUPARMA
+  LOCAL USING CDPDA-M
+  LOCAL
+  01 #MIN-PAGE(P3) CONST<0>
+  01 #MAX-PAGE(P3) CONST<250>
+END-DEFINE
+*
+* Calculate required PS based on window size and required input lines
+* minus 1 for the message line.
+COMPUTE CDSETPSA.#GLOBAL-PAGESIZE =
+        *WINDOW-PS - CDSETPSA.#INPUT-LINES - 1
+*
+* Determine whether additional room is required for PF-KEYS.
+IF CDSETPSA.#RESERVE-KD-AREA THEN
+  SUBTRACT 2 FROM CDSETPSA.#GLOBAL-PAGESIZE
+ELSE DO
+  ASSIGN CDUPARMA.#PARAMETER = 'KD'
+  CALLNAT 'CDUPARM' CDUPARMA MSG-INFO
+  /*
+  /* If the keys are at the top, bottom or inside window allow 2 lines.
+  IF CDUPARMA.#ALPHA-VALUE = 'B' OR = 'T' OR = 'I' THEN
+    SUBTRACT 2 FROM CDSETPSA.#GLOBAL-PAGESIZE
+DOEND
+*
+* Adjust global PS if it is currenlty outsize valid range.
+DECIDE FOR FIRST CONDITION
+  WHEN CDSETPSA.#GLOBAL-PAGESIZE LT #MIN-PAGE
+    ASSIGN CDSETPSA.#GLOBAL-PAGESIZE = #MIN-PAGE
+  WHEN CDSETPSA.#GLOBAL-PAGESIZE GE #MIN-PAGE AND
+       CDSETPSA.#GLOBAL-PAGESIZE LE #MAX-PAGE
+    IGNORE
+  WHEN CDSETPSA.#GLOBAL-PAGESIZE GT #MAX-PAGE
+    ASSIGN CDSETPSA.#GLOBAL-PAGESIZE = #MAX-PAGE
+  WHEN NONE IGNORE
+END-DECIDE
+*
+* Set global pagesize.
+SET GLOBALS PS=CDSETPSA.#GLOBAL-PAGESIZE
+END

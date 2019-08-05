@@ -1,0 +1,16 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*  This data area is passed to
+/*  CD--ACT to retrieve action
+/*  information
+/*
+ 1 CD1VACTA
+   2 API-NAME (A8)
+   2 INPUTS (A1/1:V)
+   2 INPUT-OUTPUTS (A1/1:V)
+   2 OUTPUTS (A1/1:V)
+END-DEFINE

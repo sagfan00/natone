@@ -1,0 +1,36 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 SL01 (A251)
+ 1 REDEFINE SL01 /* REDEF. BEGIN : SL01
+   2 ADDRESS (A1) /* Pass to CS-CHANG
+ 1 REDEFINE SL01
+   2 SL01-B (B2)
+   2 SL01-T (A249)
+   2 REDEFINE SL01-T /* REDEF. BEGIN : SL01-T
+     3 INT-CHAR (I1/1:249) /* used for char trans.
+   2 REDEFINE SL01-T /* REDEF. BEGIN : SL01-T
+     3 #HELP-TEXT (A68)
+     3 #HELP-ATTR (A4)
+   2 REDEFINE SL01-T /* REDEF. BEGIN : SL01-T
+     3 SL01-T-SHORT (A72)
+     3 SL01-A (A1) /* Type field in code frame
+     3 SL01-C (A1) /* Condition field in code frame
+     3 SL01-SB (N2)
+   2 REDEFINE SL01-T
+     3 SL01-PREFIX (A6)
+     3 SL01-REST (A243)
+   2 REDEFINE SL01-T
+     3 SL01-CHAR (A1/1:249)
+   2 REDEFINE SL01-T
+     3 SL01-69 (A69)
+     3 SL01-END-COMMENT (A3)
+ 1 MARKS (A1)
+ 1 LWORK (A3)
+ 1 REDEFINE LWORK
+   2 LM01 (A1)
+   2 LL01 (B2)
+ 1 SL01-LENGTH (B4) INIT<251>
+END-DEFINE

@@ -1,0 +1,21 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Check for incoming direct command.
+IF DIALOG-INFO.##COMMAND NE ' ' THEN
+  /*
+  /* Get the first part of the direct command (up to the first blank).
+  ASSIGN CDGETDCA.#DIRECT-COMMAND = DIALOG-INFO.##COMMAND
+  CALLNAT 'CDGETDC' CDGETDCA
+  RESET CDGETDCA.#DIRECT-COMMAND
+  /*
+  /* Stack the first part and reassign global command to the remainder.
+  STACK TOP DATA CDGETDCA.#STACK-DATA
+  ASSIGN MSG-INFO.##MSG-DATA(3) = CDGETDCA.#STACK-DATA
+  /*
+  /* Set msg data in case of 1106
+  ASSIGN DIALOG-INFO.##COMMAND = CDGETDCA.#REST-COMMAND
+END-IF

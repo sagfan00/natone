@@ -1,0 +1,782 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+OPTIONS LOWSRCE=ON
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+* 10.09.2010 SSZ1  MF982   Installation of Mainframe Construct Objects
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+**********************************************************************
+* Program    : CSHLOAD
+* System     : NATURAL-CONSTRUCT
+* Application: Batch load utility for help text.
+* Written by : SAG
+* Description: Load help text from WORK FILE 1.
+*
+* History    :
+**********************************************************************
+*
+DEFINE DATA
+  LOCAL USING CSLZULDA
+  LOCAL USING CSLSL01
+  LOCAL USING CSRRVSM
+  LOCAL USING CSASTD
+  LOCAL
+*
+* Input parameters
+  01 #TEMP-TYPE(A3)
+  01 #TYPE(A1/25)
+  01 #MAJOR(A32/25)
+  01 #MINOR(A32/25)
+  01 #LANGUAGE(A2/25)
+  01 #REPL(A1)
+  01 #TERM-OPTION(A1) INIT <'N'>
+  01 #TERM-ERROR(L)
+  01 #REPLACE(L/25)
+  01 #UPDATES(P5)
+  01 #HEADER1(A60)
+    INIT<'*** N A T U R A L  C O N S T R U C T  Version 1234567890 ***'>
+  01 #HEADER2(A60)
+     INIT<'               - BATCH HELP TEXT LOAD UTILITY -'>
+  01 #TERM-PROMPT(A19) CONST <'Terminate on error:'>
+  01 #TERM-PROMPT-CV(C)
+  01 #TERM-OPTION-CV(C)
+*
+  01 #TAST(L/25)
+  01 #MJAST(L/25)
+  01 #MNAST(L/25)
+  01 #LGAST(L/25)
+  01 #TOTAL-MATCHES(N7/25)
+  01 #MAX-LINES-DB(P3) CONST <50>
+  01 #MAX-LINES-WK(P3) CONST <25>
+*
+* Record Buffer for reading work file.
+* Large, Alpha buffer - a union of all possible record types.
+  01 WK-RECORD
+  02 RECORD-BUFF(A250/8)
+   2 REDEFINE RECORD-BUFF                                      /* SSZ1
+     3 WK-RECORD-A21 (A21)                                     /* SSZ1
+  02 REDEFINE RECORD-BUFF
+    /*
+    /* Header - common to all types
+    03 REC-HDR
+      /*
+      /* Possible types: (I)dentification
+      /*                 (H)elp header
+      /*                 help (L)ines
+      04 #REC-TYPE(A2)
+    03 REC-BODY(A1/1998)
+    03 REDEFINE REC-BODY
+      /*
+      /* Describe the layout of an ID record
+      04 ID-REC
+        05 VERSION-NUMBER(A10)
+        05 UNLD-DESCR(A8)
+        05 UNLD-USER(A8)
+        05 UNLD-DATE(A8)
+        05 #A-UNLD-TIME(A7)
+        05 REDEFINE #A-UNLD-TIME
+          06 UNLD-TIME(N7)
+        05 UNLD-OPSYS(A8)
+        05 UNLD-TPSYS(A8)
+        05 #SAG-RESERVED(A100) /* For future use.
+        05 #ID-REC-EOR(A2)
+    03 REDEFINE REC-BODY
+      /*
+      /* Describe the layout of a NCST-HELP record
+      04 HELP-REC
+        05 TYPE-COMPONENT(A1)
+        05 MAJOR-COMPONENT(A32)
+        05 MINOR-COMPONENT(A32)
+        05 #A-LANGUAGE-CODE (A2)
+        05 REDEFINE #A-LANGUAGE-CODE
+          06 LANGUAGE-CODE (N2)
+        05 HEADER1(A62)
+        05 HEADER2(A62)
+        05 SAVE-USER(A8)
+        05 SAVE-DATE(A8)
+        05 #A-SAVE-TIME(A7)
+        05 REDEFINE #A-SAVE-TIME
+          06 SAVE-TIME(N7)
+        05 #A-TOTAL-PAGES(A3)
+        05 REDEFINE #A-TOTAL-PAGES
+          06 TOTAL-PAGES(N3)
+        05 HELP-PROFILE-NAME(A8)
+        05 #A-HELP-LINES-PER-PAGE(A3)
+        05 REDEFINE #A-HELP-LINES-PER-PAGE
+          06 HELP-LINES-PER-PAGE(N3)
+        05 WINDOW-BASE(A7)
+        05 #A-WINDOW-LENGTH(A3)
+        05 REDEFINE #A-WINDOW-LENGTH
+          06 WINDOW-LENGTH(N3)
+        05 #A-WINDOW-COLUMNS(A3)
+        05 REDEFINE #A-WINDOW-COLUMNS
+          06 WINDOW-COLUMNS(N3)
+        05 #A-WINDOW-FRAME(A1)
+        05 #A-WINDOW-STAY(A1)
+        05 DYNAMIC-ATTRIBUTE(A1/1:2)
+        05 MESSAGE-LIBRARY   (A8)
+        05 LINK-ATTRIB-BEGIN (A4)
+        05 LINK-ATTRIB-END   (A4)
+        05 LINK-TEXT         (A60)
+        05 #HELP-REC-EOR(A2)
+    03 REDEFINE REC-BODY
+      /*
+      /* Describe the layout of a NCST-HELP-LINES record
+       04 HELP-LINES-REC
+         05 #A-LINES-THIS-PAGE(A3)
+         05 REDEFINE #A-LINES-THIS-PAGE
+           06 #N-LINES-THIS-PAGE(N3)
+         05 LINE-TYPE-COMPONENT(A1)
+         05 LINE-MAJOR-COMPONENT(A32)
+         05 LINE-MINOR-COMPONENT(A32)
+         05 #A-LINE-LANGUAGE-CODE (A2)
+         05 REDEFINE #A-LINE-LANGUAGE-CODE
+           06 LINE-LANGUAGE-CODE (N2)
+         05 LINE-TEXT(A68/1:#MAX-LINES-WK)
+         05 LINE-ATTR(A4/1:#MAX-LINES-WK)
+         05 #HELP-LINES-REC-EOR(A2)
+*
+* Local vars corresponding to view NCST-HELP
+  01 #HELP-KEY(A67)
+  01 REDEFINE #HELP-KEY
+    02 #HTYPE(A1)
+    02 #HMAJOR(A32)
+    02 #HMINOR(A32)
+    02 #A-HLANGUAGE (A2)
+    02 REDEFINE #A-HLANGUAGE
+      03 #HLANGUAGE (N2)
+*
+  01 #SAVE-PAGES(N3.0)
+*
+* Local vars corresponding to view NCST-HELP-LINES (one line)
+  01 #LINE(A72)
+  01 REDEFINE #LINE
+    02 #LTEXT(A68)
+    02 #LATTR(A4)
+*
+* A copy of the work file content.
+* Formats suitable for STOREing, CALLNATing CSHSAVE.
+  01 SAVED-HELP-REC
+    02 TYPE-COMPONENT(A1)
+    02 MAJOR-COMPONENT(A32)
+    02 MINOR-COMPONENT(A32)
+    02 #A-LANGUAGE-COMPONENT(A2)
+    02 REDEFINE #A-LANGUAGE-COMPONENT
+      03 LANGUAGE-COMPONENT (N2)
+    02 HEADER1(A62)
+    02 HEADER2(A62)
+    02 SAVE-USER(A8)
+    02 SAVE-DATE(A8)
+    02 SAVE-TIME(N7)
+    02 TOTAL-PAGES(P3)
+    02 HELP-PROFILE-NAME(A8)
+    02 HELP-LINES-PER-PAGE(P3)
+    02 WINDOW-BASE(A7)
+    02 WINDOW-LENGTH(P3)
+    02 WINDOW-COLUMNS(P3)
+    02 WINDOW-FRAME(A1)
+    02 REDEFINE WINDOW-FRAME
+      03 #WINDOW-FRAME-(L)
+    02 WINDOW-STAY(A1)
+    02 REDEFINE WINDOW-STAY
+      03 #WINDOW-STAY-(L)
+    02 DYNAMIC-ATTRIBUTE(A1/1:2)
+    02 MESSAGE-LIBRARY   (A8)
+    02 LINK-ATTRIB-BEGIN (A4)
+    02 LINK-ATTRIB-END   (A4)
+    02 LINK-TEXT         (A60)
+*
+* File views
+  01 NCST-HELP VIEW OF NCST-HELP
+    02 TYPE-COMPONENT
+    02 MAJOR-COMPONENT
+    02 MINOR-COMPONENT
+    02 LANGUAGE-CODE
+    02 TOTAL-PAGES
+*
+  01 NCST-PROFILE VIEW OF NCST-PROFILE
+    02 PROFILE-NAME
+    02 PROFILE-DESCRIPTION
+    02 HELP-LINES-PER-PAGE
+    02 WINDOW-BASE
+    02 WINDOW-LENGTH
+    02 WINDOW-COLUMNS
+    02 WINDOW-FRAME
+    02 WINDOW-STAY
+    02 MESSAGE-LIBRARY
+    02 LINK-ATTRIB-BEGIN
+    02 LINK-ATTRIB-END
+*
+* Miscellaneous fields
+  01 #AUTRE-KEY(A65)
+  01 #EXISTS(L)
+  01 #TMATCH(L)
+  01 #MJMATCH(L)
+  01 #MNMATCH(L)
+  01 #LGMATCH(L)
+  01 #SAVE(L)
+  01 #HLLP(N4)
+  01 #NO-TO-CHECK(N4)
+  01 #POS(N4)
+  01 #MSG(A79)
+  01 #PROF-MSG(A79)
+  01 #CSHSAVE-MSG(A79)
+  01 #RETURN-CODE(A1)
+  01 #RECORDS(P9)
+  01 #TOTAL-RECORDS(P9)
+  01 #PROGRAM(A8)
+  01 #SYSTEM(A8)
+  01 #I(N7)
+  01 #J(N7)
+  01 #K(P3)
+*
+* NATEDIT fields
+  01 #EDTLEN (I4)
+  01 #EDTBUF (A253)
+  01 REDEFINE #EDTBUF
+    2 #EDTBUF-R (A1)
+  01 #EDTFLAG (I4) INIT <2>
+  01 #NUMBER-FOUND (I4)
+  01 #FORM-FEED (B1) CONST <H'0C'>
+  01 #WRITE-BLANKS (N3)
+1 CR-CST-Object-End                    (A21)  /* SSZ1
+END-DEFINE
+*
+DEFINE PRINTER(SRC=2) OUTPUT 'SOURCE'
+FORMAT PS=60 LS=100
+FORMAT(SRC) PS=0 LS=250
+DEFINE PRINTER(RPT=1)
+FORMAT(RPT) PS=60 LS=170
+PERFORM INITIALIZATIONS
+*
+RESET #TYPE(*) #MAJOR(*) #MINOR(*) #LANGUAGE(*) #REPLACE(*)
+      #TAST(*) #MJAST(*) #MNAST(*) #LGAST(*)
+      #NO-TO-CHECK #RECORDS #TOTAL-RECORDS #MSG #PROGRAM #SYSTEM
+ASSIGN #PROGRAM = *PROGRAM
+ASSIGN #SYSTEM = 'C-STRUCT'
+  CR-CST-Object-End :=                                         /* SSZ1
+      H'CC99CC99CC99CC99CC99CC99CC99CC'-'CST000'               /* SSZ1
+*
+* Read the work file ID-RECORD and verify that it
+* was written by companion programme CSHUNLD.
+READ WORK FILE 1 ONCE WK-RECORD
+*
+* If input file is pre version 3.4, then use CSHLOAD2 to load the v3.3
+* format help file into 3.4 format
+IF WK-RECORD.VERSION-NUMBER = '3.3.1' OR = '3.3.2' THEN
+  CLOSE WORK 1
+  FETCH 'CSHLOAD2'
+END-IF
+*
+IF     WK-RECORD.#REC-TYPE   NE '<I'          /* Not an ID-REC
+  OR   WK-RECORD.UNLD-DESCR  NE 'HELP-TXT'    /* Not correctly set-up
+  OR   WK-RECORD.#ID-REC-EOR NE 'I>'          /* Length error?
+  WRITE(RPT) NOHDR 'Work File Error:'(I)
+                   'Not a recognizable Construct work file or pre 3.3.1'
+  WRITE(RPT) NOHDR 'Nothing loaded'
+  IF #TERM-ERROR
+    TERMINATE 99
+  ELSE
+    ESCAPE MODULE IMMEDIATE
+  END-IF
+END-IF
+*
+* Read in maximum 25 keys to check
+FOR #I = 1 TO 25
+  INPUT(AD=O IP=OFF LS=80) *DATX #HEADER1(AD=IO) *TIMX
+             / 9X #HEADER2(AD=IO) //
+        'Type..........:' #TEMP-TYPE (AD=MILT'_') '("."=Terminate)'
+     /  'Major.........:' #MAJOR(#I) (AD=MILT'_')
+     /  'Minor.........:' #MINOR(#I) (AD=MILT'_')
+     /  'Language......:' #LANGUAGE(#I) (AD=MILT'_')
+     /  'Replace Option:' #REPL (AD=MILT'_') '(Y/N)' 4X
+        #TERM-PROMPT (AD=O CV=#TERM-PROMPT-CV)
+        #TERM-OPTION (AD=MILT'_' CV=#TERM-OPTION-CV)
+   // #TYPE(01) #MAJOR(01) #MINOR(01) #LANGUAGE(01)
+    / #TYPE(02) #MAJOR(02) #MINOR(02) #LANGUAGE(02)
+    / #TYPE(03) #MAJOR(03) #MINOR(03) #LANGUAGE(03)
+    / #TYPE(04) #MAJOR(04) #MINOR(04) #LANGUAGE(04)
+    / #TYPE(05) #MAJOR(05) #MINOR(05) #LANGUAGE(05)
+    / #TYPE(06) #MAJOR(06) #MINOR(06) #LANGUAGE(06)
+    / #TYPE(07) #MAJOR(07) #MINOR(07) #LANGUAGE(07)
+    / #TYPE(08) #MAJOR(08) #MINOR(08) #LANGUAGE(08)
+    / #TYPE(09) #MAJOR(09) #MINOR(09) #LANGUAGE(09)
+    / #TYPE(10) #MAJOR(10) #MINOR(10) #LANGUAGE(10)
+    / #TYPE(11) #MAJOR(11) #MINOR(11) #LANGUAGE(11)
+    / #TYPE(12) #MAJOR(12) #MINOR(12) #LANGUAGE(12)
+    / #TYPE(13) #MAJOR(13) #MINOR(13) #LANGUAGE(13)
+    / #TYPE(14) #MAJOR(14) #MINOR(14) #LANGUAGE(14)
+    / #TYPE(15) #MAJOR(15) #MINOR(15) #LANGUAGE(15)
+  IF #TEMP-TYPE = '.' OR = '//' OR = '/*' OR = 'FIN' OR = 'END' OR
+    (#TEMP-TYPE = ' ' AND #MAJOR(#I) = ' ' AND
+     #MINOR(#I) = ' ')
+    RESET #TYPE(#I) #MAJOR(#I) #MINOR(#I) #REPLACE(#I) #LANGUAGE(#I)
+    ESCAPE BOTTOM
+  END-IF
+  ASSIGN #TYPE(#I) = #TEMP-TYPE
+  IF #TYPE(#I) EQ '*'
+    ASSIGN #TAST(#I) = TRUE
+    RESET #TYPE(#I)
+  END-IF
+  IF #MAJOR(#I) EQ SCAN '*' OR #MAJOR(#I) EQ ' '
+    ASSIGN #MJAST(#I) = TRUE
+    EXAMINE #MAJOR(#I) FOR '*' AND DELETE
+  END-IF
+  IF #MINOR(#I) EQ SCAN '*' OR #MINOR(#I) EQ ' '
+    ASSIGN #MNAST(#I) = TRUE
+    EXAMINE #MINOR(#I) FOR '*' AND DELETE
+  END-IF
+  IF #LANGUAGE(#I) EQ SCAN '*' OR #LANGUAGE(#I) EQ ' '
+    ASSIGN #LGAST(#I) = TRUE
+    EXAMINE #LANGUAGE(#I) FOR '*' AND DELETE
+  END-IF
+  IF #REPL EQ 'Y'
+    ASSIGN #REPLACE(#I) = TRUE
+  ELSE
+    ASSIGN #REPLACE(#I) = FALSE
+  END-IF
+  ADD 1 TO #NO-TO-CHECK
+END-FOR
+*
+IF *DEVICE = 'BATCH' AND #TERM-OPTION = 'Y'
+  #TERM-ERROR := TRUE
+ELSE /* Never terminate an online/interactive Natural session
+  #TERM-ERROR := FALSE
+END-IF
+*
+* After determining #TERM-ERROR, proceed with validations.
+*
+IF     WK-RECORD.#REC-TYPE   NE '<I'          /* Not an ID-REC
+  OR   WK-RECORD.UNLD-DESCR  NE 'HELP-TXT'    /* Not correctly set-up
+  OR   WK-RECORD.#ID-REC-EOR NE 'I>'          /* Length error?
+  WRITE(RPT) NOHDR 'Work File Error:'(I)
+                   'Not a recognizable Construct work file or pre 3.3.1'
+  WRITE(RPT) NOHDR 'Nothing loaded'
+  IF #TERM-ERROR
+    TERMINATE 99
+  ELSE
+    ESCAPE MODULE IMMEDIATE
+  END-IF
+END-IF
+*
+IF #NO-TO-CHECK EQ 0
+  ESCAPE MODULE IMMEDIATE
+END-IF
+NEWPAGE(RPT)
+*
+* Read WORK FILE 1 and see if help-key matches any of the input
+* table values.
+READ WORK FILE 1 WK-RECORD
+*
+  If WK-RECORD-A21 = CR-CST-Object-End                       /* SSZ1
+    Escape Bottom                                            /* SSZ1
+  End-If                                                     /* SSZ1
+  IF WK-RECORD.#REC-TYPE NE '<H'
+    WRITE(RPT) NOHDR 'Work File Error:'(I)
+                     'Expected #REC-TYPE "<H", received'
+                     '"' WK-RECORD.#REC-TYPE '"'
+    WRITE(RPT) NOHDR 'Loading aborted'
+    IF #TERM-ERROR
+      TERMINATE 99
+    ELSE
+      ESCAPE MODULE IMMEDIATE
+    END-IF
+  END-IF
+*
+* Save the WK-RECORD before the TEXT LINES are read.
+* a MOVE BY NAME will convert most fields.
+  MOVE BY NAME WK-RECORD.HELP-REC TO SAVED-HELP-REC
+*
+* Logicals are received as A1 containing 'T' or 'F'.
+* Translate them. Although the DDM defines them as A1 most
+* programmes REDEFINE them to Logical.
+  IF WK-RECORD.#A-WINDOW-FRAME = 'T'
+    ASSIGN SAVED-HELP-REC.#WINDOW-FRAME- = TRUE
+  ELSE
+    ASSIGN SAVED-HELP-REC.#WINDOW-FRAME- = FALSE
+  END-IF
+*
+  IF WK-RECORD.#A-WINDOW-STAY = 'T'
+    ASSIGN SAVED-HELP-REC.#WINDOW-STAY- = TRUE
+  ELSE
+    ASSIGN SAVED-HELP-REC.#WINDOW-STAY- = FALSE
+  END-IF
+*
+* Check if help-key matches any of the input table values.
+  IF *MACHINE-CLASS = 'VMS'   THEN  /*  Open VMS
+    PERFORM VMS-CLEAR-BUFFER
+  ELSE
+    SET CONTROL 'Z'
+    WRITE(SRC) 'DUMMY'
+    SET CONTROL 'Z' /* Remove '*/' from source area
+  END-IF
+*
+  FOR #I = 1 TO #NO-TO-CHECK
+    ASSIGN #TMATCH = #MJMATCH = #MNMATCH = #LGMATCH = FALSE
+    IF #TAST(#I)
+      ASSIGN #TMATCH = TRUE
+    ELSE
+      IF WK-RECORD.TYPE-COMPONENT = #TYPE(#I)
+        ASSIGN #TMATCH = TRUE
+      END-IF
+    END-IF
+    IF NOT #TMATCH ESCAPE TOP END-IF
+*
+    IF #MJAST(#I)
+      IF #MAJOR(#I) = ' '
+        ASSIGN #MJMATCH = TRUE
+      ELSE
+        EXAMINE WK-RECORD.MAJOR-COMPONENT FOR #MAJOR(#I)
+                                          GIVING POSITION #POS
+        IF #POS EQ 1
+          ASSIGN #MJMATCH = TRUE
+        END-IF
+      END-IF
+    ELSE
+      IF WK-RECORD.MAJOR-COMPONENT = #MAJOR(#I)
+        ASSIGN #MJMATCH = TRUE
+      END-IF
+    END-IF
+    IF NOT #MJMATCH ESCAPE TOP END-IF
+*
+    IF #MNAST(#I)
+      IF #MINOR(#I) = ' '
+        ASSIGN #MNMATCH = TRUE
+      ELSE
+        EXAMINE WK-RECORD.MINOR-COMPONENT FOR #MINOR(#I)
+                                          GIVING POSITION #POS
+        IF #POS EQ 1
+          ASSIGN #MNMATCH = TRUE
+        END-IF
+      END-IF
+    ELSE
+      IF WK-RECORD.MINOR-COMPONENT = #MINOR(#I)
+        ASSIGN #MNMATCH = TRUE
+      END-IF
+    END-IF
+    IF NOT #MNMATCH ESCAPE TOP END-IF
+    IF #LGAST(#I)
+      ASSIGN #LGMATCH = TRUE
+    ELSE
+      IF #LANGUAGE(#I) IS (N2)
+        IF WK-RECORD.LANGUAGE-CODE = VAL(#LANGUAGE(#I))
+          ASSIGN #LGMATCH = TRUE
+        END-IF
+      END-IF
+    END-IF
+    IF NOT #LGMATCH ESCAPE TOP END-IF
+    ESCAPE BOTTOM
+  END-FOR
+*
+* You have found a match. Assign tentative message.
+  ASSIGN #MSG = 'on WORK FILE 1 but not selected'
+  ASSIGN #SAVE = FALSE
+*
+* Assign key - for composing messages and READing NCST-HELP.
+  ASSIGN #HELP-KEY.#HTYPE = WK-RECORD.TYPE-COMPONENT
+  ASSIGN #HELP-KEY.#HMAJOR = WK-RECORD.MAJOR-COMPONENT
+  ASSIGN #HELP-KEY.#HMINOR = WK-RECORD.MINOR-COMPONENT
+  ASSIGN #HELP-KEY.#HLANGUAGE = WK-RECORD.LANGUAGE-CODE
+  IF #TMATCH AND #MJMATCH AND #MNMATCH AND #LGMATCH
+    ADD 1 TO #TOTAL-MATCHES(#I)
+*
+* Check to see if help member already exists.
+    ASSIGN #EXISTS = FALSE
+    READ(1) NCST-HELP BY HEADER-MAJOR-MINOR STARTING FROM #HELP-KEY
+      IF #HELP-KEY.#HTYPE  = NCST-HELP.TYPE-COMPONENT  AND
+         #HELP-KEY.#HMAJOR = NCST-HELP.MAJOR-COMPONENT AND
+         #HELP-KEY.#HMINOR = NCST-HELP.MINOR-COMPONENT AND
+         #HELP-KEY.#HLANGUAGE = NCST-HELP.LANGUAGE-CODE
+        ASSIGN #EXISTS = TRUE
+      END-IF
+    END-READ
+    IF #EXISTS            /* already exist
+      IF #REPLACE(#I)
+        ASSIGN #SAVE = TRUE
+        ASSIGN #MSG = 'Replaced'
+        ASSIGN #SAVE-PAGES = NCST-HELP.TOTAL-PAGES
+      ELSE
+        ASSIGN #SAVE = FALSE
+        ASSIGN #MSG = 'NOT Replaced'
+      END-IF
+    ELSE                  /* does not exist
+      ASSIGN #SAVE = TRUE
+      ASSIGN #MSG = 'Saved'
+      RESET #SAVE-PAGES
+    END-IF
+    ADD 1 TO #RECORDS
+  END-IF
+  RESET #WRITE-BLANKS
+*
+* Read WORK FILE 1 to get all help text lines
+  PAGES-PER-HELP.
+  FOR #I = 1 TO SAVED-HELP-REC.TOTAL-PAGES
+    /*
+    /* Read as many work file records as necessary to satisfy the page.
+    /* PC-CONNECTION can't handle A68/50 + A4/50.
+    ASSIGN #K = 0
+    RECS-PER-PAGE.
+    REPEAT
+      READ WORK FILE 1 ONCE WK-RECORD
+        AT END OF FILE
+          ESCAPE BOTTOM (PAGES-PER-HELP.)
+        END-ENDFILE
+      /*
+      /* Verify we are 'in-synch' with what's expected.
+      IF WK-RECORD.#REC-TYPE NE '<L'
+        WRITE(RPT) NOHDR 'Work File Error:'(I)
+                         'Expected #REC-TYPE "<L", received'
+                         '"' WK-RECORD.#REC-TYPE '"'
+        WRITE(RPT) NOHDR 'Loading aborted'
+                          #HELP-KEY.#HTYPE
+                          #HELP-KEY.#HMINOR
+                          #HELP-KEY.#HMAJOR
+                          #HELP-KEY.#HLANGUAGE
+                          'may be incomplete.'
+        IF #TERM-ERROR
+          TERMINATE 99
+        ELSE
+          ESCAPE MODULE IMMEDIATE
+        END-IF
+      END-IF
+      /*
+      IF #SAVE
+        /*
+        /* Saving - count the lines exactly - write to SRC.
+        IF WK-RECORD.LINE-ATTR(1) NE SCAN 'P'
+                                 AND #WRITE-BLANKS GT 0
+          WRITE-PREVIOUS-PAGE-TRAILING-BLANKS.
+          FOR #J = 1 TO #WRITE-BLANKS
+            WRITE (SRC) NOTITLE ' '
+          END-FOR
+        END-IF
+        FOR #J = 1 TO #MAX-LINES-WK
+          ADD 1 TO #K
+          IF #K GT WK-RECORD.#N-LINES-THIS-PAGE
+            ESCAPE BOTTOM (RECS-PER-PAGE.)
+          END-IF
+          ASSIGN #LTEXT = WK-RECORD.LINE-TEXT(#J)
+          ASSIGN #LATTR = WK-RECORD.LINE-ATTR(#J)
+          WRITE(SRC) NOTITLE #LINE
+        END-FOR
+      ELSE
+        /*
+        /* Not saving - decide when page is all in.
+        ADD #MAX-LINES-WK TO #K
+        IF #K GE WK-RECORD.#N-LINES-THIS-PAGE
+          ESCAPE BOTTOM (RECS-PER-PAGE.)
+        END-IF
+      END-IF
+    END-REPEAT /* Repeat - records per page
+      IF WK-RECORD.#N-LINES-THIS-PAGE LT
+                  SAVED-HELP-REC.HELP-LINES-PER-PAGE
+        COMPUTE #WRITE-BLANKS = SAVED-HELP-REC.HELP-LINES-PER-PAGE -
+                                WK-RECORD.#N-LINES-THIS-PAGE
+      ELSE
+        RESET #WRITE-BLANKS
+    END-IF
+  END-FOR /* For pages per help
+  IF #SAVE
+    RESET #CSHSAVE-MSG #RETURN-CODE #PROF-MSG  CSASTD
+    MOVE LEFT SAVED-HELP-REC.HEADER1 TO SAVED-HELP-REC.HEADER1
+    MOVE LEFT SAVED-HELP-REC.HEADER2 TO SAVED-HELP-REC.HEADER2
+    NEWPAGE(SRC)  /* Unix - ensure source gets 'flushed' out.
+    PERFORM DELETE-FF
+    CALLNAT 'CSHSAVE' #HELP-KEY
+                      #SAVE-PAGES
+                      SAVED-HELP-REC.HEADER1
+                      SAVED-HELP-REC.HEADER2
+                      SAVED-HELP-REC.LINK-TEXT
+                      SAVED-HELP-REC.SAVE-USER
+                      SAVED-HELP-REC.SAVE-DATE
+                      SAVED-HELP-REC.SAVE-TIME
+                      SAVED-HELP-REC.HELP-LINES-PER-PAGE
+                      SAVED-HELP-REC.HELP-PROFILE-NAME
+                      SAVED-HELP-REC.WINDOW-BASE
+                      SAVED-HELP-REC.WINDOW-LENGTH
+                      SAVED-HELP-REC.WINDOW-COLUMNS
+                      SAVED-HELP-REC.#WINDOW-FRAME-
+                      SAVED-HELP-REC.#WINDOW-STAY-
+                      SAVED-HELP-REC.DYNAMIC-ATTRIBUTE(*)
+                      SAVED-HELP-REC.MESSAGE-LIBRARY
+                      SAVED-HELP-REC.LINK-ATTRIB-BEGIN
+                      SAVED-HELP-REC.LINK-ATTRIB-END
+                      CSASTD
+    ASSIGN #RETURN-CODE = CSASTD.RETURN-CODE
+    ASSIGN #CSHSAVE-MSG = CSASTD.MSG
+    IF #RETURN-CODE NE ' ' /* save error
+      ASSIGN #MSG = #CSHSAVE-MSG
+    ELSE      /* help text saved. Now check that help profile exists
+        ADD 1 TO #UPDATES
+        CHECK-IF-PROFILE-EXISTS.
+        FIND NUMBER NCST-PROFILE WITH PROFILE-NAME =
+             SAVED-HELP-REC.HELP-PROFILE-NAME
+        /* if profile not on file, store profile
+        IF *NUMBER(CHECK-IF-PROFILE-EXISTS.) EQ 0 THEN
+            ASSIGN NCST-PROFILE.PROFILE-NAME =
+                 SAVED-HELP-REC.HELP-PROFILE-NAME
+            ASSIGN NCST-PROFILE.PROFILE-DESCRIPTION =
+            '** Automatically created during BATCH load **'
+            ASSIGN NCST-PROFILE.HELP-LINES-PER-PAGE =
+              SAVED-HELP-REC.HELP-LINES-PER-PAGE
+            ASSIGN NCST-PROFILE.WINDOW-BASE =
+                 SAVED-HELP-REC.WINDOW-BASE
+            ASSIGN NCST-PROFILE.WINDOW-LENGTH =
+                 SAVED-HELP-REC.WINDOW-LENGTH
+            ASSIGN NCST-PROFILE.WINDOW-COLUMNS =
+                 SAVED-HELP-REC.WINDOW-COLUMNS
+            ASSIGN NCST-PROFILE.WINDOW-FRAME =
+                 SAVED-HELP-REC.WINDOW-FRAME
+            ASSIGN NCST-PROFILE.WINDOW-STAY =
+                 SAVED-HELP-REC.WINDOW-STAY
+            NCST-PROFILE.MESSAGE-LIBRARY
+              := SAVED-HELP-REC.MESSAGE-LIBRARY
+            NCST-PROFILE.LINK-ATTRIB-BEGIN
+              := SAVED-HELP-REC.LINK-ATTRIB-BEGIN
+            NCST-PROFILE.LINK-ATTRIB-END
+              := SAVED-HELP-REC.LINK-ATTRIB-END
+            STORE NCST-PROFILE
+            END OF TRANSACTION
+            COMPRESS 'Help profile:' SAVED-HELP-REC.HELP-PROFILE-NAME
+             'added to help profile file.' INTO #PROF-MSG
+          END-IF
+      END-IF
+  END-IF
+  IF #PROF-MSG NE ' '
+     WRITE(RPT) NOHDR #HELP-KEY(EM=X'/'X(32)'/'X(32)'/'XX) #MSG
+                / 10T '=======>' #PROF-MSG
+   ELSE
+     WRITE(RPT) NOHDR #HELP-KEY(EM=X'/'X(32)'/'X(32)'/'XX) #MSG
+   END-IF
+END-WORK  /* READ WORK FILE
+*
+AT TOP OF PAGE(RPT)
+  WRITE(RPT) NOTITLE *DATX #HEADER1(AD=I) *TIMX
+            /  9X #HEADER2(AD=I)
+            /
+END-TOPPAGE
+*
+NEWPAGE(RPT)
+FOR #I = 1 TO 25
+  IF #TYPE(#I) EQ ' ' AND #MAJOR(#I) EQ ' ' AND
+     #MINOR(#I) EQ ' ' AND #LANGUAGE(#I) EQ ' '
+     AND NOT #TAST(#I) AND NOT #MJAST(#I) AND NOT #MNAST(#I)
+     AND NOT #LGAST(#I)
+    ESCAPE BOTTOM
+  END-IF
+  IF #TAST(#I)
+    COMPRESS #TYPE(#I)  '*' INTO #TYPE(#I) LEAVING NO
+  END-IF
+  IF #MJAST(#I)
+    COMPRESS #MAJOR(#I) '*' INTO #MAJOR(#I) LEAVING NO
+  END-IF
+  IF #MNAST(#I)
+    COMPRESS #MINOR(#I) '*' INTO #MINOR(#I) LEAVING NO
+  END-IF
+  IF #LGAST(#I)
+    COMPRESS #LANGUAGE(#I) '*' INTO #LANGUAGE(#I) LEAVING NO
+  END-IF
+  DISPLAY(RPT)
+      'Type' #TYPE(#I) 'Major' #MAJOR(#I)
+      'Minor' #MINOR(#I) 'Language' #LANGUAGE(#I)
+      'Replace?' #REPLACE(#I)(EM='   No'/'  Yes')
+      'Matches' #TOTAL-MATCHES(#I)
+END-FOR
+*
+WRITE(RPT) // 'Number input parameters   :' #NO-TO-CHECK (AD=L SG=OFF)
+WRITE(RPT)    'Help text selected        :' #RECORDS (AD=L SG=OFF)
+WRITE(RPT)    'Help members updated/added:' #UPDATES (AD=L SG=OFF)
+*
+************************************************************************
+DEFINE SUBROUTINE DELETE-FF
+************************************************************************
+*
+* Delete any /* lines put into the edit buffer by the WRITE statement
+*
+* Initialize CMZUL and perform a read only call
+  ASSIGN INLENGTH = SL01-LENGTH
+  ASSIGN INSCRSIZE = 1
+  ASSIGN COEDITOR = H'03'
+  ASSIGN COSCLEN1 = 0; ASSIGN COSCLEN2 = 1
+  CALL 'CMZUL' 'I' INLIB COSCLEN1
+  ASSIGN RUCOM  = 'LET'
+  CALL 'CMZUL' 'R' RUXPOS SL01
+  COMPRESS 'T' 'SC "*/"' TO RUCOM WITH DELIMITER
+  REPEAT
+    CALL 'CMZUL' 'R' RUXPOS SL01
+    IF MARKS = ' ' ESCAPE BOTTOM END-IF
+    ASSIGN SL01-T = '.D'
+    ASSIGN RUCOM = 'SC "*/"'
+  END-REPEAT
+END-SUBROUTINE
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+* Get the current system version number.
+  CALLNAT 'CS-RVSM' CSRRVSM
+  EXAMINE #HEADER1 FOR '1234567890'
+          REPLACE WITH CSRRVSM.#VERSION-NUMBER
+*
+  IF *DEVICE = 'BATCH'
+    SET CONTROL 'D' /* Activate delimiter mode
+    MOVE (AD=D) TO #TERM-PROMPT-CV #TERM-OPTION-CV /* Default
+  ELSE
+    MOVE (AD=N) TO #TERM-PROMPT-CV /* Non-display
+    MOVE (AD=NP) TO #TERM-OPTION-CV /* Protected
+  END-IF
+END-SUBROUTINE /* INITIALIZATIONS
+*
+************************************************************************
+DEFINE SUBROUTINE VMS-CLEAR-BUFFER
+************************************************************************
+*
+  ASSIGN #EDTFLAG = 2
+*
+* Delete CST_HELP_TEXT Buffer.
+  ASSIGN #EDTLEN = 27
+  ASSIGN #EDTBUF = 'DELETE =CST_HELP_TEXT WHOLE'
+  CALL 'NATEDIT' #EDTLEN #EDTBUF #EDTFLAG
+*
+* Delete TPU MAIN Buffer.
+  ASSIGN #EDTLEN = 18
+  ASSIGN #EDTBUF = 'DELETE =MAIN WHOLE'
+  CALL 'NATEDIT' #EDTLEN #EDTBUF #EDTFLAG
+*
+* Copy from MAIN TPU to Natural Compile Buffer
+  ASSIGN #EDTBUF = '<'
+  ASSIGN #EDTLEN = 1
+  CALL 'NATEDIT' #EDTLEN #EDTBUF #EDTFLAG
+*
+* Copy from Natural Compile Buffer to MAIN TPU Buffer
+  ASSIGN #EDTBUF = '>'
+  ASSIGN #EDTLEN = 1
+  CALL 'NATEDIT' #EDTLEN #EDTBUF #EDTFLAG
+END-SUBROUTINE
+*
+END

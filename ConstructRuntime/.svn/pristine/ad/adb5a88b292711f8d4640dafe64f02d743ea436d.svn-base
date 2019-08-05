@@ -1,0 +1,48 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDCHKSTK
+* System     : NATURAL-CONSTRUCT
+* Application: All
+* Written on : 08 Mar. 1993
+* Description: Check for an entry on the stack; return the entry
+*            | optionally removing it from the stack.
+*            | Delimited values in a stack entry will be returned
+*            | as one string.
+*            ! Note you must increase the PS variable to > 99
+*            ! to compile this module.
+*
+* HISTORY    : CHANGED TO STRUCTURED MODE 19-DEC-2011
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDCHKSTA
+  LOCAL
+  01 #THREE-CHAR(A3)
+  01 REDEFINE #THREE-CHAR
+    02 #CHAR(A1/1:3)
+  01 #STACK-INT(A249/1:99)
+END-DEFINE
+FORMAT LS=250 PS=100
+RESET CDCHKSTA.OUTPUTS
+COMPRESS 'X' 'X' TO #THREE-CHAR WITH DELIMITER
+ASSIGN CDCHKSTA.#DELIMITER = #CHAR(2)
+SET GLOBALS ID=@                     /* Assume "@" not in command string
+IF *DATA > 0
+  IF *MACHINE-CLASS = 'MAINFRAME'
+        IF NOT CDCHKSTA.#POP-STACK-ENTRY
+           SET CONTROL '.S'
+        END-IF
+        INPUT CDCHKSTA.#STACK-DATA
+  ELSE
+    INPUT #STACK-INT (*)
+     CDCHKSTA.#STACK-DATA := #STACK-INT(1) /* RETURN THE FIRST ITEM
+     IF NOT CDCHKSTA.#POP-STACK-ENTRY     /* RE-STACK ALL ITEMS
+        STACK TOP DATA FORMATTED #STACK-INT(*)
+     END-IF
+  END-IF
+END-IF
+SET GLOBALS ID = CDCHKSTA.#DELIMITER
+END

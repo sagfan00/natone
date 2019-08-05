@@ -1,0 +1,31 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*********************************************************************
+* Copycode : CC--LTR
+* Written  : Sep 11,2000 at 11:00 AM
+* Function : This translates strings into upper case which are
+*          : not within quatation marks.
+* these    : 01 #LTR-I (N2)
+* variables: 01 #LTR-INSIDE-QUOTES (L)
+* must be  : 01 #LTR-LINE-80 (A80)
+* in the   : 01 REDEFINE #LTR-LINE-80
+* main     :    02 #LTR-CHARACTER (A1/1:80)
+* program  :
+*********************************************************************
+MOVE &1& TO #LTR-LINE-80
+FOR #LTR-I 1 80
+    IF #LTR-CHARACTER(#LTR-I) = '"'
+       IF #LTR-INSIDE-QUOTES THEN
+          RESET #LTR-INSIDE-QUOTES
+       ELSE
+          ASSIGN #LTR-INSIDE-QUOTES = TRUE
+       END-IF
+    END-IF
+    IF NOT #LTR-INSIDE-QUOTES
+       EXAMINE #LTR-CHARACTER(#LTR-I) TRANSLATE INTO UPPER
+    END-IF
+END-FOR
+MOVE #LTR-LINE-80 TO &1&

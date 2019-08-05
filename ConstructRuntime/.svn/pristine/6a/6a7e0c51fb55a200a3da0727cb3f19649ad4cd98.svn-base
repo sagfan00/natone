@@ -1,0 +1,195 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program   : CDUMSGU
+* System    : NATURAL-CONSTRUCT
+* Written on: Feb 5, 1993
+* Function  : Error message handler.
+* Desc      : This routine is used to return the text information
+*           : associated with a given USER message. The error text
+*           : returned is based on the current value of *LANGUAGE.
+*           :
+*           : This routine can be invoked by error processing modules
+*           : in order to obtain the text associated with a Natural
+*           : error.
+*           :
+*           : Input : MSG-INFO.##MSG-NR
+*           : Output: MSG-INFO.##MSG
+*           :
+*           :
+*           : This routine changed to invoke USR* routines to
+*           : get error message information. These USR routines
+*           : are delivered with Natural in the library SYSEXT.
+*           : Copy USR0320N to steplib library.
+* :
+*           : This routine now allows the message text field to contain
+*           : the name of a specific message library to be used.
+*           : It now supports for message data substitutions.
+*
+* History
+* Version Date        Reason
+* 411     July 16, 97 Don't consider the SYSBIZ library when accessing
+*                     messages since all Natural Business applications execute
+*                     out of SYSBIZ.
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDPDA-M
+  LOCAL
+  01 #MAX-ATTEMPTS(I1) CONST<4>
+  01 #ALPHA-NR(A4)
+  01 #ATTEMPT(A8/1:#MAX-ATTEMPTS)
+  01 #FOUND(I1)
+  01 #J(P1)
+  01 #SKIP(L)
+  01 USR0320N-PARMS
+    02 APPLICATION(A8)
+    02 ERROR-NUMBER(N4)
+    02 LANGUAGE(I1)
+    02 RESPONSE(N4)
+    02 S-TEXT(A65)
+    02 REDEFINE S-TEXT
+      03 #FIRST-8(A8)
+      03 #REST(A57)
+  01 USR1012N-PARMS
+    02 ERR-PARM(A34)
+    02 RESPONSE(N4)
+  01 #MESSAGE(A250)
+  01 #PLACEHOLDER
+    02 BLANK1(A1)
+    02 #UNPRINTABLE(A1) INIT<H'01'>
+    02 BLANK2(A1)
+  01 REDEFINE #PLACEHOLDER
+    02 #STRING(A3)
+  01 REDEFINE #PLACEHOLDER
+    02 FILLER-BLANK1(A1)
+    02 #STRING2(A2)
+  01 REDEFINE #PLACEHOLDER
+    02 #STRING3(A2)
+  01 #POS(I1)
+  01 #SUB-STRING-RL-BLANK(A5) INIT<' :N: '>
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #FILLER-L(A1)
+    02 #SUB-STRING(A3)
+    02 REDEFINE #SUB-STRING
+      03 FILLER(A1)
+      03 #I(N1)
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #SUB-STRING-L-BLANK(A4)
+  01 REDEFINE #SUB-STRING-RL-BLANK
+    02 #FILLER-R(A1)
+    02 #SUB-STRING-R-BLANK(A4)
+  01 #DELIMITER (A1) INIT<H'01'>
+END-DEFINE
+IF *LANGUAGE LT 1 OR *LANGUAGE GT 60 THEN
+  ASSIGN *LANGUAGE = 1
+END-IF
+ASSIGN USR0320N-PARMS.ERROR-NUMBER = MSG-INFO.##MSG-NR
+ASSIGN USR0320N-PARMS.S-TEXT = MSG-INFO.##MSG
+*
+* If a library name has been explicitely provided in the msg text, use
+* it. Next try current library, then STEPLIB, then SYSTEM if different.
+IF USR0320N-PARMS.#FIRST-8 NE ' ' AND USR0320N-PARMS.#REST = ' ' THEN
+  ASSIGN #ATTEMPT(1) = USR0320N-PARMS.#FIRST-8
+END-IF
+RESET USR0320N-PARMS.S-TEXT
+IF *LIBRARY-ID NE 'SYSBIZ' THEN /* Natural Business
+  ASSIGN #ATTEMPT(2) = *LIBRARY-ID
+END-IF
+ASSIGN #ATTEMPT(3) = *STEPLIB
+IF *STEPLIB NE 'SYSTEM' THEN
+  ASSIGN #ATTEMPT(4) = 'SYSTEM'
+END-IF
+RESET MSG-INFO.##MSG
+GET-MSG.
+FOR #J = 1 TO #MAX-ATTEMPTS
+  RESET #SKIP
+  DECIDE FOR FIRST CONDITION
+    WHEN #ATTEMPT(#J) = ' '
+      ASSIGN #SKIP = TRUE
+    WHEN #J GT 1
+      IF #ATTEMPT(#J) = #ATTEMPT(1:#J - 1)
+        ASSIGN #SKIP = TRUE
+      END-IF
+    WHEN NONE
+      IGNORE
+  END-DECIDE
+  IF NOT #SKIP THEN
+    ASSIGN USR0320N-PARMS.APPLICATION = #ATTEMPT(#J)
+    CALLNAT 'USR0320N' USR0320N-PARMS
+    /* it couldn't find anything for the current language
+    /* and the current language is not English; look again for
+    /* the English language
+    IF USR0320N-PARMS.RESPONSE = 8
+      USR0320N-PARMS.LANGUAGE := 1
+      CALLNAT 'USR0320N' USR0320N-PARMS
+    END-IF
+    IF USR0320N-PARMS.S-TEXT NE ' ' THEN
+      ASSIGN MSG-INFO.##MSG = USR0320N-PARMS.S-TEXT
+      ESCAPE BOTTOM(GET-MSG.) IMMEDIATE
+    END-IF
+  END-IF
+END-FOR
+IF MSG-INFO.##MSG = ' ' THEN
+  ASSIGN USR0320N-PARMS.APPLICATION = 'SYSTEM'
+  ASSIGN USR0320N-PARMS.ERROR-NUMBER = 8099 /* No text found
+  CALLNAT 'USR0320N' USR0320N-PARMS
+  ASSIGN MSG-INFO.##MSG = USR0320N-PARMS.S-TEXT
+  COMPRESS MSG-INFO.##MSG-NR TO #ALPHA-NR
+  EXAMINE MSG-INFO.##MSG FOR ':1:'
+          REPLACE WITH #ALPHA-NR
+END-IF
+IF MSG-INFO.##MSG = ' ' THEN /* Still blank, default to english
+  COMPRESS 'Unable to find text for message' MSG-INFO.##MSG-NR
+        TO MSG-INFO.##MSG
+ELSE
+  IF MSG-INFO.##MSG = SCAN ':1:' OR
+       MSG-INFO.##MSG = SCAN ':2:' OR
+           MSG-INFO.##MSG = SCAN ':3:' THEN
+    PERFORM MESSAGE-SUBSTITUTION
+  END-IF
+END-IF
+*
+************************************************************************
+DEFINE SUBROUTINE MESSAGE-SUBSTITUTION
+************************************************************************
+*
+* Substitute message data
+  ASSIGN #MESSAGE = MSG-INFO.##MSG
+  FOR #I = 1 TO 3
+    EXAMINE MSG-INFO.##MSG-DATA(#I) FOR FULL ' .'
+        REPLACE WITH #DELIMITER
+    SEPARATE MSG-INFO.##MSG-DATA(#I) INTO MSG-INFO.##MSG-DATA(#I)
+        IGNORE WITH DELIMITERS #DELIMITER
+    EXAMINE #MESSAGE FOR FULL #SUB-STRING GIVING POSITION #POS
+    IF #POS = 1
+      IF MSG-INFO.##MSG-DATA(#I) = ' '
+        EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK DELETE FIRST
+        EXAMINE #MESSAGE FOR #SUB-STRING DELETE FIRST
+      ELSE
+        EXAMINE #MESSAGE FOR FULL #SUB-STRING
+                         REPLACE FIRST FULL #STRING2
+        EXAMINE #MESSAGE FOR FULL #UNPRINTABLE
+                         REPLACE FIRST MSG-INFO.##MSG-DATA(#I)
+      END-IF
+    END-IF
+    IF MSG-INFO.##MSG-DATA(#I) = ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-L-BLANK REPLACE WITH ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK REPLACE WITH ' '
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING REPLACE WITH ' '
+    ELSE
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-L-BLANK
+                       REPLACE WITH FULL #STRING
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING-R-BLANK
+                       REPLACE WITH FULL #STRING
+      EXAMINE #MESSAGE FOR FULL #SUB-STRING
+                       REPLACE WITH FULL #STRING
+      EXAMINE #MESSAGE FOR FULL #UNPRINTABLE
+                       REPLACE WITH MSG-INFO.##MSG-DATA(#I)
+    END-IF
+  END-FOR
+  ASSIGN MSG-INFO.##MSG = #MESSAGE
+END-SUBROUTINE /* MESSAGE-SUBSTITUTION
+END

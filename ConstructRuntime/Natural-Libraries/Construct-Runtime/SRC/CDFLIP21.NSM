@@ -1,0 +1,86 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #COLOUR-CV(*) #HPARM #LINE1-COLOUR(*) #LINE2-COLOUR(*) #PGM-NAME
+*     #SCR-CV
+DEFINE DATA PARAMETER
+1  #COLOUR-CV (C/00001:00008)
+1 #HPARM (A065)
+1 #LINE1-COLOUR (L/00001:00008)
+1 #LINE2-COLOUR (L/00001:00008)
+1 #PGM-NAME (A008)
+1  #SCR-CV (C)
+END-DEFINE
+FORMAT PS=021 LS=079 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTTTTMMOTTTTD I NEGRRED I D BLPITUYE ?_)^&:+(|@$'CD-HELPR',#HPARM   *
+* 023079        N1NNLCN____         X        01 SYSDBA  YL   #SCR-CV 1 *
+************************************************************************
+INPUT          (     CV=#SCR-CV  HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T #PGM-NAME  (AD=OD ) /*.01U008 A008 .
+ 018T 'PF-Key Color Specification'(I)
+ 053T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 053T *TIMX  (AD=OD EM=HH':'II' 'AP ) /*.01S008 T    .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+/
+ 001T 'First PF-key Line'(I)
+/
+/
+ 003T #LINE1-COLOUR (001)  (AD=MY'_' CV=#COLOUR-CV(001) ) /*.99U001 L    .
+   /* A1000080000100001000010000100001010002004000014H
+ 005T 'Blue'(BL)
+ 018T #LINE1-COLOUR (002)  (AD=MY'_' CV=#COLOUR-CV(002) ) /*.99U001 L    .
+ 020T 'Green'(GR)
+ 033T #LINE1-COLOUR (003)  (AD=MY'_' CV=#COLOUR-CV(003) ) /*.99U001 L    .
+ 035T 'White'(NE)
+ 048T #LINE1-COLOUR (004)  (AD=MY'_' CV=#COLOUR-CV(004) ) /*.99U001 L    .
+ 050T 'Pink'(PI)
+/
+ 003T #LINE1-COLOUR (005)  (AD=MY'_' CV=#COLOUR-CV(005) ) /*.99U001 L    .
+ 005T 'Red'(RE)
+ 018T #LINE1-COLOUR (006)  (AD=MY'_' CV=#COLOUR-CV(006) ) /*.99U001 L    .
+ 020T 'Turquoise'(TU)
+ 033T #LINE1-COLOUR (007)  (AD=MY'_' CV=#COLOUR-CV(007) ) /*.99U001 L    .
+ 035T 'Yellow'(YE)
+ 048T #LINE1-COLOUR (008)  (AD=MY'_' CV=#COLOUR-CV(008) ) /*.99U001 L    .
+/
+/
+/
+ 001T 'Second PF-key Line'(I)
+/
+/
+ 003T #LINE2-COLOUR (001)  (AD=MY'_' CV=#COLOUR-CV(001) ) /*.99U001 L    .
+   /* A1000080000100001000010000100001010002004000014H
+ 005T 'Blue'(BL)
+ 018T #LINE2-COLOUR (002)  (AD=MY'_' CV=#COLOUR-CV(002) ) /*.99U001 L    .
+ 020T 'Green'(GR)
+ 033T #LINE2-COLOUR (003)  (AD=MY'_' CV=#COLOUR-CV(003) ) /*.99U001 L    .
+ 035T 'White'(NE)
+ 048T #LINE2-COLOUR (004)  (AD=MY'_' CV=#COLOUR-CV(004) ) /*.99U001 L    .
+ 050T 'Pink'(PI)
+/
+ 003T #LINE2-COLOUR (005)  (AD=MY'_' CV=#COLOUR-CV(005) ) /*.99U001 L    .
+ 005T 'Red'(RE)
+ 018T #LINE2-COLOUR (006)  (AD=MY'_' CV=#COLOUR-CV(006) ) /*.99U001 L    .
+ 020T 'Turquoise'(TU)
+ 033T #LINE2-COLOUR (007)  (AD=MY'_' CV=#COLOUR-CV(007) ) /*.99U001 L    .
+ 035T 'Yellow'(YE)
+ 048T #LINE2-COLOUR (008)  (AD=MY'_' CV=#COLOUR-CV(008) ) /*.99U001 L    .
+/
+/
+/
+/
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

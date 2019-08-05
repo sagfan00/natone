@@ -1,0 +1,8 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Assign Flip PF Key used by setting its initial value.
+RESET INITIAL CDKEYLDA.#FLIP-KEY

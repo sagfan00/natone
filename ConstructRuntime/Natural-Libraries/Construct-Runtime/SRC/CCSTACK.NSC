@@ -1,0 +1,27 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+***********************************************************************
+* Copycode : CCSTACK
+* System   : NATURAL-CONSTRUCT
+* Title    : Stack blank to bypass input screen
+* Written  : Sep 19,96 at 04:28 PM
+* Function : This copycode is used to stack a blank to bypass input
+*          : screen when in generation or user sample phase.  This
+*          : applies to old CONSTRUCT-MODEL-MAINTENANCE (now renamed
+*          : to CST-MODIFY-332).  The nucleus no longer stacks a blank
+*          : since the new CST-MODIFY has been enhanced.
+*          :
+* Mod Date   Mod By    Description of Changes
+* MMM DD YY  ________ ______________________________________________
+* ______________________________________________
+***********************************************************************
+*
+* If Generate or User Exit Sample phase, stack ' ' so screens
+* do not stop at inputs
+IF CU--PDA.#PDA-PHASE = CU-FLDA.#GENERATE OR = CU-FLDA.#USER-EXIT-SAMPLE OR = CU-FLDA.#BLANK-PHASE THEN
+  STACK TOP DATA ' '
+END-IF
+*

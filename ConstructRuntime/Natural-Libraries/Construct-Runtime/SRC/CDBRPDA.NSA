@@ -1,0 +1,82 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDBRPDA
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-07
+/*                        Short Desc:    Browse object standard parms
+/*                        Long Desc :    This data area is passed to
+/*                                  :    all browse objects. Browse
+/*                                  :    objects are used to encapsulate
+/*                                  :    the retrieval of database
+/*                                  :    records. These objects can
+/*                                  :    return many database records
+/*                                  :    at a time.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDBRPDA
+   2 INPUTS
+     3 METHOD (N1) /* 0 = Get rows
+     3 SORT-KEY (A32) /* The key that is to be browsed
+/*                                       /* by.
+     3 HISTOGRAM (L) /* If this field is true, only
+/*                                       /* distinct key values will be
+/*                                       /* returned, along with a count
+/*                                       /* of the number of records
+/*                                       /* having this key.
+     3 ROWS-REQUESTED (N4) /* Maximum number of rows that
+/*                                       /* are requested to be returned
+/*                                       /* for the current call. This
+/*                                       /* must be less than or equal to
+/*                                       /* number of rows allocated.
+     3 RANGE-OPTION (N2) /* See CDRANGEL
+     3 LEADING-FIXED-COMPONENTS (N2) /* This field is used to
+/*                                       /* increase the default number
+/*                                       /* of leading fixed key values
+/*                                       /* for the logical key. All key
+/*                                       /* values supplied up to this
+/*                                       /* number of components will
+/*                                       /* exactly match the
+/*                                       /* corresponding value in the
+/*                                       /* return row.
+     3 USE-UNIQUE-ID (L) /* This flag is set if browsing
+/*                                       /* by a non-unique key. If so,
+/*                                       /* you can designate a specific
+/*                                       /* record as the first one to be
+/*                                       /* returned. For example, if
+/*                                       /* browsing employees by NAME
+/*                                       /* you can indicate that you
+/*                                       /* wish to begin at the SMITH
+/*                                       /* having ISN 1234. All prior
+/*                                       /* SMITH records will not be
+/*                                       /* returned.
+/*                                       /* This feature is mainly used
+/*                                       /* to simulate backward
+/*                                       /* scrolling.
+/*                                       /* For non-adabas files, the
+/*                                       /* prime key determines
+/*                                       /* uniqueness. If no prime-key,
+/*                                       /* the record sequence is used.
+   2 INPUT-OUTPUTS
+     3 RESTART (L) /* Set to force the browse
+/*                                       /* object to begin a new browse
+/*                                       /* even though the starting
+/*                                       /* key may not have changed.
+/*                                       /* This is reset by the called
+/*                                       /* browse object.
+   2 OUTPUTS
+     3 ACTUAL-ROWS-RETURNED (N4) /* Number of rows returned. This
+/*                                       /* will be less than or equal to
+/*                                       /* MAX-ROWS-REQUESTED
+     3 END-OF-DATA (L) /* If all of the rows on the
+/*                                       /* database were exhausted, this
+/*                                       /* flag is set.
+     3 RESTARTED (I1) /* See CDBRPDAL
+END-DEFINE

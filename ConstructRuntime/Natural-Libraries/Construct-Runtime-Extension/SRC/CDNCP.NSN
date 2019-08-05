@@ -1,0 +1,123 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CDNCP
+* System     : NATURAL-CONSTRUCT
+* Application: All generated applications which use Direct Commands
+* Title      : Natural Construct Processor Command
+* Written on : 19 Aug 1992
+* Description: This subprogram requires NAT2.2 or better to execute.
+*
+*              If a command processor has been previously invoked
+*              (usually from the startup menu) then the direct command
+*              will be checked to see if it is executable by the
+*              command processor and executed if possible.
+*
+*              If no command processor is active or the direct command
+*              is not executable by the current processor, then
+*              control is returned to the calling program (CDNCPX).
+*
+* History
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDPDA-D
+  PARAMETER USING CDPDA-M
+  LOCAL USING CDNCPV   /* View of COMMAND
+  LOCAL
+*
+* Miscellaneous Variables
+   01 #CURRENT-PROCESSOR(A8)   /* Currently active Natural Command
+                               /* Processor name.
+   01 #DATA(A249)
+   01 #DIR-COMMAND(A60)
+   01 #PROGRAM(A8)
+   01 REDEFINE #PROGRAM
+      02 CHAR(A1/1:8)
+END-DEFINE
+FORMAT LS=250
+*
+CHECK-COMMAND.
+PROCESS CDNCPV ACTION GET
+  USING PROCESSOR-NAME = ' '
+        GETSET-FIELD-NAME = 'NAME'
+IF NATURAL-ERROR > 0 THEN   /* No command processor is active.
+  ESCAPE ROUTINE IMMEDIATE
+ELSE
+  ASSIGN #CURRENT-PROCESSOR = CDNCPV.GETSET-FIELD-VALUE /* NCP name
+  PERFORM NCP-ACTIVE
+  IF NATURAL-ERROR > 0 THEN  /* Invalid command or other problem
+    PERFORM SET-MSG
+  END-IF
+END-IF  /* No processor active
+*
+************************************************************************
+DEFINE SUBROUTINE NCP-ACTIVE
+************************************************************************
+*
+* Command processor is active - validate direct command.
+  PROCESS CDNCPV ACTION CHECK
+    USING PROCESSOR-NAME = #CURRENT-PROCESSOR
+          COMMAND-LINE(1) = DIALOG-INFO.##COMMAND
+*
+  IF NATURAL-ERROR > 0 THEN  /* Then command is invalid for processor
+    ESCAPE ROUTINE IMMEDIATE
+  ELSE /* Valid command
+    RELEASE STACK
+    STACK TOP COMMAND DIALOG-INFO.##MAIN
+    ASSIGN #DIR-COMMAND = DIALOG-INFO.##COMMAND
+    RESET DIALOG-INFO.##COMMAND
+    PROCESS CDNCPV ACTION EXEC
+       USING PROCESSOR-NAME = #CURRENT-PROCESSOR
+             COMMAND-LINE(1) = #DIR-COMMAND
+    IF NATURAL-ERROR > 0 THEN
+      ESCAPE ROUTINE IMMEDIATE
+    END-IF
+*
+    IF *DATA > 0 THEN
+      INPUT #DATA
+    END-IF
+    /*
+    /* If stacked data was an action code, then the prior executed
+    /* cmd may have prepared for another Natural cmd processor
+    /* cmd to be executed. Rebuild the stack and execute the cmd.
+    /* Don't stack an action code if one already exists on the stack.
+    /*
+    EXAMINE RESULT-FIELD(1) FOR 'ACTION=' REPLACE WITH 'ACTION:'
+    IF RESULT-FIELD(1) = MASK('ACTION:') AND
+        #DATA EQ MASK('ACTION:') THEN
+      RESET RESULT-FIELD(1)
+    END-IF
+    COMPRESS RESULT-FIELD(1) #DATA TO #DATA WITH DELIMITER
+    IF #DATA NE ' ' THEN
+      STACK TOP DATA #DATA
+    END-IF
+    /*
+    /* If another command has been prepared, then execute it.
+    IF CDNCPV.RESULT-FIELD(2) NE MASK('FETCH=')
+      PROCESS CDNCPV ACTION EXEC
+        USING PROCESSOR-NAME = #CURRENT-PROCESSOR
+             COMMAND-LINE(1) = CDNCPV.COMMAND-LINE(1)
+      IF NATURAL-ERROR > 0
+        ESCAPE ROUTINE IMMEDIATE
+      END-IF
+    END-IF
+    /*
+    /* If no other command has been prepared, check for a pgm to FETCH.
+    IF CDNCPV.RESULT-FIELD(2) = MASK('FETCH=')  THEN
+      MOVE CDNCPV.RESULT-CHAR(2,7:14) TO #PROGRAM.CHAR(1:8)
+      FETCH  #PROGRAM
+    END-IF
+  END-IF /* Error on check command
+END-SUBROUTINE /* NCP-ACTIVE
+*
+************************************************************************
+DEFINE SUBROUTINE SET-MSG
+************************************************************************
+*
+  CALLNAT 'CDUMSG' MSG-INFO
+  COMPUTE MSG-INFO.##MSG-NR = -MSG-INFO.##MSG-NR /* Get system error msg
+END-SUBROUTINE /* SET-MSG
+END

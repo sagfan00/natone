@@ -1,0 +1,22 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  text strings required by the
+/*  MAINTENANCE model.
+/*
+ 1 CDFMTXL
+/*
+   2 #ACTION-TXT (A10) INIT<'*8330'> /* 'Action'
+   2 #REQUIRED-TXT (A18) INIT<'*8331'> /* 'is required'
+   2 #CANNOT-BE (A25) INIT<'*8332'> /* 'cannot be'
+   2 #BLANK-TXT (A15) INIT<'*8333'> /* 'Blank'
+   2 #FALSE-TXT (A15) INIT<'*8334'> /* 'False'
+   2 #ZERO-TXT (A15) INIT<'*8335'> /* 'Zero'
+   2 #OBJECT-NAME (A32) INIT<'*8313'> /* 'Record'
+ 1 REDEFINE CDFMTXL /* REDEF. BEGIN : CDFMTXL
+   2 CDUTRANS (A1/1:130)
+ 1 CDFMTXL-NAME (A8) INIT<'CDFMTXL'>
+END-DEFINE

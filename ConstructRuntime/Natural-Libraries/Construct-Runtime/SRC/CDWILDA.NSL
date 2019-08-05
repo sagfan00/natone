@@ -1,0 +1,12 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDWILDA
+   2 #WILD-CARD-CHARS (A1/1:3) INIT<'*','<','>'>
+   2 REDEFINE #WILD-CARD-CHARS
+     3 #ASTERISK (A1)
+     3 #LESS-OR-EQUAL (A1)
+     3 #GREAT-OR-EQUAL (A1)
+END-DEFINE

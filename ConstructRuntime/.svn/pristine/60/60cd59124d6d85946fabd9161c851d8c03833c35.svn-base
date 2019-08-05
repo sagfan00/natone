@@ -1,0 +1,131 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/* **********************************************************************
+/*  Program ....... USR1051A (PDA)
+/*  Library ....... SYSEXT
+/*  Description ... Contains one         part of the parameters for
+/*    USR1051N to handle Predict         data.
+/* **********************************************************************
+/*
+ 1 USR1051A
+   2 USER (A8)
+   2 DBID (N5)
+   2 FNR (N5)
+   2 PASSWORD (A8)
+   2 CIPHERCODE (N8)
+   2 INFO-TYPE (A1)
+   2 OBJECT-TYPE (A5)
+   2 REDEFINE OBJECT-TYPE
+     3 OBJECT-TYPE-A2 (A2)
+   2 OBJECT-NAME (A32)
+   2 OTHER-KEY (A64)
+   2 REDEFINE OTHER-KEY
+     3 NEW-OBJECT-NAME (A32)
+   2 REDEFINE OTHER-KEY
+     3 OBJECT-NAME-2 (A32)
+     3 OBJECT-NAME-3 (A32)
+   2 REDEFINE OTHER-KEY
+     3 IMPL-POINTER
+       4 MEM-NAME (A32)
+       4 MEM-LIB (A8)
+       4 MEM-DBID (N5)
+       4 MEM-FNR (N5)
+/*
+   2 INPUTS /* input parameter
+     3 OPT-ACCESS (A1)
+     3 OPT-ET (A1)
+     3 OPT-REPLACE (A1)
+     3 OPT-SESNUM (N3)
+     3 OPT-LINE-NUM (A1)
+     3 OPT-AMOUNT (N3)
+     3 OPT-LINESIZE (N3)
+     3 OPT-SL-TYPE (A1)
+/*
+   2 INPUT-OUTPUTS /* I-O parameter
+     3 FDIC-VERSION (A3)
+     3 TIMESTMP (N13)
+     3 NEXT-SEQ (N5)
+     3 NEXT-NUM (N7)
+     3 SYSDIC-USER (A250)
+/*
+ 1 USR1051-TEXT (A160) /* for internal use only
+/*
+ 1 USR1051-RESTR (A1/1:439) /* This is an variable
+/*                                       /* array. Instead of 439 any
+/*                                       /* value greater 2 may be used.
+/*                                       /*
+/*                                       /* The dimension of the array
+/*                                       /* corresponds with the value of
+/*                                       /* parameter RESTR-LENGTH.
+ 1 REDEFINE USR1051-RESTR
+   2 RESTR-LENGTH (N3) /*
+   2 RESTR-KEYWORD (A32/1:5)
+   2 RESTR-BOOL-OP (A1)
+   2 OBJECT-SUBTYP (A2)
+   2 RESTR-FROM-DATE (N12)
+   2 FILLER (A20)
+   2 RESTR-NOT-KEYWORD (A32)
+   2 RESTR-OWNER (A32)
+   2 RESTR-EXTRACT (A32)
+   2 RESTR-DBNR (N5)
+   2 RESTR-FNR-V33 (N3) /* please use RESTR-FNR instead
+   2 RESTR-LAN (A1)
+   2 RESTR-FI-SEL (A1)
+   2 REDEFINE RESTR-FI-SEL
+     3 RESTR-VE-FORMAT (A1)
+   2 RESTR-VE-STATUS (A1)
+   2 RESTR-SCAN-VALUE (A32)
+   2 RESTR-SCAN-ABSTR (A1)
+   2 RESTR-SCAN-DESC (A1)
+   2 RESTR-SCAN-ABS (A1)
+   2 RESTR-SCAN-RULE (A1)
+   2 RESTR-SCAN-OBJID (A1)
+   2 RESTR-SCAN-IGNORE (A1)
+   2 FILLER-1 (A7)
+   2 RESTR-FI-EXT-NAME (A50)
+   2 REDEFINE RESTR-FI-EXT-NAME
+     3 RESTR-EL-SYNONYM (A32)
+     3 RESTR-EL-SORT (A1)
+   2 RESTR-PARENT (A32)
+   2 RESTR-PARENT-SUBTYP (A2)
+   2 RESTR-FNR (N5)
+/*                                       /* Data communication area
+ 1 USR1051-SL /* This is an variable array.
+/*                                       /* The values 20 and 72 may be
+/*                                       /* changed for customers need.
+/*                                       /* The dimension of the array
+/*                                       /* corresponds with parameters
+/*                                       /* OPT-AMOUNT and OPT-LINESIZE.
+   2 SL-RETURN (P3)
+   2 SL-NUM (P7/1:20)
+   2 SL-SEQ (N5/1:20)
+   2 SL-LONG (A1/1:20)
+   2 SL-TEXT (A1/1:20,1:72)
+   2 REDEFINE SL-TEXT
+     3 SL-TEXT-A72 (A72/1:20)
+   2 REDEFINE SL-TEXT
+     3 SL-TEXT-A70 (A1/1:20,1:70)
+   2 REDEFINE SL-TEXT
+     3 SL-TEXT-A1-900 (A1/1:1,1:900)
+/*                                       /* Message area
+ 1 USR1051-MSG
+   2 MSG (A79)
+   2 MSG-TYPE (I1)
+   2 MSGA-GR
+     3 MSG-NR (I2)
+     3 MSG-TEXT1 (A34)
+     3 MSG-TEXT2 (A34)
+   2 MSG-TEXT3 (A34)
+/*                                       /* Description of the field
+ 1 USR1051-FLD /* in error.
+   2 FIELD-STRUCTURE (A32)
+   2 FIELD-NAME (A32)
+   2 FIELD-POSITION (I4)
+   2 FIELD-INDEX1 (I4)
+   2 FIELD-INDEX2 (I4)
+   2 FIELD-INDEX3 (I4)
+/* **** end of USR1051A *************************************************
+END-DEFINE

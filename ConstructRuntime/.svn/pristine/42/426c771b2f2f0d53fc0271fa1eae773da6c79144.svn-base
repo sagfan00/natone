@@ -1,0 +1,81 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDAPROXY
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-02
+/*                        Short Desc:    Standard proxy parameters
+/*                        Long Desc :    This data area defines
+/*                                  :    parameters that are passed to
+/*                                  :    all object interface modules
+/*                                  :    (known as proxies) called
+/*                                  :    by the server dispatcher.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*   2006-01-17  This module is to       replace CDAPROXY
+/*               the only difference     is INPUTS has now been
+/*               replaced with           CDAPROXY-INPUTS
+ 1 CDAPROXY
+   2 INPUT-OUTPUTS
+     3 DATA-LENGTH (N10) /* Length of data recieved or
+/*                                       /* data to be sent.
+   2 CDAPROXY-INPUTS
+     3 DOMAIN (A8) /* High level object qualifier
+     3 OBJECT (A32) /* Object identifier
+     3 METHOD (A32) /* Eg. GET, UPDATE, etc.
+/*                                       /* The method determines which
+/*                                       /* proxy object is invoked as
+/*                                       /* well as what function the
+/*                                       /* invoked object is to perform.
+     3 OBJECT-VERSION (N6) /* Used to handle upward
+/*                                       /* compatibility. Allows the
+/*                                       /* proxy object can support
+/*                                       /* multiple client/server
+/*                                       /* versions of an object.
+     3 REDEFINE OBJECT-VERSION /* REDEF. BEGIN : OBJECT-VERSION
+       4 VERSION (N2)
+       4 RELEASE (N2)
+       4 MAINTENANCE-LEVEL (N2)
+     3 SERVER-MODE (N1) /* 1 = Dispatcher issues ET
+/*                                       /*     after call.
+/*                                       /* 2 = No ET after call
+     3 USER-ID (A32) /* Client user ID
+     3 PASSWORD (A32) /* Client password
+     3 USER-LANGUAGE (N2) /* Assigned to *LANGUAGE
+     3 TRACE-DATA
+       4 TRACE-OPTION (N1/1:15)
+       4 REDEFINE TRACE-OPTION /* REDEF. BEGIN : TRACE-OPTION
+         5 WRITE-DATA-TO-PGM (N1) /* 1 = Data sent to proxy
+/*                                       /*     will be written to pgm
+/*                                       /* 2 = Data received from proxy
+/*                                       /*     will be written to pgm
+/*                                       /* 3 = Received and sent data
+/*                                       /*     will be written
+/*                                       /* 4 = Data will be written to
+/*                                       /*     a pgm if error in proxy
+/*                                       /* 5 = Source area contains
+/*                                       /*     user-defined
+/*                                       /*     application debug data,
+/*                                       /*     save to system file.
+         5 ERROR-HANDLING (N1) /* 0 = ESCAPE ROUTINE back to
+/*                                       /*     dispatcher.
+/*                                       /* 1 = Invoke *ERROR-TA
+       4 TRACE-COMMAND (A10) /* Use CDLPROXC values
+/*                                       /* DATASIZES = Proxy returns
+/*                                       /*             block sizes.
+/*                                       /* INITIALIZE = Proxy returns
+/*                                       /*              initialized data
+     3 RESERVED (A40) /* Reserved for future use.
+     3 REDEFINE RESERVED /* REDEF. BEGIN : RESERVED
+       4 TIMESTAMP-VALUES /* Used for performance measur.
+         5 START-OF-PROGRAM (B8)
+         5 BEFORE-CALLNAT-TIME (B8)
+         5 AFTER-CALLNAT-TIME (B8)
+         5 END-OF-PROGRAM (B8)
+END-DEFINE

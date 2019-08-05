@@ -1,0 +1,44 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+*
+* Handle standard PF keys common to all programs.
+DECIDE FOR FIRST CONDITION
+*
+* 'quit' - Terminate application by fetching global termination pgm
+* if we are deep in application, do FETCH RETURN to trigger confirm.
+  WHEN *PF-KEY EQ CDKEYLDA.#QUIT-KEY
+    /*
+    /* Pass current object name in case it needs it.
+    IF *LEVEL = 1 AND *DATA = 0 THEN
+      /*
+      /* Don't bother with confirmation.
+      CALLNAT 'CDENVIRR'  /* Release previously saved environments
+      FETCH DIALOG-INFO.##QUIT #PROGRAM
+    ELSE
+      CALLNAT 'CDENVIRR'  /* Release previously saved environments
+      FETCH RETURN DIALOG-INFO.##QUIT #PROGRAM
+    END-IF
+    ESCAPE TOP /* In case quit was cancelled.
+*
+* 'main' - Release Stack, fetch global startup program.
+  WHEN *PF-KEY EQ CDKEYLDA.#MAIN-KEY
+    PERFORM FINAL-PROCESSING
+    CALLNAT 'CDENVIRR'  /* Release previously saved environments
+    RELEASE STACK
+    FETCH DIALOG-INFO.##MAIN
+*
+* 'return' - go to previous object.
+  WHEN *PF-KEY EQ CDKEYLDA.#RETURN-KEY OR #FIRST-CHAR-ON-SCREEN EQ '.'
+    ESCAPE BOTTOM(PROG.) IMMEDIATE
+*
+* 'flip' - Invoke flip subprogram.
+  WHEN *PF-KEY EQ CDKEYLDA.#FLIP-KEY
+    CALLNAT 'CDFLIP' CDFLIPA MSG-INFO
+    ESCAPE TOP
+*
+* All other keys will be processed in main program.
+  WHEN NONE IGNORE
+END-DECIDE

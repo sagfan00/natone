@@ -1,0 +1,60 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #HPARM #PGM-NAME CDHCOPYA.HARDCOPY-DEVICE CDHCOPYA.MAX-RECORDS
+*     CDHCOPYA.PAGESIZE
+DEFINE DATA PARAMETER
+1 #HPARM (A065)
+1 #PGM-NAME (A008)
+1 CDHCOPYA.HARDCOPY-DEVICE (A008)
+1 CDHCOPYA.MAX-RECORDS (P07.0)
+1 CDHCOPYA.PAGESIZE (P03.0)
+END-DEFINE
+FORMAT PS=021 LS=079 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 023079        N1NNLCN____         X        01 SYSDBA  YL           0 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 001T #PGM-NAME  (AD=OD ) /*.01U008 A008 .
+ 014T '***** HARDCOPY PRINT OPTIONS *****'(I)
+ 053T *PROGRAM  (AD=OD ) /*.01S008 A008 .
+/
+ 001T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 053T *TIMX  (AD=OD EM=HH':'II' 'AP ) /*.01S008 T    .
+/
+ 001T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+/
+ 001T 'Please specify the following print options...'(I)
+/
+/
+ 003T 'Hardcopy device'
+ 019T '.' (027)
+ 047T CDHCOPYA.HARDCOPY-DEVICE  (AD=MIL'_' ) /*.99D008 A008 .
+/
+ 003T 'Print lines per page'
+ 024T '.' (022)
+ 047T CDHCOPYA.PAGESIZE  (AD=MIL'_' ) /*.99D003 P03.0.
+/
+ 003T 'Maximum number of records to be written ...'
+ 047T CDHCOPYA.MAX-RECORDS  (AD=MIL'_' ) /*.99D007 P07.0.
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

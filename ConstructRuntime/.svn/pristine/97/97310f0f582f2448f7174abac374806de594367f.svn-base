@@ -1,0 +1,93 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDLLANG
+   2 #LANG-TBL-SIZE (P3) INIT<60>
+   2 #LANG-TBL-INDEX (P3)
+/*
+/*  Language code
+   2 #LANG-MAP (A3/1:60) INIT
+     (1) <'011'>
+     (2) <'022'>
+     (3) <'033'>
+     (4) <'044'>
+     (5) <'055'>
+     (6) <'066'>
+     (7) <'077'>
+     (8) <'088'>
+     (9) <'099'>
+     (10) <'10A'>
+     (11) <'11B'>
+     (12) <'12C'>
+     (13) <'13D'>
+     (14) <'14E'>
+     (15) <'15F'>
+     (16) <'16G'>
+     (17) <'17H'>
+     (18) <'18I'>
+     (19) <'19J'>
+     (20) <'20K'>
+     (21) <'21L'>
+     (22) <'22M'>
+     (23) <'23N'>
+     (24) <'24O'>
+     (25) <'25P'>
+     (26) <'26Q'>
+     (27) <'27R'>
+     (28) <'28S'>
+     (29) <'29T'>
+     (30) <'30U'>
+     (31) <'31V'>
+     (32) <'32W'>
+     (33) <'33X'>
+     (34) <'34Y'>
+     (35) <'35Z'>
+     (36) <'36a'>
+     (37) <'37b'>
+     (38) <'38c'>
+     (39) <'39d'>
+     (40) <'40e'>
+     (41) <'41f'>
+     (42) <'42g'>
+     (43) <'43h'>
+     (44) <'44i'>
+     (45) <'45j'>
+     (46) <'46k'>
+     (47) <'47l'>
+     (48) <'48m'>
+     (49) <'49n'>
+     (50) <'50o'>
+     (51) <'51p'>
+     (52) <'52q'>
+     (53) <'53r'>
+     (54) <'54s'>
+     (55) <'55t'>
+     (56) <'56u'>
+     (57) <'57v'>
+     (58) <'58w'>
+     (59) <'59x'>
+     (60) <'60y'>
+   2 REDEFINE #LANG-MAP
+     3 #LANG-MAP-STRUCTURE (1:60)
+       4 #LANG-CODE-NUMBER (N2)
+       4 #LANG-CODE-CHAR (A1)
+   2 REDEFINE #LANG-MAP /* REDEF. BEGIN : #LANG-MAP
+     3 #LANGUAGE-1-34 (1:34)
+       4 #SINGLE-BYTE-LANGUAGE (N2)
+       4 FILLER1 (A1)
+     3 #LANGUAGE-35-50 (1:16)
+       4 #UNKNOWN-LANGUAGE (N2)
+       4 FILLER2 (A1)
+     3 #LANGUAGE-51-60 (1:10)
+       4 #MULTI-BYTE-LANGUAGE (N2)
+       4 FILLER3 (A1)
+   2 REDEFINE #LANG-MAP
+     3 #LANGUAGE-1-25 (1:25)
+       4 #LOWER-CASE (N2)
+       4 FILLER4 (A1)
+     3 #LANGUAGE-26-60 (1:35)
+       4 #NO-LOWER-CASE (N2)
+       4 FILLER5 (A1)
+END-DEFINE

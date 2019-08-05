@@ -1,0 +1,26 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  language dependent text strings
+/*  used in help routines.
+/*
+ 1 CDHLPTXL
+/*
+   2 #HELP-ID-TXT (A15) INIT<'*8350'> /* Help ID
+   2 #HELP-FOR-TXT (A15) INIT<'*8351'> /* Help for
+   2 #HELP-PARAMETER-TXT (A15) INIT<'*8352'> /* Parameter
+   2 #HELP-PAGE-TXT (A15) INIT<'*8353.1,./08'> /* Page
+   2 #HELP-FILE-TXT (A15) INIT<'*8354'> /* File
+   2 #HELP-FILE-TYPE-TXT (A15) INIT<'*8355'> /* File Type
+   2 #HELP-FIELD-TXT (A15) INIT<'*8356'> /* Field
+   2 #HELP-PREDICT-DESC-TXT (A40) INIT<'*8357'> /* PREDICT Ex..
+   2 #HELP-PREDICT-NO-DESC-FOUND (A60) INIT<'*8358'> /* PREDICT No Des.
+   2 #HELP-PREDICT-NO-PROFILE (A60) INIT<'*8359'> /* PREDICT Mis.
+   2 #HELP-INVALID-PARAMETER (A50) INIT<'*8360'> /* Invalid para.
+ 1 REDEFINE CDHLPTXL /* REDEF. BEGIN : CDHLPTXL
+   2 CDUTRANS (A1/1:315)
+ 1 CDHLPTXL-NAME (A8) INIT<'CDHLPTXL'>
+END-DEFINE

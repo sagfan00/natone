@@ -1,0 +1,25 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CCDEBUG
+* System     : NATURAL-CONSTRUCT
+* Written by : SAG
+* Description: This copycode is included whenever debug data is to be
+*            : written out by your application. This copycode should
+*            : be passed in the current program name, line number,
+*            : statement type and debug data.
+*            : CSUDEBUG can be used to control what gets written to
+*            : the debug data as well as where it is written.
+*            :
+* History    :
+************************************************************************
+IF *COM = 'DB=Y' THEN
+  ASSIGN CDADEBUG.PGM-LOCATION = &1&
+  ASSIGN CDADEBUG.LINE-NUM = &2&
+  COMPRESS &3& TO CDADEBUG.TRACE-DATA
+  ASSIGN CDADEBUG.PROGRAM-NAME = *PROGRAM
+  CALLNAT 'CDUDEBUG' CDADEBUG
+END-IF

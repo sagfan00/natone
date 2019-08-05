@@ -1,0 +1,15 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDHCOPYA
+   2 HARDCOPY (L) /* True = print hard copy
+   2 SET-CONTROL-H (A9)
+   2 REDEFINE SET-CONTROL-H /* REDEF. BEGIN : SET-CONTROL-H
+     3 FILLER (A1)
+     3 HARDCOPY-DEVICE (A8) /* Default hardcopy device
+   2 MAX-RECORDS (P7)
+   2 PAGESIZE (P3)
+   2 RECORDS-WRITTEN (P7) /* Records written to hardcopy
+END-DEFINE

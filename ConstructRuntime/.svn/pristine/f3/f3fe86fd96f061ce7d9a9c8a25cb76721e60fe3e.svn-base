@@ -1,0 +1,613 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* :LineIncrement 10
+* <Natural Source Header
+**Postgen Changes
+**SAG GENERATOR: CST-SHELL                        VERSION: 3.4.1
+**SAG TITLE: Maintain valid actions
+**SAG SYSTEM: NATURAL-CONSTRUCT
+**SAG DESCS(1): This subprogram is used to maintain the set of all
+**SAG DESCS(2): valid action values for an application.
+**SAG PROGRAM-TYPE: N
+**SAG PARAMETER-NAME(1): CDACTA
+**SAG LOCAL-NAME(1): CDACTL
+**SAG LOCAL-NAME(2): CDKEYLDA
+**SAG LOCAL-NAME(3): CDCHKSTA
+**SAG LOCAL-NAME(4): CDPDA-M
+************************************************************************
+* Program  : CDACT
+* System   : NATURAL-CONSTRUCT
+* Title    : Maintain valid actions
+* Generated: Jul 11,96 at 03:22 PM by SAG
+* Function : This subprogram is used to maintain the set of all
+*          : valid action values for an application.
+*
+*
+* History
+**SAG DEFINE EXIT CHANGE-HISTORY
+* Changed on Jul 11,96 by SAG for release ____
+* >
+* > Description : This subprogram is used to maintain the set of all
+* >               valid action values for an application. Whenever a
+* >               program contains a field where actions can be
+* >               specified this subprogram should be used to
+* >               establish the valid action codes and acceptable
+* >               alternates for the current language.
+* >
+* >               To indicate which actions you wish to support,
+* >               place an 'X' character in the first mneumonic
+* >               associated with the action prior to invoking this
+* >               subprogram. This subprogram will replace all
+* >               selected action mneumonics for the correct
+* >               mneumonic values based on the current value of
+* >               *LANGUAGE. If selected nmeumonics collide,
+* >               ambiguous mneumonics are removed from the list
+* >               of valid neumonics.
+* >
+* >               This subprogram also builds a two line display
+* >               field that can be placed on the screen to
+* >               indicate the valid commands associated with the
+* >               action field. If using a small window, be sure to
+* >               set your window size prior to invoking this
+* >               routine since the list of valid action descriptions
+* >               is split into 2 lines based on the current window
+* >               length.
+* >
+* > Security note  The calling program name is passed to this program
+* >                but is not used by default. This can be used
+* >                if you wish to incorporate action level security
+* >                by user.
+* >
+* > Change note
+* >
+* >              Update CDACTL when adding a new action.
+* >              Note: This translation LDA is also being used by
+* >                    Construct to display valid actions in the
+* >                    BROWSE-SELECT* models.  If you want Construct
+* >                    (invoked by CSTG) to reflect these changes then
+* >                    you must recompile the module CDACTCST.
+* >
+* >              Put dynamic attribute characters between
+* >              actions to allow these to be used as
+* >              tabbable push-buttons.
+* >
+* >              If action is requested by a not sign ^,
+* >              don't put action in #KD-LINES(*)
+* >
+* >              Dynamic multi-language run-time support
+* >
+**SAG END-EXIT
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDACTA
+  LOCAL USING CDACTL
+  LOCAL USING CDKEYLDA
+  LOCAL USING CDCHKSTA
+  LOCAL USING CDPDA-M
+  LOCAL
+  01 #PROGRAM (A8)
+**SAG DEFINE EXIT LOCAL-DATA
+*
+* Additional local variables
+*
+* Define required constants.
+  01 #MAX-ALTERNATES(P1) CONST<3>
+  01 #MAX-CODES(P3) CONST<30>
+  01 #ATTR
+    02 REVERSED-MODIFIABLE(A1) INIT<H'00'>
+    02 NONDISPLAY-PROTECTED(A1) INIT<'('>
+  01 REDEFINE #ATTR
+    02 #LIST(A1/1:2)
+*
+* Miscellaneous local variables.
+  01 #ACTION-CNT(P3)
+  01 #AVAILABLE-WIDTH(P3)
+  01 #CHECK-LENGTH(A3)
+  01 #CODES (1:#USED-CODES)
+    02 #CODE-VALUE(A3/1:#MAX-ALTERNATES)
+    02 #CODE-NAME(A10)
+  01 #CONFLICTS-FOUND(L)
+  01 #FLIP(A5)
+  01 #FOUND(P3)
+  01 #I(P3)
+  01 #J(P3)
+  01 #K(P3)
+  01 #KD-NAME(A11/1:#USED-CODES+2) /* 10 char description + 1 for space
+  01 REDEFINE #KD-NAME
+    02 #TEMP-AREA(A165)
+  01 REDEFINE #KD-NAME
+    02 #EXPAND-CHAR(A1/1:165)
+  01 REDEFINE #KD-NAME
+    02 #KD-STRUCTURE(1:#USED-CODES+2)
+      03 #KD-ATTR(A1) /* Attribute byte
+      03 #KD-ELEM(A10)
+      03 REDEFINE #KD-ELEM
+        04 #KD-ELEM-CHAR-B(B1/1:10)
+      03 REDEFINE #KD-ELEM
+        04 #KD-ELEM-CHAR-I(I1/1:10)
+      03 REDEFINE #KD-ELEM
+        04 #KD-ELEM-CHAR-A(A1/1:10)
+  01 #MAX-LESS-1(P3)
+  01 NCP-ACTION
+    02 #NCP-ACTION(A3)
+    02 REDEFINE #NCP-ACTION
+      03 CHAR(A1/1:3)
+  01 #NCP-ACTION-CNT(P3)
+  01 #NCP-ACTION-IDX(P3)
+  01 #NAME-CNT(P3)
+  01 #REQUIRED-LEN(P3)
+  01 #SORT-REQUIRED(L)
+  01 #TEMP(A80)
+  01 REDEFINE #TEMP
+    02 #TEMP-CHAR(A1/1:80)
+  01 #TOTAL-WIDTH(P3)
+  01 #VALID-ACTION-LIST(A3/1:#MAX-CODES)
+  /*
+  /* For determining CASE-DIFF for the run-time character set.
+  01 #A-LOWER(A1) INIT <'a'> /* Over length comment to preserve the 'a'. R CASE 'a'.
+  01 REDEFINE #A-LOWER
+    02 #A-LOWER-I(I1)
+  01 #A-UPPER(A1) INIT <'A'>
+  01 REDEFINE #A-UPPER
+    02 #A-UPPER-I(I1)
+  01 #CASE-DIFF(I1)
+*
+* Stack checking variables - Used to determine if action restrictions
+*                            were passed on the stack.
+  01 #POS(P2)
+  01 #INDEX(P3)
+  01 #STACK
+    02 DATA(A80)
+    02 REDEFINE DATA
+      03 CHAR(A1/1:80)
+  01 #FIRST-DELIMITER(P3)
+  01 #END(P3)
+  01 #START(P3)
+*
+* Action Inheritence Tables - If the calling program passes an action
+*                             code on the stack then use it to determine
+*                             what other action codes are available to
+*                             the caller.
+*
+* The indices in the #ACTION-INDX arrays correspond to the occurrence
+* number of the actions specified in the #APPL-ACTIONS array found in
+* CDACTA. For example ADD = 1, BROWSE = 2, ect. These tables must be
+* updated with any new actions added to CDACTA if they are to be part
+* of the action inheritence hierarchy.
+*
+  01 #MAX-DISPLAY-ACTIONS(P2) CONST<5>            /* BROWSE
+  01 #DISPLAY-ACTIONS                             /* CLEAR
+     02 #ACTION-INDX(P2/1:#MAX-DISPLAY-ACTIONS)   /* DISPLAY
+        INIT <2,3,4,6,13>                         /* NEXT   /* FORMER
+     02 #ACTION-ALLOWED(L/1:#MAX-DISPLAY-ACTIONS)
+*
+  01 #MAX-MODIFY-ACTIONS(P2) CONST<5>                   /* MODIFY
+  01 #MODIFY-ACTIONS
+     02 #ACTION-INDX(P2/1:#MAX-MODIFY-ACTIONS)
+        INIT <2,3,4,5,6>
+     02 #ACTION-ALLOWED(L/1:#MAX-MODIFY-ACTIONS)
+*
+  01 #MAX-ADD-ACTIONS(P2) CONST<6>                      /* ADD
+  01 #ADD-ACTIONS
+     02 #ACTION-INDX(P2/1:#MAX-ADD-ACTIONS)
+        INIT <1,2,3,4,5,6>
+     02 #ACTION-ALLOWED(L/1:#MAX-ADD-ACTIONS)
+*
+  01 #MAX-PURGE-ACTIONS(P2) CONST<7>                    /* PURGE
+  01 #PURGE-ACTIONS                                     /* RECALL
+     02 #ACTION-INDX(P2/1:#MAX-PURGE-ACTIONS)
+        INIT <1,2,3,4,6,7,9>
+     02 #ACTION-ALLOWED(L/1:#MAX-PURGE-ACTIONS)
+*
+**SAG END-EXIT
+END-DEFINE
+PROG.    /* to allow escape from routine.
+REPEAT
+*
+PERFORM INITIALIZATIONS
+*
+**SAG DEFINE EXIT START-OF-PROGRAM
+*
+**SAG END-EXIT
+*
+**SAG DEFINE EXIT GENERATE-CODE
+*
+RESET CDACTA.OUTPUTS
+ASSIGN #MESSAGE-LIBRARY = *PROGRAM
+COMPUTE #CASE-DIFF = #A-UPPER-I - #A-LOWER-I
+PERFORM GET-ACTION-TEXT
+*
+FORMAT LS=250 PS=23
+*
+* Make sure there are no H'00' characters in the selected action table
+* from a previous call.
+EXAMINE FULL CDACTA.#APPL-ACTIONS(*,*) FOR H'00' REPLACE WITH ' '
+*
+* If an action code was passed on the stack, in the form 'ACTION:',
+* then we are processing an action requested from a command processor.
+* This signals to pass back only actions "inherited" by this action
+* code as defined in the inheritance tables.
+*
+IF *DATA > 0 THEN
+  CALLNAT 'CDCHKSTK' CDCHKSTA
+  ASSIGN #STACK.DATA = CDCHKSTA.#STACK-DATA
+  EXAMINE #STACK.DATA FOR 'ACTION:' DELETE GIVING NUMBER #NCP-ACTION-CNT
+  IF #NCP-ACTION-CNT > 0 THEN
+    /* If action = '*', Maintain, allow all action codes.
+    IF #STACK.CHAR(1) = '*' THEN
+      ASSIGN #STACK.CHAR(1) = H'00'
+    ELSE
+      /*
+      /* Translate English action code into current language.
+      EXAMINE #STACK.CHAR(*) FOR CDCHKSTA.#DELIMITER
+               GIVING INDEX #FIRST-DELIMITER
+      IF #FIRST-DELIMITER EQ 0 THEN
+         EXAMINE FULL #STACK.CHAR(*) FOR ' '
+                 GIVING INDEX #FIRST-DELIMITER
+      END-IF
+      COMPUTE #END = #FIRST-DELIMITER - 1
+      IF #END LE 0 OR #END GT 3 THEN
+        ASSIGN #END = 3
+      END-IF
+      ASSIGN NCP-ACTION.CHAR(1:#END) = #STACK.CHAR(1:#END)
+      DECIDE ON FIRST VALUE #NCP-ACTION
+        VALUE 'A','AD','ADD' ASSIGN #NCP-ACTION-IDX = 1  /* Add
+        VALUE 'B','BR','BRO' ASSIGN #NCP-ACTION-IDX = 2  /* Browse
+        VALUE 'C','CL','CLE' ASSIGN #NCP-ACTION-IDX = 3  /* Clear
+        VALUE 'D','DI','DIS' ASSIGN #NCP-ACTION-IDX = 4  /* Display
+        VALUE 'M','MO','MOD' ASSIGN #NCP-ACTION-IDX = 5  /* Modify
+        VALUE 'N','NE','NEX' ASSIGN #NCP-ACTION-IDX = 6  /* Next
+        VALUE 'P','PU','PUR' ASSIGN #NCP-ACTION-IDX = 7  /* Purge
+        VALUE 'R','RE','REC' ASSIGN #NCP-ACTION-IDX = 9  /* Recall
+        VALUE 'F','FO','FOR' ASSIGN #NCP-ACTION-IDX = 13 /* Former
+        NONE  IGNORE
+      END-DECIDE
+      IF #NCP-ACTION-IDX > 0 THEN
+        ASSIGN #NCP-ACTION = #CODE-VALUE(#NCP-ACTION-IDX,3)
+        IF #NCP-ACTION NE ' ' THEN
+          COMPUTE #START = #FIRST-DELIMITER + 1
+          COMPUTE #END = 80 - #FIRST-DELIMITER
+          MOVE #STACK.CHAR(#START:80) TO #STACK.CHAR(1:#END)
+          ADD 1 TO #END
+          RESET #STACK.CHAR(#END:80)
+          COMPRESS #NCP-ACTION #STACK.DATA TO #STACK.DATA
+              WITH DELIMITER
+          PERFORM REBUILD-APPL-ACTIONS
+        END-IF
+      END-IF
+    END-IF
+    SET CONTROL '.P'
+    STACK TOP DATA #STACK.DATA
+  END-IF  /* NCP action was stacked
+END-IF    /* *DATA > 0
+*
+* Build up list of valid actions and alternates.
+FOR #I = 1 TO #USED-CODES
+  /*
+  /* If action value was marked, assign true action values.
+  IF CDACTA.#APPL-ACTIONS(#I,1) NE ' ' THEN
+    ADD 1 TO #ACTION-CNT
+    /*
+    /* If the action request character was a not sign (^),
+    /* return the valid action character for this, but do not
+    /* add the field to the #KD-LINES display or the valid
+    /* action list.
+    IF CDACTA.#APPL-ACTIONS(#I,1) NE '^' THEN
+      /*
+      /* Save only the #APPL-ACTIONS which are not marked with
+      /* ^ character to the valid action list.
+      ASSIGN #VALID-ACTION-LIST(#I) =
+             #CODES.#CODE-VALUE(#I,1)
+      ADD 1 TO #NAME-CNT
+      ASSIGN #KD-NAME.#KD-ELEM(#NAME-CNT) =
+             #CODES.#CODE-NAME(#I)
+      /*
+      /* Determine whether the code list is currently sorted.
+      IF #NAME-CNT GE 2 THEN
+        IF #KD-NAME.#KD-ELEM(#NAME-CNT) LT
+           #KD-NAME.#KD-ELEM(#NAME-CNT - 1) THEN
+          ASSIGN #SORT-REQUIRED = TRUE
+        END-IF
+      END-IF
+    END-IF
+    ASSIGN CDACTA.#APPL-ACTIONS(#I,*) =
+           #CODES.#CODE-VALUE(#I,*)
+  END-IF
+END-FOR
+IF #ACTION-CNT = 0 THEN
+  INPUT(AD=OI) 'Error in use of program' *PROGRAM
+    / 'No action codes were selected'
+   ESCAPE ROUTINE
+END-IF
+*
+* Make sure that no code is duplicated. That is, used for more than 1
+* function. If so, replace duplicates with H'00'
+COMPUTE #MAX-LESS-1 = #USED-CODES - 1
+FOR #I = 1 TO #MAX-LESS-1
+  FOR #J = 1 TO #MAX-ALTERNATES
+    IF NOT (CDACTA.#APPL-ACTIONS(#I,#J) EQ ' ' OR = H'00') THEN
+     /*
+     /* If a duplicate action exists, replace all similar actions
+     /* with H'00'.
+      EXAMINE FULL CDACTA.#APPL-ACTIONS(#I + 1:#USED-CODES,*) FOR
+              FULL CDACTA.#APPL-ACTIONS(#I,#J)
+              REPLACE WITH H'00' GIVING NUMBER #FOUND
+      IF #FOUND NE 0 THEN
+        ASSIGN CDACTA.#APPL-ACTIONS(#I,#J) = H'00'
+        ASSIGN #CONFLICTS-FOUND = TRUE
+      END-IF
+    END-IF
+  END-FOR
+END-FOR
+*
+* Make sure that ALL alternates have not been deleted for a particular
+* action.
+IF #CONFLICTS-FOUND THEN
+  RESET #NAME-CNT
+  FOR #I = 1 TO #MAX-CODES
+    /*
+    /* Keep track of our place in the KD-NAME table.
+    IF #VALID-ACTION-LIST(#I) NE ' ' THEN
+      ADD 1 TO #NAME-CNT
+    END-IF
+    /*
+    /* If we deleted enties because of conflicts then make sure we
+    /* did not delete them all and make sure occurrence 1 is entered.
+    IF CDACTA.#APPL-ACTIONS(#I,*) EQ H'00' THEN
+      /*
+      /* If we did not delete them all, make sure that the first one
+      /* is filled in. Copy from other one if necessary.
+      IF CDACTA.#APPL-ACTIONS(#I,*) GT ' ' THEN /* did not delete all.
+        /*
+        /* If first occurrence is empty copy subsequent occurrence.
+        IF CDACTA.#APPL-ACTIONS(#I,1) = H'00' THEN
+          FILL-FIRST-SLOT.
+          FOR #J = 2 TO #MAX-ALTERNATES
+            IF CDACTA.#APPL-ACTIONS(#I,#J) GT ' ' THEN
+              ASSIGN CDACTA.#APPL-ACTIONS(#I,1) =
+                     CDACTA.#APPL-ACTIONS(#I,#J)
+              IF #VALID-ACTION-LIST(#I) NE ' ' THEN
+                ASSIGN #VALID-ACTION-LIST(#I) =
+                       CDACTA.#APPL-ACTIONS(#I,#J)
+                /*
+                /* Flip part of the name into upper case to reflect
+                /* the fact that more characters are required.
+                ASSIGN #CHECK-LENGTH = CDACTA.#APPL-ACTIONS(#I,1)
+                EXAMINE #CHECK-LENGTH FOR ' '
+                        GIVING LENGTH #REQUIRED-LEN
+                FOR #K = 1 TO #REQUIRED-LEN
+                  IF #KD-ELEM-CHAR-A(#NAME-CNT,#K) = MASK(L)
+                    /*
+                    /*  Convert lower case letter to upper case letter.
+                    ADD #CASE-DIFF TO #KD-ELEM-CHAR-I(#NAME-CNT,#K)
+                  END-IF
+                END-FOR
+              END-IF
+              ESCAPE BOTTOM(FILL-FIRST-SLOT.)
+            END-IF
+          END-FOR
+        END-IF
+      ELSE
+        INPUT(AD=OI) 'Error encountered in program' *PROGRAM
+           / 'Too many naming conflicts for action:' #I
+             'have rendered it unsupportable'
+      END-IF
+    END-IF
+  END-FOR
+END-IF
+*
+* Sort the list of names if necessary.
+IF #SORT-REQUIRED THEN
+  PERFORM SORT-NAMES
+END-IF
+*
+* Put an attribute character before all of the action fields to allow
+* the user to tab to each action. This requires a DY parameter of
+* '00VI'FFNP'02
+*
+* Add (PFn=flip) to the KD-LINE by default.
+ADD 1 TO #NAME-CNT
+COMPRESS '(' CDKEYLDA.#FLIP-KEY '=' #FLIP ')'
+          TO #KD-NAME.#KD-ELEM(#NAME-CNT) LEAVING NO
+ASSIGN #KD-NAME.#KD-ATTR(1:#NAME-CNT) = #ATTR.REVERSED-MODIFIABLE
+*
+* Now build the PF-KEY lines so that they fit inside the current window
+ASSIGN #AVAILABLE-WIDTH = ABS(*WINDOW-LS)
+/* This code assumes a Mainframe window size so we'll adjust the PC
+/* to the mainframe size
+IF #AVAILABLE-WIDTH > 80
+  #AVAILABLE-WIDTH := 80
+END-IF
+COMPUTE #TOTAL-WIDTH = #AVAILABLE-WIDTH * 2
+*
+IF #TOTAL-WIDTH GT 165 THEN
+  ASSIGN #TOTAL-WIDTH = 165
+END-IF
+*
+* If we don't have room to display all PF-KEYS then only leave one
+* space between them instead of equal spacing.
+IF #EXPAND-CHAR(#TOTAL-WIDTH:165) NE ' ' THEN
+  COMPRESS #KD-NAME(*) TO #TEMP-AREA LEAVING NO
+END-IF
+*
+* If necessary split the line based on the current window size.
+IF #EXPAND-CHAR(#AVAILABLE-WIDTH + 1:165) NE ' ' THEN
+  FOR #I = #AVAILABLE-WIDTH TO 1 STEP -1
+    IF #EXPAND-CHAR(#I) = #ATTR.#LIST(*) THEN
+      ASSIGN #TEMP.#TEMP-CHAR(1:79) = #EXPAND-CHAR(#I:#I + 78)
+      /*
+      /* Padd the end of the first line with attribute bytes so that
+      /* the length of the last push button on the first line will be
+      /* correct.
+      ASSIGN #EXPAND-CHAR(#I:#I + 78) =
+             #ATTR.REVERSED-MODIFIABLE
+      ASSIGN CDACTA.#KD-LINES(1) = #TEMP-AREA
+      ASSIGN CDACTA.#KD-LINES(2) = #TEMP
+      ESCAPE BOTTOM IMMEDIATE
+    END-IF
+  END-FOR
+ELSE
+  ASSIGN CDACTA.#KD-LINES(1) = #TEMP-AREA
+END-IF
+*
+* If the second KD-LINE is totally blank, make sure it is protected.
+IF CDACTA.#KD-LINES(2) = ' ' THEN
+  MOVE ALL #ATTR.REVERSED-MODIFIABLE TO CDACTA.#KD-LINES(2)
+END-IF
+*
+** Build VAL-ACT and Invalid message field.
+COMPRESS #VALID-ACTION-LIST(*) TO #TEMP-AREA WITH DELIMITER ','
+ASSIGN CDACTA.#INVALID-ACT-MSG =
+   'Invalid action, enter one of the following::1:'
+ASSIGN CDACTA.#INVALID-ACT-MSG-NR = 8058
+ASSIGN CDACTA.#INVALID-ACT-MSG-DATA = #TEMP-AREA
+*
+* Replace empty slots with H'00' so that a blank action does not
+* get mapped to an action variable.
+EXAMINE FULL CDACTA.#APPL-ACTIONS(*,*) FOR FULL '   ' REPLACE WITH H'00'
+*
+************************************************************************
+DEFINE SUBROUTINE SORT-NAMES
+************************************************************************
+*
+* Sort the list of function names using a bubble sort.
+COMPUTE #MAX-LESS-1 = #NAME-CNT - 1
+FOR #I = 1 TO #NAME-CNT
+  FOR #J = 1 TO #MAX-LESS-1
+    /*
+    /* If current value is greater than the next value then flip them
+    /* to bubble largest value to the end.
+    COMPUTE #K = #J + 1
+    /*
+    IF #KD-NAME.#KD-ELEM(#J) GT #KD-NAME.#KD-ELEM(#K) /* Swap #J and #K
+      ASSIGN #TEMP = #KD-NAME.#KD-ELEM(#K)
+      ASSIGN #KD-NAME.#KD-ELEM(#K) = #KD-NAME.#KD-ELEM(#J)
+      ASSIGN #KD-NAME.#KD-ELEM(#J) = #TEMP
+    END-IF
+  END-FOR
+  IF #MAX-LESS-1 GT 0 THEN
+    SUBTRACT 1 FROM #MAX-LESS-1
+  END-IF
+END-FOR
+END-SUBROUTINE
+************************************************************************
+DEFINE SUBROUTINE REBUILD-APPL-ACTIONS
+************************************************************************
+*
+* Rebuild the list of allowed action codes considering the original
+* requested actions from the calling program, and the action code passed
+* on the stack.  The code passed on the stack indicates that the calling
+* program only wants actions that are inherited by the action code on
+* the stack.  For example: stacked action 'D' inherits 'B','C','N', and
+* all other codes are restricted. The inherited actions are only allowed
+* if they were originally requested by the calling program.
+*
+  DECIDE ON FIRST VALUE OF #NCP-ACTION
+*
+* DISPLAY actions
+   VALUES #CODE-VALUE(2,3),  /* BROWSE
+          #CODE-VALUE(3,3),  /* CLEAR
+          #CODE-VALUE(4,3),  /* DISPLAY
+          #CODE-VALUE(6,3),  /* NEXT
+          #CODE-VALUE(13,3)  /* FORMER
+     FOR #I=1 TO #MAX-DISPLAY-ACTIONS
+       ASSIGN #POS = #DISPLAY-ACTIONS.#ACTION-INDX(#I)
+       IF CDACTA.#APPL-ACTIONS(#POS,1) NE ' ' THEN
+         ASSIGN #DISPLAY-ACTIONS.#ACTION-ALLOWED(#I) = TRUE
+       END-IF
+     END-FOR
+     RESET  CDACTA.#APPL-ACTIONS(*,*)
+     FOR #I=1 TO #MAX-DISPLAY-ACTIONS
+       ASSIGN #POS = #DISPLAY-ACTIONS.#ACTION-INDX(#I)
+       IF #DISPLAY-ACTIONS.#ACTION-ALLOWED(#I) THEN
+         ASSIGN CDACTA.#APPL-ACTIONS(#POS,*) = 'X'
+       END-IF
+     END-FOR
+*
+* MODIFY actions
+   VALUE  #CODE-VALUE(5,3)   /* MODIFY
+     FOR #I=1 TO #MAX-MODIFY-ACTIONS
+       ASSIGN #POS = #MODIFY-ACTIONS.#ACTION-INDX(#I)
+       IF CDACTA.#APPL-ACTIONS(#POS,1) NE ' ' THEN
+         ASSIGN #MODIFY-ACTIONS.#ACTION-ALLOWED(#I) = TRUE
+       END-IF
+     END-FOR
+     RESET  CDACTA.#APPL-ACTIONS(*,*)
+     FOR #I=1 TO #MAX-MODIFY-ACTIONS
+       ASSIGN #POS = #MODIFY-ACTIONS.#ACTION-INDX(#I)
+       IF #MODIFY-ACTIONS.#ACTION-ALLOWED(#I) THEN
+         ASSIGN CDACTA.#APPL-ACTIONS(#POS,*) = 'X'
+       END-IF
+     END-FOR
+*
+* ADD actions
+   VALUE  #CODE-VALUE(1,3)   /* ADD
+     FOR #I=1 TO #MAX-ADD-ACTIONS
+       ASSIGN #POS = #ADD-ACTIONS.#ACTION-INDX(#I)
+       IF CDACTA.#APPL-ACTIONS(#POS,1) NE ' ' THEN
+         ASSIGN #ADD-ACTIONS.#ACTION-ALLOWED(#I) = TRUE
+       END-IF
+     END-FOR
+     RESET  CDACTA.#APPL-ACTIONS(*,*)
+     FOR #I=1 TO #MAX-ADD-ACTIONS
+       ASSIGN #POS = #ADD-ACTIONS.#ACTION-INDX(#I)
+       IF #ADD-ACTIONS.#ACTION-ALLOWED(#I) THEN
+         ASSIGN CDACTA.#APPL-ACTIONS(#POS,*) = 'X'
+       END-IF
+     END-FOR
+*
+* PURGE actions
+   VALUES #CODE-VALUE(7,3),  /* PURGE
+          #CODE-VALUE(9,3)   /* RECALL
+     FOR #I=1 TO #MAX-PURGE-ACTIONS
+       ASSIGN #POS = #PURGE-ACTIONS.#ACTION-INDX(#I)
+       IF CDACTA.#APPL-ACTIONS(#POS,1) NE ' ' THEN
+         ASSIGN #PURGE-ACTIONS.#ACTION-ALLOWED(#I) = TRUE
+       END-IF
+     END-FOR
+     RESET  CDACTA.#APPL-ACTIONS(*,*)
+     FOR #I=1 TO #MAX-PURGE-ACTIONS
+       ASSIGN #POS = #PURGE-ACTIONS.#ACTION-INDX(#I)
+       IF #PURGE-ACTIONS.#ACTION-ALLOWED(#I) THEN
+         ASSIGN CDACTA.#APPL-ACTIONS(#POS,*) = 'X'
+       END-IF
+     END-FOR
+   NONE VALUE
+     IGNORE
+ END-DECIDE
+END-SUBROUTINE /* REBUILD-APPL-ACTIONS
+*
+************************************************************************
+DEFINE SUBROUTINE GET-ACTION-TEXT
+************************************************************************
+*
+* Get the translations for action codes if required
+ IF CDACTL.#TEXT-REQUIRED THEN
+   CALLNAT 'CDUTRANS' CDACTL.TRANSLATION-TEXT CDACTL.#MESSAGE-LIBRARY
+                      MSG-INFO
+ END-IF
+ ASSIGN #CODES.#CODE-NAME(1:#USED-CODES) =
+                                      CDACTL.#ACTION-INIT(1:#USED-CODES)
+ MOVE CDACTL.#FLIP-NAME TO #FLIP
+ EXAMINE CDACTL.#ACTION-INIT(*) TRANSLATE INTO UPPER CASE
+ FOR #I = 1 TO #USED-CODES
+   FOR #J = 1 TO #MAX-ALTERNATES
+     MOVE SUBSTRING (CDACTL.#ACTION-INIT(#I),1,#J) TO
+          #CODES.#CODE-VALUE(#I,#J)
+   END-FOR
+ END-FOR
+END-SUBROUTINE
+**SAG END-EXIT
+*
+************************************************************************
+DEFINE SUBROUTINE INITIALIZATIONS
+************************************************************************
+*
+  ASSIGN #PROGRAM = *PROGRAM
+*
+END-SUBROUTINE /* INITIALIZATIONS
+*
+ESCAPE BOTTOM(PROG.) IMMEDIATE
+END-REPEAT  /* PROG.
+END

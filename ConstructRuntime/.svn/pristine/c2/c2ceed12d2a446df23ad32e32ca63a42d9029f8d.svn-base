@@ -1,0 +1,43 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+************************************************************************
+* Program    : CSUSAA
+* System     : NATURAL-CONSTRUCT
+* Subsystem  : General Utility
+* Written on : Oct 20, 1992 by SAG
+* Function   : Build input prompt in ISA-SAA standard format.
+* Description: This subprogram recieves a text string together and it's
+*            | maximum length.  The subprogram builds the input
+*            | prompt by appending dots and a colon to the text.
+*
+* Mod Date   Mod By   Description of Changes
+* MMM DD YY  ________ _____________________________________________
+*                     _____________________________________________
+************************************************************************
+DEFINE DATA
+  PARAMETER USING CDASAA
+  LOCAL
+  01 #MSG-LENGTH(P2)
+END-DEFINE
+*
+DECIDE FOR FIRST CONDITION
+  WHEN CDASAA.#MAX-MSG-LENGTH LT 1
+    ESCAPE ROUTINE IMMEDIATE
+  WHEN CDASAA.#MAX-MSG-LENGTH GT 65
+    ASSIGN CDASAA.#MAX-MSG-LENGTH = 65
+  WHEN NONE
+    IGNORE
+END-DECIDE
+*
+EXAMINE CDASAA.#MSG-TXT FOR ' ' GIVING LENGTH IN #MSG-LENGTH
+ADD 1 TO #MSG-LENGTH
+IF #MSG-LENGTH LT CDASAA.#MAX-MSG-LENGTH - 1
+  ASSIGN CDASAA.#CHAR(#MSG-LENGTH:#MAX-MSG-LENGTH - 1) = '.'
+END-IF
+IF #MSG-LENGTH LE CDASAA.#MAX-MSG-LENGTH
+  ASSIGN CDASAA.#CHAR(#MAX-MSG-LENGTH) = ':'
+END-IF
+END

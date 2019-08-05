@@ -1,0 +1,46 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP IBM01140
+* <Natural Source Header
+* MAP2: PROTOTYPE
+* INPUT USING MAP 'XXXXXXXX'
+*     #HPARM #MAP-PROGRAM-NAME #TEMP.#CLEAR-AFTER-UPDATE
+*     #TEMP.#REPOSITION-DISPLAY #TEMP.#REPOSITION-UPDATE
+DEFINE DATA PARAMETER
+1 #HPARM (A065)
+1 #MAP-PROGRAM-NAME (A008)
+1 #TEMP.#CLEAR-AFTER-UPDATE (L)
+1 #TEMP.#REPOSITION-DISPLAY (L)
+1 #TEMP.#REPOSITION-UPDATE (L)
+END-DEFINE
+FORMAT PS=008 LS=069 ZP=OFF SG=OFF KD=ON  IP=OFF
+* MAP2: MAP PROFILES *****************************        410***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(   'CD-HELPR',#HPARM   *
+* 010068        N0NNUCN____         X        01 SYSPROF YL           1 *
+************************************************************************
+INPUT          (     IP=OFF      HE='CD-HELPR',#HPARM                 /*
+                                                                       )
+ 002T #MAP-PROGRAM-NAME  (AD=OD ) /*.01U008 A008 .
+ 013T '***** MAINTENANCE DIALOGUE PREFERENCES *****'(I)
+ 061T *PROGRAM  (AD=ODR ) /*.01S008 A008 .
+/
+ 002T *DATX  (AD=OD EM=LLL' 'DD','YY ) /*.01S009 D    .
+ 016T #HPARM  (AD=ON AL=001  ) /*.01U001 A065 .
+ 061T *TIMX  (AD=OD EM=HH':'II' 'AP ) /*.01S008 T    .
+/
+/
+ 002T 'Mark the desired behaviour for the current dialogue'
+/
+/
+ 002T #TEMP.#CLEAR-AFTER-UPDATE  (AD=MILT'_' ) /*.99U001 L    .
+ 004T 'Clear screen after each successful add/modify/purge action'
+/
+ 002T #TEMP.#REPOSITION-UPDATE  (AD=MILT'_' ) /*.99U001 L    .
+ 004T 'Reposition screen after add/modify/purge action'
+/
+ 002T #TEMP.#REPOSITION-DISPLAY  (AD=MILT'_' ) /*.99U001 L    .
+ 004T 'Reposition screen (to panel 1, line 1, etc.) for each new'
+ 062T 'display'
+* MAP2: VALIDATION *****************************************************
+* MAP2: END OF MAP *****************************************************
+END

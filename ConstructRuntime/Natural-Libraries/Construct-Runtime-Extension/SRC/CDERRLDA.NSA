@@ -1,0 +1,38 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDERRLDA /* Used by error processors.
+/*
+/*  When an error occurs, NATURAL
+/*  will execute a STACK TOP DATA
+/*  statement and place at the top
+/*  of the stack the following
+/*  information, which can be used
+/*  as INPUT data by an error
+/*  transaction: Error Number,
+/*  Line Number, Status, Program
+/*  Name and the Level.
+/*
+   2 #ERROR-NR (N4) /* The NATURAL error number.
+   2 #ERROR-LINE-NR (N4) /* Statement line number of the
+/*                                       /* statement that caused an err.
+/*                                       /* If the Status is either 'C'
+/*                                       /* or 'S', the Line number will
+/*                                       /* be zero.
+   2 #ERROR-STATUS (A1) /* The status may be one of the
+/*                                       /* following:
+/*                                       /* 'C'=Command Processing Error
+/*                                       /* 'L'=Logon Processing Error
+/*                                       /* 'O'=Object Time Error
+/*                                       /* 'S'=Non-Correctable Syntax
+/*                                       /*     Error.
+/*
+   2 #ERROR-PROGRAM (A8)
+   2 #ERROR-PROGRAM-LEVEL (N2) /* The level of the program,
+/*                                       /* subprogram, external
+/*                                       /* subroutine, map or
+/*                                       /* helproutine which caused
+/*                                       /* an error.
+END-DEFINE

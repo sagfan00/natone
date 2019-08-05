@@ -1,0 +1,26 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDBRLDA
+/*                        System    :    CST411
+/*                        Author    :    Software AG
+/*                        Created   :    1997-06-07
+/*                        Short Desc:    Browse object constants
+/*                        Long Desc :    This data area contains
+/*                                  :    constants used by generated
+/*                                  :    browse objects.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDBRLDA
+   2 RESTART-VALUES
+     3 EXPLICIT-RESTART (I1) INIT<1> /* Restart = TRUE
+     3 KEY-INFO-CHANGED (I1) INIT<2>
+     3 START-VALUE-CHANGED (I1) INIT<3>
+     3 UNIQUE-ID-CHANGED (I1) INIT<4>
+END-DEFINE

@@ -1,0 +1,11 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+ASSIGN #DOUBLE-QUOTE = 'A'
+IF #DOUBLE-QUOTE LT '0' THEN   /* Letters LT numbers
+  ASSIGN #DOUBLE-QUOTE = H'7F' /* EBCDIC
+ELSE
+  ASSIGN #DOUBLE-QUOTE = H'22' /* ASCII
+END-IF

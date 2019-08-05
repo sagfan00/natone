@@ -1,0 +1,117 @@
+* >Natural Source Header 000000
+* :Mode S
+* :CP
+* :LineIncrement 10
+* <Natural Source Header
+* MAP2: PROTOTYPE              --- CREATED BY WNT 2.2.0 ---
+* INPUT USING MAP 'XXXXXXXX'
+*     #C-ADDRESS #C-ARRIVED #C-DOB #C-DUE-FOR-SURGERY #C-FIRST-NAME
+*     #C-PATIENT-ID #C-RELEASED #C-SURNAME #G-MESSAGE #M-MAP-HEADING
+*     #M-UNDERLINE PATIENT.ADDRESS(*) PATIENT.ARRIVED PATIENT.DOB
+*     PATIENT.DUE-FOR-SURGERY PATIENT.FIRST-NAME PATIENT.PATIENT-ID
+*     PATIENT.RELEASED PATIENT.SURNAME
+DEFINE DATA PARAMETER
+1 #C-ADDRESS (C)
+1 #C-ARRIVED (C)
+1 #C-DOB (C)
+1 #C-DUE-FOR-SURGERY (C)
+1 #C-FIRST-NAME (C)
+1 #C-PATIENT-ID (C)
+1 #C-RELEASED (C)
+1 #C-SURNAME (C)
+1 #G-MESSAGE (A070)
+1 #M-MAP-HEADING (A040)
+1 #M-UNDERLINE (A040)
+1 PATIENT.ADDRESS (A030/00001:00004)
+1 PATIENT.ARRIVED (A020)
+1 PATIENT.DOB (N06.0)
+1 PATIENT.DUE-FOR-SURGERY (A006)
+1 PATIENT.FIRST-NAME (A020)
+1 PATIENT.PATIENT-ID (N07.0)
+1 PATIENT.RELEASED (D)
+1 PATIENT.SURNAME (A020)
+END-DEFINE
+FORMAT PS=024 LS=081 ZP=OFF SG=OFF KD=OFF IP=OFF
+* MAP2: MAP PROFILES *****************************        200***********
+* .TTAAAMMOO   D I D I N D I D I        ?_)^&:+(                       *
+* 024080        N0NNUCN             X        01 SYSDBA  NR             *
+************************************************************************
+INPUT          (     IP=OFF                                           /*
+                                                                       )
+ 001T *PROGRAM  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 019T #M-MAP-HEADING  (AD=DLOFHT ) /*.01U040 A040 .
+ 066T 'Date:'
+ 072T *DATX  (AD=DLOFHT' ' EM=mm-dd-yy ) /*.01S008 D    .
+/
+ 001T *USER  (AD=DLOFHT' ' ) /*.01S008 A008 .
+ 019T #M-UNDERLINE  (AD=DLOFHT ) /*.01U040 A040 .
+/
+/
+/
+ 017T 'Patient Number:'
+ 034T PATIENT.PATIENT-ID  (AD=DLMFHT' ' /*.99V007 N07.0.
+      CV=#C-PATIENT-ID )
+/
+ 021T 'First Name:'
+ 034T PATIENT.FIRST-NAME  (AD=DLMFHT' ' /*.99U020 A020 .
+      CV=#C-FIRST-NAME )
+/
+ 022T 'Last Name:'
+ 034T PATIENT.SURNAME  (AD=DLMFHT' ' CV=#C-SURNAME ) /*.99U020 A020 .
+/
+ 018T 'Date of Birth:'
+ 034T PATIENT.DOB  (AD=DLMFHT' ' EM=99-99-99 CV=#C-DOB ) /*.99U008 N06.0.
+/
+ 024T 'Address:'
+ 034T PATIENT.ADDRESS (001)  (AD=DLMFHT' ' /*.99U030 A030 .
+      CV=#C-ADDRESS )
+   /**A1000040000100001000010000100001100004001001000001000HV
+/
+ 034T PATIENT.ADDRESS (002)  (AD=DLMFHT' ' /*.99U030 A030 .
+      CV=#C-ADDRESS )
+/
+ 034T PATIENT.ADDRESS (003)  (AD=DLMFHT' ' /*.99U030 A030 .
+      CV=#C-ADDRESS )
+/
+ 034T PATIENT.ADDRESS (004)  (AD=DLMFHT' ' /*.99U030 A030 .
+      CV=#C-ADDRESS )
+/
+ 019T 'Arrival Date:'
+ 034T PATIENT.ARRIVED  (AD=DLMFHT' ' CV=#C-ARRIVED ) /*.99U020 A020 .
+/
+ 016T 'Date of Surgery:'
+ 034T PATIENT.DUE-FOR-SURGERY  (AD=DLMFHT' ' /*.99U008 A006 .
+      EM=XX-XX-XX CV=#C-DUE-FOR-SURGERY )
+/
+ 009T 'Estimated Release Date:'
+ 034T PATIENT.RELEASED  (AD=DLMFHT' ' EM=YYYY-MM-DD /*.99U010 D    .
+      CV=#C-RELEASED )
+/
+/
+/
+/
+ 004T 'PF3/15 to Return'
+ 059T 'PF12/24 to Exit'
+/
+ 004T #G-MESSAGE  (AD=DLOFHT ) /*.01D070 A070 .
+/
+/
+/
+/
+* MAP2: VALIDATION *****************************************************
+RULEVAR D01PATIENT.PATIENT-ID
+INCDIR PATIENT                         PATIENT-ID                      ;
+RULEVAR D01PATIENT.FIRST-NAME
+INCDIR PATIENT                         PATIENT-FIRST-NAME              ;
+RULEVAR D01PATIENT.SURNAME
+INCDIR PATIENT                         PATIENT-SURNAME                 ;
+RULEVAR D01PATIENT.DOB
+INCDIR PATIENT                         PATIENT-DOB                     ;
+RULEVAR D01PATIENT.ARRIVED
+INCDIR PATIENT                         PATIENT-ARRIVED                 ;
+RULEVAR D01PATIENT.DUE-FOR-SURGERY
+INCDIR PATIENT                         PATIENT-DUE-FOR-SURGERY         ;
+RULEVAR D01PATIENT.RELEASED
+INCDIR PATIENT                         PATIENT-RELEASED                ;
+* MAP2: END OF MAP *****************************************************
+END

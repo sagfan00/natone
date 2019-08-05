@@ -1,0 +1,42 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*
+/*                        Module    :    CDRANGEL
+/*                        System    :    CST341
+/*                        Author    :    Software AG
+/*                        Created   :    1996-01-17
+/*                        Short Desc:    Wildcard options
+/*                        Long Desc :    This data area defines the
+/*                                  :    valid types of range searches
+/*                                  :    that can be specified of
+/*                                  :    CDRANGE.
+/*  History
+/*
+/*    YYYY-MM-DD User ID  Change #       Description
+/*    ---------- -------- --------       --------------------------------
+/*
+ 1 CDRANGEL
+   2 METHODS /* Assign to CDRANGEA.METHOD
+     3 INITIAL-ASSIGNMENT (I1) INIT<0>
+     3 ASSIGN-NEXT-START-VALUES (I1) INIT<1>
+   2 RANGE-OPTIONS /* Assign CDRANGEA.RANGE-OPTION
+     3 DEFAULT (N1) INIT<0> /* Input specifies a
+/*                                       /* starting value, LE or GE
+/*                                       /* will be determined based on
+/*                                       /* the sort order.
+/*                                       /* Embedded wildcard can be
+/*                                       /* specified using >, < and
+/*                                       /* * characters for Alpha and
+/*                                       /* numeric characters.
+     3 LESS-THAN (N1) INIT<1>
+     3 LESS-THAN-OR-EQUAL (N1) INIT<2>
+     3 EQUAL (N1) INIT<3>
+     3 GREATER-THAN-OR-EQUAL (N1) INIT<4> /* Default
+     3 GREATER-THAN (N1) INIT<5>
+     3 BEGINS-WITH (N1) INIT<6> /* Prefix of key matches
+/*                                               /* the input key.
+     3 NO-WILDCARD (N1) INIT<7>
+END-DEFINE

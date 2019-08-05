@@ -1,0 +1,15 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDBITOPA
+   2 FUNC (I1)
+   2 INT-1 (I1)
+   2 BIT-SET (L/0:7)
+   2 REDEFINE BIT-SET /* REDEF. BEGIN : BIT-SET
+     3 EBCDIC-DATA (L)
+     3 COMPRESS-DATA (L)
+     3 ENCRYPT-DATA (L)
+     3 ENCRYPT-HEADER (L)
+END-DEFINE

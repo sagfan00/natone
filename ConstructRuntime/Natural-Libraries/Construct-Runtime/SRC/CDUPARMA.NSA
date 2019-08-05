@@ -1,0 +1,36 @@
+DEFINE DATA PARAMETER
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+ 1 CDUPARMA
+   2 INPUTS
+     3 #PARAMETER (A2) /* ID = Input Delimiter
+/*                                       /* CF = Terminal Command Char
+/*                                       /* UL = Upper/Lower Case
+/*                                       /* TB = Message at Top/Bottom
+/*                                       /* IA = Input assign char.
+/*                                       /* DC = Decimal Character
+/*                                       /* PS = Page Size
+/*                                       /* LS = Line Size
+/*                                       /* SF = Spacing Factor
+/*                                       /* SL = Source Length
+/*                                       /* KD = Key display position
+/*                                       /* ML = Message Line position
+/*                                       /* KD and ML set bot Alpha and
+/*                                       /* Numeric values as follows:
+/*                                       /* Alpha T = Top of window
+/*                                       /*       B = Bottom of window
+/*                                       /*       I = Inside window (but
+/*                                       /*           not top or bottom)
+/*                                       /*       O = Outside Window
+/*                                       /*     ' ' = disabled
+/*                                       /* Numeric value contains the
+/*                                       /* actual line number of KD or
+/*                                       /* Message line, this could
+/*                                       /* be greater than logical
+/*                                       /* window or even phys. screen.
+   2 OUTPUTS
+     3 #ALPHA-VALUE (A1) /* ID,CF,UL,TB,IA,DC,KD,ML
+     3 #NUMERIC-VALUE (P3) /* PS,LS,SF,SL,KD,ML
+END-DEFINE

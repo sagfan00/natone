@@ -1,0 +1,17 @@
+DEFINE DATA LOCAL
+/* >Natural Source Header 000000
+/* :Mode S
+/* :CP
+/* <Natural Source Header
+/*  This data area is used to keep
+/*  text strings required by the
+/*  BROWSE models.
+/*
+ 1 CDSCTXL
+/*
+   2 #END-OF-DATA-TXT (A40) INIT<'*8390'> /* End of data
+   2 #DISPLAY-ACTION (A5) INIT<'*8391'>
+ 1 REDEFINE CDSCTXL /* REDEF. BEGIN : CDSCTXL
+   2 CDUTRANS (A1/1:45)
+ 1 CDSCTXL-NAME (A8) INIT<'CDSCTXL'>
+END-DEFINE
